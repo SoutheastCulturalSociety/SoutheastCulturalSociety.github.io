@@ -428,7 +428,10 @@
 
     // ---------- AUTO GALLERY USING GITHUB API ----------
     fetch('https://api.github.com/repos/SoutheastCulturalSociety/SoutheastCulturalSociety.github.io/contents/gallery')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("GitHub API request failed");
+        return res.json();
+      })
       .then(files => {
         const galleryTrack = document.getElementById('gallery-track');
         files
