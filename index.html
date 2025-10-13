@@ -279,19 +279,11 @@
       z-index: 0;
       pointer-events: none;
     }
-
-    .gallery-empty {
-      color: #4d1a00;
-      background: #fffaf0;
-      padding: 12px;
-      border-radius: 8px;
-      display: inline-block;
-      box-shadow: 0 0 8px rgba(128,0,0,0.15);
-    }
   </style>
 </head>
 
 <body>
+  <!-- Particle Background Canvas -->
   <canvas id="particle-bg"></canvas>
 
   <header>
@@ -307,12 +299,14 @@
     </nav>
   </header>
 
+  <!-- NEWS WHEEL -->
   <div class="news-wheel">
     <div class="news-content">
       📢 Registration open for Annual Cultural Fest 2025! — Dance Workshop this Friday — Photography Contest results announced — Join SCS to be part of our creative family!
     </div>
   </div>
 
+  <!-- HOME -->
   <section id="home">
     <div class="overlay">
       <h2>Welcome to Demo Website of Southeast Cultural Society</h2>
@@ -321,6 +315,7 @@
     </div>
   </section>
 
+  <!-- NOTICE BOARD -->
   <section id="notice-board">
     <h2>Notice Board</h2>
     <h3>Upcoming Events</h3>
@@ -331,6 +326,7 @@
         <p>Annual cultural celebration featuring music, dance, and art exhibitions.</p>
         <a href="#">Register</a>
       </div>
+
       <div class="notice-card">
         <h3>Art Workshop</h3>
         <p>Date: January 12, 2025</p>
@@ -340,6 +336,7 @@
     </div>
   </section>
 
+  <!-- ABOUT -->
   <section id="about">
     <h2>About Us</h2>
     <p>
@@ -350,13 +347,18 @@
     </p>
   </section>
 
-  <!-- ✅ FIXED GALLERY -->
+  <!-- GALLERY -->
   <section id="gallery">
     <h2>Gallery</h2>
-    <div class="gallery-track" id="gallery-track"></div>
-    <div id="gallery-empty" style="display:none;" class="gallery-empty">No images found in /assets/gallery/ — upload images to your repo.</div>
+    <div class="gallery-track" id="gallery-track">
+      <img src="assets/gallery/img1.png" alt="Event Photo 1">
+      <img src="assets/gallery/img2.png" alt="Event Photo 2">
+      <img src="assets/gallery/img3.png" alt="Event Photo 3">
+      <img src="assets/gallery/img4.png" alt="Event Photo 4">
+    </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact">
     <h2>Contact Us</h2>
     <p>Email: <a href="mailto:southeastculturalsociety@gmail.com">southeastculturalsociety@gmail.com</a></p>
@@ -367,14 +369,16 @@
     </p>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <p>&copy; 2010–2025 Southeast Cultural Society. All Rights Reserved.</p>
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND ----------
+    // ---------- PARTICLE BACKGROUND (Petals) ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
+
     let particlesArray;
 
     function resizeCanvas() {
@@ -428,30 +432,13 @@
     }
     animateParticles();
 
-    // ✅ SIMPLE LOCAL GALLERY SCRIPT
-    (function loadSimpleGallery() {
-      const track = document.getElementById('gallery-track');
-      const empty = document.getElementById('gallery-empty');
-      const repoURL = "https://southeastculturalsociety.github.io/assets/gallery/";
-      const imageCount = 10; // set this to your number of images
-      let found = false;
-
-      for (let i = 1; i <= imageCount; i++) {
-        const img = new Image();
-        img.src = `${repoURL}img${i}.jpg`;
-        img.alt = `Gallery Image ${i}`;
-        img.onload = () => {
-          track.appendChild(img);
-          const clone = img.cloneNode(true);
-          track.appendChild(clone);
-          found = true;
-          empty.style.display = 'none';
-        };
-        img.onerror = () => {
-          if (i === imageCount && !found) empty.style.display = 'inline-block';
-        };
-      }
-    })();
+    // ---------- GALLERY INFINITE LOOP ----------
+    const galleryTrack = document.getElementById('gallery-track');
+    const galleryImages = Array.from(galleryTrack.children);
+    galleryImages.forEach(img => {
+      const clone = img.cloneNode(true);
+      galleryTrack.appendChild(clone);
+    });
   </script>
 </body>
 </html>
