@@ -19,8 +19,9 @@ jobs:
           GALLERY_FOLDER="assets/gallery"
           JSON_FILE="gallery.json"
 
+          # Create JSON array
           echo "[" > $JSON_FILE
-          FILES=($(ls $GALLERY_FOLDER))
+          FILES=($(ls -1 "$GALLERY_FOLDER" | sort))
           for i in "${!FILES[@]}"; do
             FILE="${GALLERY_FOLDER}/${FILES[$i]}"
             if [ $i -lt $((${#FILES[@]}-1)) ]; then
@@ -36,5 +37,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add gallery.json
-          git commit -m "Update gallery.json"
+          git diff --cached --quiet || git commit -m "Update gallery.json"
           git push
