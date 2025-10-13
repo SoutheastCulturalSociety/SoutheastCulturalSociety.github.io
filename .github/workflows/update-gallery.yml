@@ -3,9 +3,12 @@ name: Update Gallery JSON
 on:
   push:
     paths:
-      - 'assets/gallery/**'  # Only runs if gallery folder changes
+      - 'assets/gallery/**'
     branches:
       - main
+
+permissions:
+  contents: write  # ✅ allows the action to commit/push
 
 jobs:
   generate-gallery-json:
@@ -13,13 +16,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate gallery.json
         run: |
           GALLERY_FOLDER="assets/gallery"
           JSON_FILE="gallery.json"
 
-          # Create JSON array
           echo "[" > $JSON_FILE
           FILES=($(ls -1 "$GALLERY_FOLDER" | sort))
           for i in "${!FILES[@]}"; do
