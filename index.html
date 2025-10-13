@@ -428,20 +428,23 @@
 
     // ---------- AUTO GALLERY USING GITHUB API ----------
     fetch('https://api.github.com/repos/SoutheastCulturalSociety/SoutheastCulturalSociety.github.io/contents/gallery')
-      .then(res => {
-        if (!res.ok) throw new Error("GitHub API request failed");
-        return res.json();
-      })
+      .then(res => res.json())
       .then(files => {
         const galleryTrack = document.getElementById('gallery-track');
-        files
-          .filter(file => /\.(png|jpg|jpeg|gif)$/i.test(file.name))
-          .forEach(file => {
-            const img = document.createElement('img');
-            img.src = file.download_url;
-            img.alt = file.name;
-            galleryTrack.appendChild(img);
-          });
+        const imgs = files.filter(file => /\.(png|jpg|jpeg|gif)$/i.test(file.name));
+        imgs.forEach(file => {
+          const img = document.createElement('img');
+          img.src = file.download_url;
+          img.alt = file.name;
+          galleryTrack.appendChild(img);
+        });
+        // Clone for infinite scroll
+        imgs.forEach(file => {
+          const img = document.createElement('img');
+          img.src = file.download_url;
+          img.alt = file.name;
+          galleryTrack.appendChild(img);
+        });
       })
       .catch(err => console.error("Error loading gallery images:", err));
   </script>
