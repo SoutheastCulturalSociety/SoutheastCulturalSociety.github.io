@@ -22,7 +22,7 @@
     body {
       background: #f6f5f0;
       color: #222;
-      padding: 30px 20px;
+      padding: 20px;
       line-height: 1.6;
     }
 
@@ -41,7 +41,6 @@
       font-size: 1.5em;
       color: #444;
       margin-top: 40px;
-      margin-bottom: 20px;
     }
 
     .back-home {
@@ -60,58 +59,44 @@
       background: #921f1f;
     }
 
-    .committee-section {
-      max-width: 1000px;
-      margin: 30px auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-      overflow-x: auto;
-    }
-
     table {
       width: 100%;
+      max-width: 1000px;
+      margin: 20px auto;
       border-collapse: collapse;
-      margin-top: 15px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     th, td {
+      padding: 12px 15px;
       text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid #ddd;
     }
 
     th {
-      background-color: #b22a2a;
+      background: #b22a2a;
       color: #fff;
       font-weight: 600;
-      text-align: center;
     }
 
-    td.designation {
-      font-weight: 500;
-      color: #444;
+    tr:nth-child(even) {
+      background: #fafafa;
     }
 
-    td.name {
-      color: #222;
+    tr:hover {
+      background: #f0e6e6;
     }
 
     @media (max-width: 768px) {
       th, td {
-        padding: 8px;
+        padding: 10px;
+      }
+      table {
         font-size: 0.9em;
       }
     }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 0.9em;
-      color: #666;
-    }
-
   </style>
 </head>
 <body>
@@ -123,102 +108,93 @@
     <a href="https://southeastculturalsociety.github.io" class="back-home">← Back to Home</a>
   </div>
 
-  <!-- Moderator Panel -->
-  <div class="committee-section">
-    <h2>Moderator Panel</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="name">Dr. Md. Masud Shams Al Din</td><td class="designation">Moderator</td></tr>
-        <tr><td class="name">Ms. Maliha Islam</td><td class="designation">Assistant Moderator</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Moderator Panel</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Dr. Md. Masud Shams Al Din</td><td>Moderator</td></tr>
+      <tr><td>Ms. Maliha Islam</td><td>Assistant Moderator</td></tr>
+    </tbody>
+  </table>
 
-  <!-- Executive Committee -->
-  <div class="committee-section">
-    <h2>Executive Committee (EC)</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="name">Puja Pal</td><td class="designation">President</td></tr>
-        <tr><td class="name">Vanessa Christina Rozario</td><td class="designation">Vice President</td></tr>
-        <tr><td class="name">Rasel Alam</td><td class="designation">General Secretary</td></tr>
-        <tr><td class="name">Md. Jamiul Ahmed</td><td class="designation">Treasurer</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Executive Committee (EC)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Puja Pal</td><td>President</td></tr>
+      <tr><td>Vanessa Christina Rozario</td><td>Vice President</td></tr>
+      <tr><td>Rasel Alam</td><td>General Secretary</td></tr>
+      <tr><td>Md. Jamiul Ahmed</td><td>Treasurer</td></tr>
+    </tbody>
+  </table>
 
-  <!-- Sub Executive Committee -->
-  <div class="committee-section">
-    <h2>Sub Executive Committee (Sub-EC)</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Anika Tabassum</td><td>Joint Head of Publication</td></tr>
-        <tr><td>Anonto Roy</td><td>Volunteer Coordinator</td></tr>
-        <tr><td>Atoshi Chakrabarty</td><td>Head of Music</td></tr>
-        <tr><td>Aushika Biswas Jaya</td><td>Department Representative (BBA)</td></tr>
-        <tr><td>Dip Ghosh</td><td>Organizing Secretary</td></tr>
-        <tr><td>Dipta Biswas</td><td>Joint Head of Music</td></tr>
-        <tr><td>Fahmida Arfin Nisa</td><td>Department Representative (BBA)</td></tr>
-        <tr><td>Farhana Mehanaz Tonni</td><td>Head of Public Relations</td></tr>
-        <tr><td>Farsim Chowdhury</td><td>Head of Logistics & Sound</td></tr>
-        <tr><td>Jannatul Ferdous</td><td>Assistant General Secretary</td></tr>
-        <tr><td>Jannatul Islam Mim</td><td>Department Representative (CSE)</td></tr>
-        <tr><td>Jony Sarkar</td><td>Department Representative (EEE)</td></tr>
-        <tr><td>K.M. Rakib</td><td>Joint Organizing Secretary</td></tr>
-        <tr><td>Mafia Hossain Roxy</td><td>Department Representative (Bangla)</td></tr>
-        <tr><td>Mahdi Faisal Raad</td><td>Joint Head of Public Relations</td></tr>
-        <tr><td>Mahmud Hasan Rabby</td><td>Joint Head of Logistics & Sound</td></tr>
-        <tr><td>Md Mehedi Hasan</td><td>Joint Event Coordinator</td></tr>
-        <tr><td>Md Parvej Mosharof</td><td>Club Secretary</td></tr>
-        <tr><td>Md Rabbi Akon</td><td>Department Representative (Textile)</td></tr>
-        <tr><td>Mehedi Hasan Omi</td><td>Joint Head of Photography</td></tr>
-        <tr><td>Momo Mondal</td><td>Joint Head of Dance (Classical)</td></tr>
-        <tr><td>Mousumi Iasmin Khusi</td><td>Joint Women Secretary</td></tr>
-        <tr><td>Nabiha Tahsin</td><td>Department Representative (Pharmacy)</td></tr>
-        <tr><td>Nazneen Rashed Purna</td><td>Joint Volunteer Coordinator</td></tr>
-        <tr><td>Nur Fahad Sarker</td><td>Joint Head of Music (Instrumental)</td></tr>
-        <tr><td>Pranto Gupta</td><td>Joint Assistant General Secretary</td></tr>
-        <tr><td>Pronoy Deb</td><td>Head of Photography</td></tr>
-        <tr><td>Puspita Roy Sneha</td><td>Department Representative (English)</td></tr>
-        <tr><td>Rafid Rahman</td><td>Joint Head of Decorations</td></tr>
-        <tr><td>Rantu Roy</td><td>IT Secretary (Admin)</td></tr>
-        <tr><td>Rezuana Sarkar</td><td>Head of Dance (Classical)</td></tr>
-        <tr><td>Rodela Chowdhury</td><td>Women Secretary</td></tr>
-        <tr><td>Sadia Benta Alam Bushra</td><td>Event Coordinator</td></tr>
-        <tr><td>Salvia Khan Tasmia</td><td>Head of Publication</td></tr>
-        <tr><td>Samia Amrin (Rimjhim)</td><td>Joint Head of Creative & Arts</td></tr>
-        <tr><td>Sanzida Rahman Denia</td><td>Head of Creative & Arts</td></tr>
-        <tr><td>Sharafat Ullah Chowdhury (Arko)</td><td>Head of Music (Instrumental)</td></tr>
-        <tr><td>Shuvo Afsan</td><td>Head of Promotion & Marketing</td></tr>
-        <tr><td>Sk. Shafin Ahmad</td><td>Joint Head of Promotion & Marketing</td></tr>
-        <tr><td>Tamanna E Jahan Prama</td><td>Department Representative (Economics)</td></tr>
-        <tr><td>Tanjim Ahammad</td><td>Department Representative (Law)</td></tr>
-        <tr><td>Tasfia Hasan Promy</td><td>Head of Decorations</td></tr>
-        <tr><td>Tasnimul Hossain</td><td>IT Secretary (Graphics)</td></tr>
-        <tr><td>Tayeb Shafique</td><td>Joint Head of Administration</td></tr>
-        <tr><td>Towfiq Elahi</td><td>Head of Dance (Modern)</td></tr>
-        <tr><td>Zahidul Islam</td><td>Head of Administration</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Sub Executive Committee (Sub-EC)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Anika Tabassum</td><td>Joint Head of Publication</td></tr>
+      <tr><td>Anonto Roy</td><td>Volunteer Coordinator</td></tr>
+      <tr><td>Atoshi Chakrabarty</td><td>Head of Music</td></tr>
+      <tr><td>Aushika Biswas Jaya</td><td>Department Representative (BBA)</td></tr>
+      <tr><td>Dip Ghosh</td><td>Organizing Secretary</td></tr>
+      <tr><td>Dipta Biswas</td><td>Joint Head of Music</td></tr>
+      <tr><td>Fahmida Arfin Nisa</td><td>Department Representative (BBA)</td></tr>
+      <tr><td>Farhana Mehanaz Tonni</td><td>Head of Public Relations</td></tr>
+      <tr><td>Farsim Chowdhury</td><td>Head of Logistics & Sound</td></tr>
+      <tr><td>Jannatul Ferdous</td><td>Assistant General Secretary</td></tr>
+      <tr><td>Jannatul Islam Mim</td><td>Department Representative (CSE)</td></tr>
+      <tr><td>Jony Sarkar</td><td>Department Representative (EEE)</td></tr>
+      <tr><td>K.M. Rakib</td><td>Joint Organizing Secretary</td></tr>
+      <tr><td>Mafia Hossain Roxy</td><td>Department Representative (Bangla)</td></tr>
+      <tr><td>Mahdi Faisal Raad</td><td>Joint Head of Public Relations</td></tr>
+      <tr><td>Mahmud Hasan Rabby</td><td>Joint Head of Logistics & Sound</td></tr>
+      <tr><td>Md Mehedi Hasan</td><td>Joint Event Coordinator</td></tr>
+      <tr><td>Md Parvej Mosharof</td><td>Club Secretary</td></tr>
+      <tr><td>Md Rabbi Akon</td><td>Department Representative (Textile)</td></tr>
+      <tr><td>Mehedi Hasan Omi</td><td>Joint Head of Photography</td></tr>
+      <tr><td>Momo Mondal</td><td>Joint Head of Dance (Classical)</td></tr>
+      <tr><td>Mousumi Iasmin Khusi</td><td>Joint Women Secretary</td></tr>
+      <tr><td>Nabiha Tahsin</td><td>Department Representative (Pharmacy)</td></tr>
+      <tr><td>Nazneen Rashed Purna</td><td>Joint Volunteer Coordinator</td></tr>
+      <tr><td>Nur Fahad Sarker</td><td>Joint Head of Music (Instrumental)</td></tr>
+      <tr><td>Pranto Gupta</td><td>Joint Assistant General Secretary</td></tr>
+      <tr><td>Pronoy Deb</td><td>Head of Photography</td></tr>
+      <tr><td>Puspita Roy Sneha</td><td>Department Representative (English)</td></tr>
+      <tr><td>Rafid Rahman</td><td>Joint Head of Decorations</td></tr>
+      <tr><td>Rantu Roy</td><td>IT Secretary (Admin)</td></tr>
+      <tr><td>Rezuana Sarkar</td><td>Head of Dance (Classical)</td></tr>
+      <tr><td>Rodela Chowdhury</td><td>Women Secretary</td></tr>
+      <tr><td>Sadia Benta Alam Bushra</td><td>Event Coordinator</td></tr>
+      <tr><td>Salvia Khan Tasmia</td><td>Head of Publication</td></tr>
+      <tr><td>Samia Amrin (Rimjhim)</td><td>Joint Head of Creative & Arts</td></tr>
+      <tr><td>Sanzida Rahman Denia</td><td>Head of Creative & Arts</td></tr>
+      <tr><td>Sharafat Ullah Chowdhury (Arko)</td><td>Head of Music (Instrumental)</td></tr>
+      <tr><td>Shuvo Afsan</td><td>Head of Promotion & Marketing</td></tr>
+      <tr><td>Sk. Shafin Ahmad</td><td>Joint Head of Promotion & Marketing</td></tr>
+      <tr><td>Tamanna E Jahan Prama</td><td>Department Representative (Economics)</td></tr>
+      <tr><td>Tanjim Ahammad</td><td>Department Representative (Law)</td></tr>
+      <tr><td>Tasfia Hasan Promy</td><td>Head of Decorations</td></tr>
+      <tr><td>Tasnimul Hossain</td><td>IT Secretary (Graphics)</td></tr>
+      <tr><td>Tayeb Shafique</td><td>Joint Head of Administration</td></tr>
+      <tr><td>Towfiq Elahi</td><td>Head of Dance (Modern)</td></tr>
+      <tr><td>Zahidul Islam</td><td>Head of Administration</td></tr>
+    </tbody>
+  </table>
 
   <footer>
     © Southeast Cultural Society | 2025 Committee
