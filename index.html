@@ -350,12 +350,7 @@
   <!-- GALLERY -->
   <section id="gallery">
     <h2>Gallery</h2>
-    <div class="gallery-track" id="gallery-track">
-      <img src="assets/gallery/img1.png" alt="Event Photo 1">
-      <img src="assets/gallery/img2.png" alt="Event Photo 2">
-      <img src="assets/gallery/img3.png" alt="Event Photo 3">
-      <img src="assets/gallery/img4.png" alt="Event Photo 4">
-    </div>
+    <div class="gallery-track" id="gallery-track"></div>
   </section>
 
   <!-- CONTACT -->
@@ -432,13 +427,24 @@
     }
     animateParticles();
 
-    // ---------- GALLERY INFINITE LOOP ----------
+    // ---------- DYNAMIC GALLERY ----------
     const galleryTrack = document.getElementById('gallery-track');
-    const galleryImages = Array.from(galleryTrack.children);
-    galleryImages.forEach(img => {
-      const clone = img.cloneNode(true);
-      galleryTrack.appendChild(clone);
-    });
+
+    fetch('gallery.json')
+      .then(res => res.json())
+      .then(images => {
+        images.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          galleryTrack.appendChild(img);
+        });
+
+        // Clone for infinite scroll
+        Array.from(galleryTrack.children).forEach(img => {
+          galleryTrack.appendChild(img.cloneNode(true));
+        });
+      })
+      .catch(err => console.error('Error loading gallery:', err));
   </script>
 </body>
 </html>
