@@ -427,7 +427,7 @@
     animateParticles();
 
     // ---------- AUTO GALLERY USING GITHUB API ----------
-    fetch('https://api.github.com/repos/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/contents/gallery')
+    fetch('https://api.github.com/repos/SoutheastCulturalSociety/SoutheastCulturalSociety.github.io/contents/gallery')
       .then(res => res.json())
       .then(files => {
         const galleryTrack = document.getElementById('gallery-track');
