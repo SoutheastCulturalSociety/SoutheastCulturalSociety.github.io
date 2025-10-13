@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Southeast Cultural Society</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- BASIC RESET ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: #4d1a00;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fff1e6, #f5e0dc);
+    }
+
+    header {
+      background: rgba(128,0,0,0.85);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    header img.logo {
+      width: 90px;
+      height: auto;
+    }
+
+    nav {
+      margin-top: 0.5rem;
+    }
+
+    nav a {
+      color: #ffd700;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 50px 15px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    #home {
+      position: relative;
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #home .overlay {
+      background: rgba(255, 248, 240, 0.85);
+      padding: 50px 25px;
+      border-radius: 20px;
+    }
+
+    #home h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: maroon;
+    }
+
+    .join-btn {
+      background: gold;
+      color: maroon;
+      padding: 15px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 20px;
+      transition: all 0.3s;
+    }
+
+    .join-btn:hover {
+      background: #ffd94d;
+      transform: scale(1.05);
+    }
+
+    /* ---------- NEWS WHEEL ---------- */
+    .news-wheel {
+      background: #8b0000;
+      color: #fffaf0;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      position: relative;
+      font-weight: 600;
+    }
+
+    .news-content {
+      display: inline-block;
+      animation: scroll 18s linear infinite;
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(100%); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* ---------- NOTICE BOARD ---------- */
+    #notice-board h2 {
+      margin-bottom: 20px;
+      color: maroon;
+    }
+
+    .notice-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .notice-card {
+      background: #fffaf0;
+      border-radius: 12px;
+      padding: 20px;
+      width: 300px;
+      transition: transform 0.3s;
+      box-shadow: 0 0 10px rgba(128,0,0,0.3);
+    }
+
+    .notice-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(128,0,0,0.5);
+    }
+
+    .notice-card h3 {
+      color: maroon;
+      margin-bottom: 8px;
+    }
+
+    .notice-card a {
+      display: inline-block;
+      margin-top: 8px;
+      color: white;
+      background: maroon;
+      padding: 6px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .notice-card a:hover {
+      background: #b30000;
+    }
+
+    /* ---------- ABOUT ---------- */
+    #about {
+      background: #fff0e6;
+      border-radius: 15px;
+      padding: 60px 15px;
+      box-shadow: 0 0 15px rgba(128,0,0,0.3);
+    }
+
+    #about h2 {
+      color: maroon;
+      margin-bottom: 20px;
+    }
+
+    #about p {
+      max-width: 800px;
+      margin: auto;
+      line-height: 1.7;
+      color: #4d1a00;
+    }
+
+    /* ---------- GALLERY ---------- */
+    #gallery {
+      overflow: hidden;
+      position: relative;
+      margin-top: 40px;
+    }
+
+    #gallery h2 {
+      color: maroon;
+      margin-bottom: 20px;
+    }
+
+    .gallery-track {
+      display: flex;
+      width: max-content;
+      animation: scrollGallery 50s linear infinite;
+    }
+
+    .gallery-track img {
+      width: 220px;
+      height: 150px;
+      margin: 10px;
+      border-radius: 12px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .gallery-track img:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes scrollGallery {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ---------- CONTACT ---------- */
+    #contact h2 {
+      color: maroon;
+      margin-bottom: 15px;
+    }
+
+    #contact p {
+      margin-bottom: 10px;
+    }
+
+    #contact a {
+      color: maroon;
+      text-decoration: none;
+    }
+
+    #contact a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background: #8b0000;
+      color: #fffaf0;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #ffd700;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- PARTICLE BACKGROUND ---------- */
+    #particle-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Particle Background Canvas -->
+  <canvas id="particle-bg"></canvas>
+
+  <header>
+    <img src="assets/logo.png" alt="Southeast Cultural Society Logo" class="logo">
+    <h1>Southeast Cultural Society</h1>
+    <p>Since 2010</p>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#notice-board">Notice Board</a>
+      <a href="#about">About</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- NEWS WHEEL -->
+  <div class="news-wheel">
+    <div class="news-content">
+      📢 Registration open for Annual Cultural Fest 2025! — Dance Workshop this Friday — Photography Contest results announced — Join SCS to be part of our creative family!
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="overlay">
+      <h2>Welcome to Demo Website of Southeast Cultural Society</h2>
+      <p>Promoting art, culture, and unity since 2010.</p>
+      <a href="https://forms.gle/your-google-form-link" class="join-btn" target="_blank">Join Us</a>
+    </div>
+  </section>
+
+  <!-- NOTICE BOARD -->
+  <section id="notice-board">
+    <h2>Notice Board</h2>
+    <h3>Upcoming Events</h3>
+    <div class="notice-section" id="upcoming-events">
+      <div class="notice-card">
+        <h3>Cultural Fest 2025</h3>
+        <p>Date: January 15, 2025</p>
+        <p>Annual cultural celebration featuring music, dance, and art exhibitions.</p>
+        <a href="#">Register</a>
+      </div>
+
+      <div class="notice-card">
+        <h3>Art Workshop</h3>
+        <p>Date: January 12, 2025</p>
+        <p>Learn traditional painting and craft from senior artists.</p>
+        <a href="#">Join</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      The Southeast Cultural Society (SCS) was founded in 2010 to promote cultural awareness,
+      creativity, and artistic expression among students. We organize cultural festivals, art exhibitions,
+      workshops, and competitions that bring together talent from across the region. <br><br>
+      Our vision is to build a community that celebrates diversity and creativity through art and culture.
+    </p>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery-track" id="gallery-track">
+      <img src="gallery/img1.png" alt="Event Photo 1">
+      <img src="gallery/img2.png" alt="Event Photo 2">
+      <img src="gallery/img3.png" alt="Event Photo 3">
+      <img src="gallery/img4.png" alt="Event Photo 4">
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:southeastculturalsociety@gmail.com">southeastculturalsociety@gmail.com</a></p>
+    <p>Follow us on 
+      <a href="#">Facebook</a> | 
+      <a href="#">Instagram</a> | 
+      <a href="#">YouTube</a>
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2010–2025 Southeast Cultural Society. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // ---------- PARTICLE BACKGROUND (Petals) ----------
+    const canvas = document.getElementById("particle-bg");
+    const ctx = canvas.getContext("2d");
+
+    let particlesArray;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 2;
+        this.speedY = Math.random() * 1 + 0.2;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.color = `rgba(255, ${Math.floor(Math.random()*200 + 100)}, ${Math.floor(Math.random()*100)}, ${this.opacity})`;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        if (this.y > canvas.height) this.y = -this.size;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      const num = Math.floor(window.innerWidth / 8);
+      for (let i = 0; i < num; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+    initParticles();
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particlesArray) {
+        p.update();
+        p.draw();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ---------- GALLERY INFINITE LOOP ----------
+    const galleryTrack = document.getElementById('gallery-track');
+    const galleryImages = Array.from(galleryTrack.children);
+    galleryImages.forEach(img => {
+      const clone = img.cloneNode(true);
+      galleryTrack.appendChild(clone);
+    });
+  </script>
+</body>
+</html>
