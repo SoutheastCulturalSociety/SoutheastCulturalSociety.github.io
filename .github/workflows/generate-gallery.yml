@@ -1,0 +1,45 @@
+name: Generate Gallery Index
+
+on:
+  push:
+    paths:
+      - 'gallery/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Generate gallery/list.json
+        run: |
+          python3 - <<'PY'
+          import os, json
+          p = 'gallery'
+          if not os.path.exists(p):
+            os.makedirs(p)
+          files = [f for f in os.listdir(p)
+                   if os.path.isfile(os.path.join(p, f)) and f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+          files.sort()
+          out = os.path.join(p, 'list.json')
+          with open(out, 'w') as fh:
+            json.dump(files, fh, ensure_ascii=False, indent=2)
+          print(f"Generated {out} with {len(files)} entries.")
+          PY
+
+      - name: Commit gallery/list.json (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add gallery/list.json
+          # Only commit & push if there's something to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update gallery/list.json (automated)"
+            git push
+          else
+            echo "No changes to commit."
+          fi
