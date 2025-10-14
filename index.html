@@ -195,7 +195,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY ---------- */
+    /* ---------- GALLERY (2-ROW SCROLLING, FULL WIDTH) ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -211,7 +211,6 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      position: relative;
       width: 100%;
       overflow: hidden;
     }
@@ -227,20 +226,14 @@
       margin: 10px;
       border-radius: 12px;
       object-fit: cover;
-      transition: transform 0.3s, filter 0.3s;
+      transition: transform 0.3s;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      filter: blur(8px);
-    }
-
-    .gallery-track img.loaded {
-      filter: blur(0);
     }
 
     .gallery-track img:hover {
       transform: scale(1.05);
     }
 
-    /* Two-row scroll animations */
     @keyframes scrollLeft {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
@@ -402,9 +395,11 @@
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND ----------
+    // ---------- PARTICLE BACKGROUND (Petals) ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
+
+    let particlesArray;
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -438,11 +433,12 @@
       }
     }
 
-    let particlesArray = [];
     function initParticles() {
       particlesArray = [];
       const num = Math.floor(window.innerWidth / 8);
-      for (let i = 0; i < num; i++) particlesArray.push(new Particle());
+      for (let i = 0; i < num; i++) {
+        particlesArray.push(new Particle());
+      }
     }
     initParticles();
 
@@ -456,7 +452,7 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH) ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
 
@@ -468,12 +464,13 @@
         const bottomImages = images.slice(half);
 
         function populateRow(track, imgs) {
-          const total = Math.ceil(window.innerWidth / 220) + imgs.length; // ensure full width coverage
-          for (let i = 0; i < total; i++) {
+          // Fill screen width + duplicates for infinite effect
+          const imgWidth = 240; // includes margin
+          const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
+
+          for (let i = 0; i < needed; i++) {
             const img = document.createElement('img');
-            img.loading = "lazy";
             img.src = imgs[i % imgs.length];
-            img.onload = () => img.classList.add('loaded');
             track.appendChild(img);
           }
         }
