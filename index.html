@@ -18,6 +18,7 @@
       padding: 0;
       box-sizing: border-box;
       scroll-behavior: smooth;
+      user-select: none;
     }
 
     body {
@@ -195,7 +196,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY ---------- */
+    /* ---------- GALLERY (2-ROW SCROLLING, FULL WIDTH) ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -215,22 +216,16 @@
       overflow: hidden;
     }
 
-    .gallery-scroll-container {
-      overflow-x: auto;
-      overflow-y: hidden;
-      width: 100%;
-      scrollbar-width: none;
+    .gallery-container {
+      overflow: hidden;
       cursor: grab;
       position: relative;
     }
 
-    .gallery-scroll-container::-webkit-scrollbar {
-      display: none;
-    }
-
     .gallery-track {
       display: flex;
-      flex-wrap: nowrap;
+      width: max-content;
+      user-select: none;
     }
 
     .gallery-track img {
@@ -245,6 +240,24 @@
 
     .gallery-track img:hover {
       transform: scale(1.05);
+    }
+
+    @keyframes scrollLeft {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes scrollRight {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+
+    .gallery-track.top {
+      animation: scrollLeft 50s linear infinite;
+    }
+
+    .gallery-track.bottom {
+      animation: scrollRight 55s linear infinite;
     }
 
     /* ---------- CONTACT ---------- */
@@ -368,10 +381,10 @@
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="gallery-wrapper">
-      <div class="gallery-scroll-container">
+      <div class="gallery-container">
         <div class="gallery-track top" id="gallery-track-top"></div>
       </div>
-      <div class="gallery-scroll-container">
+      <div class="gallery-container">
         <div class="gallery-track bottom" id="gallery-track-bottom"></div>
       </div>
     </div>
@@ -394,7 +407,7 @@
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND ----------
+    // ---------- PARTICLE BACKGROUND (Petals) ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
 
@@ -451,78 +464,61 @@
     }
     animateParticles();
 
-    // ---------- GALLERY INFINITE CAROUSEL ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH + MANUAL DRAG) ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
-    const scrollContainers = document.querySelectorAll('.gallery-scroll-container');
 
     fetch('gallery.json')
       .then(res => res.json())
       .then(images => {
-        // Duplicate images for seamless looping
-        function populate(track, imgs) {
-          imgs.concat(imgs).forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            track.appendChild(img);
-          });
-        }
-
         const half = Math.ceil(images.length / 2);
         const topImages = images.slice(0, half);
         const bottomImages = images.slice(half);
 
-        populate(galleryTop, topImages);
-        populate(galleryBottom, bottomImages.length ? bottomImages : topImages);
-      });
+        function populateRow(track, imgs) {
+          const imgWidth = 240;
+          const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
+          for (let i = 0; i < needed; i++) {
+            const img = document.createElement('img');
+            img.src = imgs[i % imgs.length];
+            track.appendChild(img);
+          }
+        }
 
-    // Auto-scroll animation
-    function autoScroll(container, speed) {
-      let scrollPos = 0;
-      function loop() {
-        scrollPos += speed;
-        if (scrollPos >= container.scrollWidth / 2) scrollPos = 0;
-        container.scrollLeft = scrollPos;
-        requestAnimationFrame(loop);
-      }
-      loop();
-    }
+        populateRow(galleryTop, topImages);
+        populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
 
-    scrollContainers.forEach((container, idx) => {
-      const speed = idx === 0 ? 0.5 : -0.3; // top row right, bottom row left
-      autoScroll(container, speed);
-    });
+        // Manual Drag Scroll
+        const tracks = [galleryTop, galleryBottom];
+        tracks.forEach(track => {
+          let isDown = false, startX, scrollLeft;
+          const container = track.parentElement;
 
-    // Drag/Touch
-    scrollContainers.forEach(container => {
-      let isDown = false, startX, scrollLeft;
-      container.addEventListener('mousedown', e => {
-        isDown = true;
-        startX = e.pageX - container.offsetLeft;
-        scrollLeft = container.scrollLeft;
-      });
-      container.addEventListener('mouseup', () => isDown = false);
-      container.addEventListener('mouseleave', () => isDown = false);
-      container.addEventListener('mousemove', e => {
-        if (!isDown) return;
-        const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX) * 2;
-        container.scrollLeft = scrollLeft - walk;
-      });
-
-      container.addEventListener('touchstart', e => {
-        isDown = true;
-        startX = e.touches[0].pageX - container.offsetLeft;
-        scrollLeft = container.scrollLeft;
-      });
-      container.addEventListener('touchmove', e => {
-        if (!isDown) return;
-        const x = e.touches[0].pageX - container.offsetLeft;
-        const walk = (x - startX) * 2;
-        container.scrollLeft = scrollLeft - walk;
-      });
-      container.addEventListener('touchend', () => isDown = false);
-    });
+          container.addEventListener('mousedown', e => {
+            isDown = true;
+            container.classList.add('active');
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = track.offsetLeft;
+            track.style.animationPlayState = 'paused';
+          });
+          container.addEventListener('mouseleave', () => {
+            isDown = false;
+            track.style.animationPlayState = 'running';
+          });
+          container.addEventListener('mouseup', () => {
+            isDown = false;
+            track.style.animationPlayState = 'running';
+          });
+          container.addEventListener('mousemove', e => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX);
+            track.style.transform = `translateX(${walk}px)`;
+          });
+        });
+      })
+      .catch(err => console.error('Error loading gallery:', err));
   </script>
 </body>
 </html>
