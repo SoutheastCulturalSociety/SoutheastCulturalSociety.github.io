@@ -195,7 +195,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY (2-ROW SCROLLING) ---------- */
+    /* ---------- GALLERY (2-ROW SCROLLING, FULL WIDTH) ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -211,7 +211,6 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      position: relative;
       width: 100%;
       overflow: hidden;
     }
@@ -235,7 +234,6 @@
       transform: scale(1.05);
     }
 
-    /* Animations for two directions */
     @keyframes scrollLeft {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
@@ -371,7 +369,7 @@
     </p>
   </section>
 
-  <!-- GALLERY (2 ROW) -->
+  <!-- GALLERY -->
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="gallery-wrapper">
@@ -454,7 +452,7 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH) ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
 
@@ -466,15 +464,15 @@
         const bottomImages = images.slice(half);
 
         function populateRow(track, imgs) {
-          imgs.forEach(src => {
+          // Fill screen width + duplicates for infinite effect
+          const imgWidth = 240; // includes margin
+          const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
+
+          for (let i = 0; i < needed; i++) {
             const img = document.createElement('img');
-            img.src = src;
+            img.src = imgs[i % imgs.length];
             track.appendChild(img);
-          });
-          // Clone for continuous scroll
-          Array.from(track.children).forEach(img => {
-            track.appendChild(img.cloneNode(true));
-          });
+          }
         }
 
         populateRow(galleryTop, topImages);
