@@ -195,7 +195,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY (2-ROW SCROLLING, FULL WIDTH) ---------- */
+    /* ---------- GALLERY ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -215,15 +215,21 @@
       overflow: hidden;
     }
 
+    .gallery-scroll-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      width: 100%;
+      scrollbar-width: none; /* Firefox */
+      cursor: grab;
+    }
+
+    .gallery-scroll-container::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
     .gallery-track {
       display: flex;
       width: max-content;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .gallery-track:active {
-      cursor: grabbing;
     }
 
     .gallery-track img {
@@ -379,8 +385,12 @@
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="gallery-wrapper">
-      <div class="gallery-track top" id="gallery-track-top"></div>
-      <div class="gallery-track bottom" id="gallery-track-bottom"></div>
+      <div class="gallery-scroll-container">
+        <div class="gallery-track top" id="gallery-track-top"></div>
+      </div>
+      <div class="gallery-scroll-container">
+        <div class="gallery-track bottom" id="gallery-track-bottom"></div>
+      </div>
     </div>
   </section>
 
@@ -401,7 +411,7 @@
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND (Petals) ----------
+    // ---------- PARTICLE BACKGROUND ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
 
@@ -458,9 +468,10 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH + DRAG) ----------
+    // ---------- GALLERY AUTO + DRAG ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
+    const scrollContainers = document.querySelectorAll('.gallery-scroll-container');
 
     fetch('gallery.json')
       .then(res => res.json())
@@ -472,7 +483,6 @@
         function populateRow(track, imgs) {
           const imgWidth = 240; // includes margin
           const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
-
           for (let i = 0; i < needed; i++) {
             const img = document.createElement('img');
             img.src = imgs[i % imgs.length];
@@ -482,82 +492,42 @@
 
         populateRow(galleryTop, topImages);
         populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
-
-        enableDragScroll(galleryTop);
-        enableDragScroll(galleryBottom);
       })
       .catch(err => console.error('Error loading gallery:', err));
 
-    function enableDragScroll(track) {
-      let isDragging = false;
-      let startX;
-      let scrollLeftOffset;
-      let animPaused = false;
-      let pauseTimeout;
-
-      function pauseAnimation() {
-        if (!animPaused) {
-          track.style.animationPlayState = 'paused';
-          animPaused = true;
-        }
-      }
-
-      function resumeAnimation() {
-        track.style.animationPlayState = 'running';
-        animPaused = false;
-      }
-
-      track.addEventListener('mousedown', e => {
-        isDragging = true;
-        startX = e.pageX - track.offsetLeft;
-        scrollLeftOffset = track.scrollLeft;
-        pauseAnimation();
+    // Enable drag scrolling
+    scrollContainers.forEach(container => {
+      let isDown = false, startX, scrollLeft;
+      container.addEventListener('mousedown', e => {
+        isDown = true;
+        container.classList.add('active');
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
       });
-
-      track.addEventListener('mouseleave', () => {
-        if (isDragging) {
-          isDragging = false;
-          pauseTimeout = setTimeout(resumeAnimation, 2000);
-        }
-      });
-
-      track.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          pauseTimeout = setTimeout(resumeAnimation, 2000);
-        }
-      });
-
-      track.addEventListener('mousemove', e => {
-        if (!isDragging) return;
+      container.addEventListener('mouseleave', () => { isDown = false; container.classList.remove('active'); });
+      container.addEventListener('mouseup', () => { isDown = false; container.classList.remove('active'); });
+      container.addEventListener('mousemove', e => {
+        if(!isDown) return;
         e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 2; // scroll speed
-        track.scrollLeft = scrollLeftOffset - walk;
-      });
-
-      // Touch events
-      track.addEventListener('touchstart', e => {
-        isDragging = true;
-        startX = e.touches[0].pageX - track.offsetLeft;
-        scrollLeftOffset = track.scrollLeft;
-        pauseAnimation();
-      });
-
-      track.addEventListener('touchmove', e => {
-        if (!isDragging) return;
-        const x = e.touches[0].pageX - track.offsetLeft;
+        const x = e.pageX - container.offsetLeft;
         const walk = (x - startX) * 2;
-        track.scrollLeft = scrollLeftOffset - walk;
+        container.scrollLeft = scrollLeft - walk;
       });
 
-      track.addEventListener('touchend', () => {
-        if (isDragging) {
-          isDragging = false;
-          pauseTimeout = setTimeout(resumeAnimation, 2000);
-        }
+      // Touch support
+      container.addEventListener('touchstart', e => {
+        isDown = true;
+        startX = e.touches[0].pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
       });
-    }
+      container.addEventListener('touchmove', e => {
+        if(!isDown) return;
+        const x = e.touches[0].pageX - container.offsetLeft;
+        const walk = (x - startX) * 2;
+        container.scrollLeft = scrollLeft - walk;
+      });
+      container.addEventListener('touchend', () => { isDown = false; });
+    });
   </script>
 </body>
 </html>
