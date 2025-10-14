@@ -195,7 +195,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY ---------- */
+    /* ---------- GALLERY (2-ROW SCROLLING) ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -207,10 +207,18 @@
       margin-bottom: 20px;
     }
 
+    .gallery-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
     .gallery-track {
       display: flex;
       width: max-content;
-      animation: scrollGallery 50s linear infinite;
     }
 
     .gallery-track img {
@@ -220,15 +228,30 @@
       border-radius: 12px;
       object-fit: cover;
       transition: transform 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
     .gallery-track img:hover {
       transform: scale(1.05);
     }
 
-    @keyframes scrollGallery {
+    /* Animations for two directions */
+    @keyframes scrollLeft {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
+    }
+
+    @keyframes scrollRight {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+
+    .gallery-track.top {
+      animation: scrollLeft 50s linear infinite;
+    }
+
+    .gallery-track.bottom {
+      animation: scrollRight 55s linear infinite;
     }
 
     /* ---------- CONTACT ---------- */
@@ -348,10 +371,13 @@
     </p>
   </section>
 
-  <!-- GALLERY -->
+  <!-- GALLERY (2 ROW) -->
   <section id="gallery">
     <h2>Gallery</h2>
-    <div class="gallery-track" id="gallery-track"></div>
+    <div class="gallery-wrapper">
+      <div class="gallery-track top" id="gallery-track-top"></div>
+      <div class="gallery-track bottom" id="gallery-track-bottom"></div>
+    </div>
   </section>
 
   <!-- CONTACT -->
@@ -428,22 +454,31 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC GALLERY ----------
-    const galleryTrack = document.getElementById('gallery-track');
+    // ---------- DYNAMIC TWO-ROW GALLERY ----------
+    const galleryTop = document.getElementById('gallery-track-top');
+    const galleryBottom = document.getElementById('gallery-track-bottom');
 
     fetch('gallery.json')
       .then(res => res.json())
       .then(images => {
-        images.forEach(src => {
-          const img = document.createElement('img');
-          img.src = src;
-          galleryTrack.appendChild(img);
-        });
+        const half = Math.ceil(images.length / 2);
+        const topImages = images.slice(0, half);
+        const bottomImages = images.slice(half);
 
-        // Clone for infinite scroll
-        Array.from(galleryTrack.children).forEach(img => {
-          galleryTrack.appendChild(img.cloneNode(true));
-        });
+        function populateRow(track, imgs) {
+          imgs.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            track.appendChild(img);
+          });
+          // Clone for continuous scroll
+          Array.from(track.children).forEach(img => {
+            track.appendChild(img.cloneNode(true));
+          });
+        }
+
+        populateRow(galleryTop, topImages);
+        populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
       })
       .catch(err => console.error('Error loading gallery:', err));
   </script>
