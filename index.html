@@ -218,6 +218,12 @@
     .gallery-track {
       display: flex;
       width: max-content;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .gallery-track:active {
+      cursor: grabbing;
     }
 
     .gallery-track img {
@@ -452,7 +458,7 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH) ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH + DRAG) ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
 
@@ -464,7 +470,6 @@
         const bottomImages = images.slice(half);
 
         function populateRow(track, imgs) {
-          // Fill screen width + duplicates for infinite effect
           const imgWidth = 240; // includes margin
           const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
 
@@ -477,8 +482,82 @@
 
         populateRow(galleryTop, topImages);
         populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
+
+        enableDragScroll(galleryTop);
+        enableDragScroll(galleryBottom);
       })
       .catch(err => console.error('Error loading gallery:', err));
+
+    function enableDragScroll(track) {
+      let isDragging = false;
+      let startX;
+      let scrollLeftOffset;
+      let animPaused = false;
+      let pauseTimeout;
+
+      function pauseAnimation() {
+        if (!animPaused) {
+          track.style.animationPlayState = 'paused';
+          animPaused = true;
+        }
+      }
+
+      function resumeAnimation() {
+        track.style.animationPlayState = 'running';
+        animPaused = false;
+      }
+
+      track.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeftOffset = track.scrollLeft;
+        pauseAnimation();
+      });
+
+      track.addEventListener('mouseleave', () => {
+        if (isDragging) {
+          isDragging = false;
+          pauseTimeout = setTimeout(resumeAnimation, 2000);
+        }
+      });
+
+      track.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          pauseTimeout = setTimeout(resumeAnimation, 2000);
+        }
+      });
+
+      track.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 2; // scroll speed
+        track.scrollLeft = scrollLeftOffset - walk;
+      });
+
+      // Touch events
+      track.addEventListener('touchstart', e => {
+        isDragging = true;
+        startX = e.touches[0].pageX - track.offsetLeft;
+        scrollLeftOffset = track.scrollLeft;
+        pauseAnimation();
+      });
+
+      track.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        const x = e.touches[0].pageX - track.offsetLeft;
+        const walk = (x - startX) * 2;
+        track.scrollLeft = scrollLeftOffset - walk;
+      });
+
+      track.addEventListener('touchend', () => {
+        if (isDragging) {
+          isDragging = false;
+          pauseTimeout = setTimeout(resumeAnimation, 2000);
+        }
+      });
+    }
   </script>
 </body>
 </html>
