@@ -18,7 +18,6 @@
       padding: 0;
       box-sizing: border-box;
       scroll-behavior: smooth;
-      user-select: none;
     }
 
     body {
@@ -216,16 +215,9 @@
       overflow: hidden;
     }
 
-    .gallery-container {
-      overflow: hidden;
-      cursor: grab;
-      position: relative;
-    }
-
     .gallery-track {
       display: flex;
       width: max-content;
-      user-select: none;
     }
 
     .gallery-track img {
@@ -381,12 +373,8 @@
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="gallery-wrapper">
-      <div class="gallery-container">
-        <div class="gallery-track top" id="gallery-track-top"></div>
-      </div>
-      <div class="gallery-container">
-        <div class="gallery-track bottom" id="gallery-track-bottom"></div>
-      </div>
+      <div class="gallery-track top" id="gallery-track-top"></div>
+      <div class="gallery-track bottom" id="gallery-track-bottom"></div>
     </div>
   </section>
 
@@ -464,7 +452,7 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH + MANUAL DRAG) ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH) ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
 
@@ -476,8 +464,10 @@
         const bottomImages = images.slice(half);
 
         function populateRow(track, imgs) {
-          const imgWidth = 240;
+          // Fill screen width + duplicates for infinite effect
+          const imgWidth = 240; // includes margin
           const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
+
           for (let i = 0; i < needed; i++) {
             const img = document.createElement('img');
             img.src = imgs[i % imgs.length];
@@ -487,36 +477,6 @@
 
         populateRow(galleryTop, topImages);
         populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
-
-        // Manual Drag Scroll
-        const tracks = [galleryTop, galleryBottom];
-        tracks.forEach(track => {
-          let isDown = false, startX, scrollLeft;
-          const container = track.parentElement;
-
-          container.addEventListener('mousedown', e => {
-            isDown = true;
-            container.classList.add('active');
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = track.offsetLeft;
-            track.style.animationPlayState = 'paused';
-          });
-          container.addEventListener('mouseleave', () => {
-            isDown = false;
-            track.style.animationPlayState = 'running';
-          });
-          container.addEventListener('mouseup', () => {
-            isDown = false;
-            track.style.animationPlayState = 'running';
-          });
-          container.addEventListener('mousemove', e => {
-            if(!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
-            const walk = (x - startX);
-            track.style.transform = `translateX(${walk}px)`;
-          });
-        });
       })
       .catch(err => console.error('Error loading gallery:', err));
   </script>
