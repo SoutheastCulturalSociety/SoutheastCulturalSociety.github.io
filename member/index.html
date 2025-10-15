@@ -68,6 +68,14 @@
 <script>
 let currentData = null;
 
+// ✅ Allow pressing "Enter" to trigger ID generation
+document.getElementById('studentId').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    fetchID();
+  }
+});
+
 // Fetch student data
 async function fetchID() {
   const studentId = document.getElementById('studentId').value.trim();
@@ -79,7 +87,8 @@ async function fetchID() {
   document.getElementById('regenBtn').style.display = 'none';
   document.getElementById('preview').style.display = 'none';
 
-  const apiUrl = "https://script.google.com/macros/s/AKfycby69XiQqe722Z4bcCRa5_LXq5Q3Gbc3HqheoMEXMKCEPme5ZfbT3Cn0Rt3FJPvuWLad/exec?id=" + encodeURIComponent(studentId);
+  // ✅ Updated to your latest deployment URL
+  const apiUrl = "https://script.google.com/macros/s/AKfycbzXNMskZbQ1gMRPdw5is8b5dEgLO0P7p5YcNwKgFX3YjgLKo6sqI5Ukt4MkVYxmC1Fc/exec?id=" + encodeURIComponent(studentId);
 
   try {
     const res = await fetch(apiUrl);
@@ -93,7 +102,7 @@ async function fetchID() {
     const filteredData = { ...currentData };
     delete filteredData['SL'];
     delete filteredData['MAIL ID'];
-    delete filteredData['WhatsApp no']; // fully remove WhatsApp
+    delete filteredData['WhatsApp no'];
 
     const preview = document.getElementById('preview');
     const previewInfo = document.getElementById('previewInfo');
@@ -158,7 +167,7 @@ function downloadID() {
     const filteredData = { ...currentData };
     delete filteredData['SL'];
     delete filteredData['MAIL ID'];
-    delete filteredData['WhatsApp no']; // ignore WhatsApp
+    delete filteredData['WhatsApp no'];
 
     let y = 22;
     doc.setFontSize(8);
