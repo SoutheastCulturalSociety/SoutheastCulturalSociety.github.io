@@ -75,6 +75,7 @@
       font-size: 1.8rem;
       margin-bottom: 20px;
       color: maroon;
+      text-transform: capitalize;
     }
 
     .back-home {
@@ -142,6 +143,30 @@
         font-size: 0.9em;
       }
     }
+
+    /* ---------- LOADER STYLES ---------- */
+    #loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      flex-direction: column;
+    }
+
+    .spinner {
+      border: 8px solid #f3f3f3; /* Light gray */
+      border-top: 8px solid #b22a2a; /* Maroon */
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -153,110 +178,93 @@
     <nav>
       <a href="#moderator">Moderator</a>
       <a href="#ec">Executive Committee</a>
-      <a href="#sub-ec">Sub Executive Committee</a>
+      <a href="#subec">Sub Executive Committee</a>
     </nav>
   </header>
 
-  <section>
-    <div style="text-align:center;">
-      <a href="https://southeastculturalsociety.github.io" class="back-home">← Back to Home</a>
-    </div>
-
-    <h2 id="moderator">Moderator Panel</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Dr. Md. Masud Shams Al Din</td><td>Moderator</td></tr>
-        <tr><td>Ms. Maliha Islam</td><td>Assistant Moderator</td></tr>
-      </tbody>
-    </table>
-
-    <h2 id="ec">Executive Committee (EC)</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Puja Pal</td><td>President</td></tr>
-        <tr><td>Vanessa Christina Rozario</td><td>Vice President</td></tr>
-        <tr><td>Rasel Alam</td><td>General Secretary</td></tr>
-        <tr><td>Md. Jamiul Ahmed</td><td>Treasurer</td></tr>
-      </tbody>
-    </table>
-
-    <h2 id="sub-ec">Sub Executive Committee (Sub-EC)</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Designation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Sub-EC -->
-        <tr><td>Anika Tabassum</td><td>Joint Head of Publication</td></tr>
-        <tr><td>Anonto Roy</td><td>Volunteer Coordinator</td></tr>
-        <tr><td>Atoshi Chakrabarty</td><td>Head of Music</td></tr>
-        <tr><td>Aushika Biswas Jaya</td><td>Department Representative (BBA)</td></tr>
-        <tr><td>Dip Ghosh</td><td>Organizing Secretary</td></tr>
-        <tr><td>Dipta Biswas</td><td>Joint Head of Music</td></tr>
-        <tr><td>Fahmida Arfin Nisa</td><td>Department Representative (BBA)</td></tr>
-        <tr><td>Farhana Mehanaz Tonni</td><td>Head of Public Relations</td></tr>
-        <tr><td>Farsim Chowdhury</td><td>Head of Logistics & Sound</td></tr>
-        <tr><td>Jannatul Ferdous</td><td>Assistant General Secretary</td></tr>
-        <tr><td>Jannatul Islam Mim</td><td>Department Representative (CSE)</td></tr>
-        <tr><td>Jony Sarkar</td><td>Department Representative (EEE)</td></tr>
-        <tr><td>K.M. Rakib</td><td>Joint Organizing Secretary</td></tr>
-        <tr><td>Mafia Hossain Roxy</td><td>Department Representative (Bangla)</td></tr>
-        <tr><td>Mahdi Faisal Raad</td><td>Joint Head of Public Relations</td></tr>
-        <tr><td>Mahmud Hasan Rabby</td><td>Joint Head of Logistics & Sound</td></tr>
-        <tr><td>Md Mehedi Hasan</td><td>Joint Event Coordinator</td></tr>
-        <tr><td>Md Parvej Mosharof</td><td>Club Secretary</td></tr>
-        <tr><td>Md Rabbi Akon</td><td>Department Representative (Textile)</td></tr>
-        <tr><td>Mehedi Hasan Omi</td><td>Joint Head of Photography</td></tr>
-        <tr><td>Momo Mondal</td><td>Joint Head of Dance (Classical)</td></tr>
-        <tr><td>Mousumi Iasmin Khusi</td><td>Joint Women Secretary</td></tr>
-        <tr><td>Nabiha Tahsin</td><td>Department Representative (Pharmacy)</td></tr>
-        <tr><td>Nazneen Rashed Purna</td><td>Joint Volunteer Coordinator</td></tr>
-        <tr><td>Nur Fahad Sarker</td><td>Joint Head of Music (Instrumental)</td></tr>
-        <tr><td>Pranto Gupta</td><td>Joint Assistant General Secretary</td></tr>
-        <tr><td>Pronoy Deb</td><td>Head of Photography</td></tr>
-        <tr><td>Puspita Roy Sneha</td><td>Department Representative (English)</td></tr>
-        <tr><td>Rafid Rahman</td><td>Joint Head of Decorations</td></tr>
-        <tr><td>Rantu Roy</td><td>IT Secretary (Admin)</td></tr>
-        <tr><td>Rezuana Sarkar</td><td>Head of Dance (Classical)</td></tr>
-        <tr><td>Rodela Chowdhury</td><td>Women Secretary</td></tr>
-        <tr><td>Sadia Benta Alam Bushra</td><td>Event Coordinator</td></tr>
-        <tr><td>Salvia Khan Tasmia</td><td>Head of Publication</td></tr>
-        <tr><td>Samia Amrin (Rimjhim)</td><td>Joint Head of Creative & Arts</td></tr>
-        <tr><td>Sanzida Rahman Denia</td><td>Head of Creative & Arts</td></tr>
-        <tr><td>Sharafat Ullah Chowdhury (Arko)</td><td>Head of Music (Instrumental)</td></tr>
-        <tr><td>Shuvo Afsan</td><td>Head of Promotion & Marketing</td></tr>
-        <tr><td>Sk. Shafin Ahmad</td><td>Joint Head of Promotion & Marketing</td></tr>
-        <tr><td>Tamanna E Jahan Prama</td><td>Department Representative (Economics)</td></tr>
-        <tr><td>Tanjim Ahammad</td><td>Department Representative (Law)</td></tr>
-        <tr><td>Tasfia Hasan Promy</td><td>Head of Decorations</td></tr>
-        <tr><td>Tasnimul Hossain</td><td>IT Secretary (Graphics)</td></tr>
-        <tr><td>Tayeb Shafique</td><td>Joint Head of Administration</td></tr>
-        <tr><td>Towfiq Elahi</td><td>Head of Dance (Modern)</td></tr>
-        <tr><td>Zahidul Islam</td><td>Head of Administration</td></tr>
-      </tbody>
-    </table>
+  <section style="text-align:center;">
+    <a href="https://southeastculturalsociety.github.io" class="back-home">← Back to Home</a>
   </section>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Loading committee data...</p>
+  </div>
+
+  <!-- Sections will be dynamically created here -->
+  <div id="committee-sections"></div>
 
   <footer>
     &copy; 2010–2025 Southeast Cultural Society | 2025 Committee
   </footer>
 
+  <!-- ===================== DYNAMIC SHEET SCRIPT ===================== -->
+  <script>
+    const sheetUrl = "https://script.google.com/macros/s/AKfycbw-fIX9VNcdsE2uK24t1jYBCl1QtnQO40CdU8sXgrlbh4Gt0bemI_dMLNERqA1hcU3d/exec";
+    const currentYear = 2025; // Filter only this year
+
+    async function loadSheetData() {
+      const container = document.getElementById("committee-sections");
+      const loader = document.getElementById("loader");
+
+      try {
+        const res = await fetch(sheetUrl);
+        const data = await res.json();
+
+        for (const [sheetName, rows] of Object.entries(data)) {
+          const filteredRows = rows.filter(r => r["ACTIVE YEAR"] == currentYear);
+          if (!filteredRows.length) continue;
+
+          const sectionId = sheetName.toLowerCase().replace(/\s/g, "-");
+          const section = document.createElement("section");
+          section.id = sectionId;
+
+          const h2 = document.createElement("h2");
+          h2.textContent = sheetName;
+          section.appendChild(h2);
+
+          const table = document.createElement("table");
+          const thead = document.createElement("thead");
+          const tbody = document.createElement("tbody");
+
+          const headerRow = document.createElement("tr");
+          Object.keys(filteredRows[0]).forEach(key => {
+            if (key !== "ACTIVE YEAR" && key !== "BIRTHDAY") {
+              const th = document.createElement("th");
+              th.textContent = key;
+              headerRow.appendChild(th);
+            }
+          });
+          thead.appendChild(headerRow);
+
+          filteredRows.forEach(row => {
+            const tr = document.createElement("tr");
+            Object.entries(row).forEach(([key, value]) => {
+              if (key !== "ACTIVE YEAR" && key !== "BIRTHDAY") {
+                const td = document.createElement("td");
+                td.textContent = value;
+                tr.appendChild(td);
+              }
+            });
+            tbody.appendChild(tr);
+          });
+
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          section.appendChild(table);
+          container.appendChild(section);
+        }
+      } catch (error) {
+        console.error("Error loading sheet data:", error);
+        container.innerHTML = "<p style='text-align:center;color:red;'>Failed to load data. Please try again later.</p>";
+      } finally {
+        loader.style.display = "none"; // Hide loader after data is loaded
+      }
+    }
+
+    loadSheetData();
+  </script>
+
 </body>
 </html>
-
-
