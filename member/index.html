@@ -93,6 +93,7 @@ async function fetchID() {
     const filteredData = { ...currentData };
     delete filteredData['SL'];
     delete filteredData['MAIL ID'];
+    delete filteredData['WhatsApp no']; // fully remove WhatsApp
 
     const preview = document.getElementById('preview');
     const previewInfo = document.getElementById('previewInfo');
@@ -101,7 +102,6 @@ async function fetchID() {
       <strong>Name:</strong> ${filteredData.NAME}<br>
       <strong>Student ID:</strong> ${filteredData['STUDENT ID']}<br>
       <strong>Department & Batch:</strong> ${filteredData.DEPARTMENT} - ${filteredData.BATCH}<br>
-      ${filteredData['WhatsApp no'] ? `<strong>WhatsApp:</strong> ${filteredData['WhatsApp no']}<br>` : ''}
       ${filteredData['Active Year'] ? `<strong>Active Year:</strong> ${filteredData['Active Year']}` : ''}
     `;
     preview.style.display = 'block';
@@ -147,7 +147,6 @@ function downloadID() {
   doc.rect(0, 0, 85.6, 54, 'F');
 
   toDataURL('../assets/logo.png', function(logoBase64, w, h) {
-    // Maintain original aspect ratio
     const maxWidth = 13;
     const aspect = h / w;
     const finalHeight = maxWidth * aspect;
@@ -159,6 +158,7 @@ function downloadID() {
     const filteredData = { ...currentData };
     delete filteredData['SL'];
     delete filteredData['MAIL ID'];
+    delete filteredData['WhatsApp no']; // ignore WhatsApp
 
     let y = 22;
     doc.setFontSize(8);
@@ -166,7 +166,6 @@ function downloadID() {
     doc.text(`Name: ${filteredData.NAME}`, 6, y); y += 6;
     doc.text(`Student ID: ${filteredData['STUDENT ID']}`, 6, y); y += 6;
     doc.text(`Dept & Batch: ${filteredData.DEPARTMENT} - ${filteredData.BATCH}`, 6, y); y += 6;
-    if (filteredData['WhatsApp no']) { doc.text(`WhatsApp: ${filteredData['WhatsApp no']}`, 6, y); y += 6; }
     if (filteredData['Active Year']) { doc.text(`Active Year: ${filteredData['Active Year']}`, 6, y); }
 
     doc.save(`${filteredData.NAME}_SCS_ID.pdf`);
