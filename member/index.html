@@ -48,7 +48,7 @@
   <h2>Member ID Card Generator</h2>
   <p>Enter your Student ID to generate your ID card.</p>
   <input type="text" id="studentId" placeholder="Enter Student ID">
-  <button onclick="fetchID()">Generate ID Card</button>
+  <button id="generateBtn" onclick="fetchID()">Generate ID Card</button>
   <div id="loader"></div>
   <div style="margin-top:10px;">
     <button id="downloadBtn" style="display:none;" onclick="downloadID()">Download PDF</button>
@@ -68,7 +68,6 @@
 <script>
 let currentData = null;
 
-// ✅ Allow pressing "Enter" to trigger ID generation
 document.getElementById('studentId').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -76,7 +75,6 @@ document.getElementById('studentId').addEventListener('keypress', function(e) {
   }
 });
 
-// Fetch student data
 async function fetchID() {
   const studentId = document.getElementById('studentId').value.trim();
   if (!studentId) return alert("Please enter your Student ID.");
@@ -86,8 +84,8 @@ async function fetchID() {
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
   document.getElementById('preview').style.display = 'none';
+  document.getElementById('generateBtn').style.display = 'none'; // ✅ hide after click
 
-  // ✅ Updated to your latest deployment URL
   const apiUrl = "https://script.google.com/macros/s/AKfycbzXNMskZbQ1gMRPdw5is8b5dEgLO0P7p5YcNwKgFX3YjgLKo6sqI5Ukt4MkVYxmC1Fc/exec?id=" + encodeURIComponent(studentId);
 
   try {
@@ -95,7 +93,10 @@ async function fetchID() {
     const result = await res.json();
     loader.style.display = 'none';
 
-    if (!result.success) return alert(result.message || "Student ID not found.");
+    if (!result.success) {
+      document.getElementById('generateBtn').style.display = 'inline-block'; // show again if not found
+      return alert(result.message || "Student ID not found.");
+    }
 
     currentData = result.data;
 
@@ -119,12 +120,12 @@ async function fetchID() {
 
   } catch (error) {
     loader.style.display = 'none';
+    document.getElementById('generateBtn').style.display = 'inline-block'; // restore on error
     console.error(error);
     alert("Error fetching data. Please try again later.");
   }
 }
 
-// Convert image to Base64
 function toDataURL(url, callback) {
   const img = new Image();
   img.crossOrigin = 'Anonymous';
@@ -140,7 +141,6 @@ function toDataURL(url, callback) {
   };
 }
 
-// Download ID PDF (logo keeps aspect ratio)
 function downloadID() {
   if (!currentData) return;
 
@@ -151,7 +151,6 @@ function downloadID() {
     format: [85.6, 54]
   });
 
-  // Background
   doc.setFillColor(255, 248, 240);
   doc.rect(0, 0, 85.6, 54, 'F');
 
@@ -181,12 +180,12 @@ function downloadID() {
   });
 }
 
-// Re-generate
 function reGenerate() {
   document.getElementById('studentId').value = '';
   document.getElementById('preview').style.display = 'none';
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
+  document.getElementById('generateBtn').style.display = 'inline-block'; // ✅ show back on re-generate
   currentData = null;
   document.getElementById('studentId').focus();
 }
