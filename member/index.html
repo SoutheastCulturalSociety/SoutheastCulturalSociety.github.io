@@ -84,7 +84,7 @@ async function fetchID() {
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
   document.getElementById('preview').style.display = 'none';
-  document.getElementById('generateBtn').style.display = 'none'; // ✅ hide after click
+  document.getElementById('generateBtn').style.display = 'none';
 
   const apiUrl = "https://script.google.com/macros/s/AKfycbzXNMskZbQ1gMRPdw5is8b5dEgLO0P7p5YcNwKgFX3YjgLKo6sqI5Ukt4MkVYxmC1Fc/exec?id=" + encodeURIComponent(studentId);
 
@@ -93,12 +93,18 @@ async function fetchID() {
     const result = await res.json();
     loader.style.display = 'none';
 
-    if (!result.success) {
-      document.getElementById('generateBtn').style.display = 'inline-block'; // show again if not found
+    if (!result.success || !result.data) {
+      document.getElementById('generateBtn').style.display = 'inline-block';
       return alert(result.message || "Student ID not found.");
     }
 
     currentData = result.data;
+
+    // Combine all Active Years if array
+    let activeYears = currentData['Active Year'];
+    if (Array.isArray(activeYears)) {
+      currentData['Active Year'] = activeYears.join(', ');
+    }
 
     const filteredData = { ...currentData };
     delete filteredData['SL'];
@@ -120,7 +126,7 @@ async function fetchID() {
 
   } catch (error) {
     loader.style.display = 'none';
-    document.getElementById('generateBtn').style.display = 'inline-block'; // restore on error
+    document.getElementById('generateBtn').style.display = 'inline-block';
     console.error(error);
     alert("Error fetching data. Please try again later.");
   }
@@ -185,7 +191,7 @@ function reGenerate() {
   document.getElementById('preview').style.display = 'none';
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
-  document.getElementById('generateBtn').style.display = 'inline-block'; // ✅ show back on re-generate
+  document.getElementById('generateBtn').style.display = 'inline-block';
   currentData = null;
   document.getElementById('studentId').focus();
 }
