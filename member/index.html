@@ -100,7 +100,7 @@ async function fetchID() {
 
     currentData = result.data;
 
-    // ✅ Robust Active Year handling (supports array or string)
+    // ✅ Handle Active Year properly
     let activeYears = currentData['Active Year'] || currentData['ACTIVEYEAR'] || currentData['ACTIVE YEAR'];
     if (Array.isArray(activeYears)) {
       activeYears = activeYears.join(', ');
@@ -123,9 +123,13 @@ async function fetchID() {
       <strong>Department & Batch:</strong> ${filteredData.DEPARTMENT} - ${filteredData.BATCH}<br>
       <strong>Active Year:</strong> ${filteredData['Active Year']}
     `;
+
     preview.style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'inline-block';
     document.getElementById('regenBtn').style.display = 'inline-block';
+
+    // ✅ Hide input box after successful generation
+    document.getElementById('studentId').style.display = 'none';
 
   } catch (error) {
     loader.style.display = 'none';
@@ -191,6 +195,7 @@ function downloadID() {
 
 function reGenerate() {
   document.getElementById('studentId').value = '';
+  document.getElementById('studentId').style.display = 'inline-block'; // ✅ show input box again
   document.getElementById('preview').style.display = 'none';
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
