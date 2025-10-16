@@ -324,15 +324,13 @@
 
   <!-- NEWS WHEEL -->
   <div class="news-wheel">
-    <div class="news-content">
-      📢 Registration open for Annual Cultural Fest 2025! — Dance Workshop this Friday — Photography Contest results announced — Join SCS to be part of our creative family!
-    </div>
+    <div class="news-content" id="news-wheel">Loading...</div>
   </div>
 
   <!-- HOME -->
   <section id="home">
     <div class="overlay">
-      <h2>Welcome to Demo Website of Southeast Cultural Society</h2>
+      <h2>Welcome to Official Website of Southeast Cultural Society</h2>
       <p>Promoting art, culture, and unity since 2010.</p>
       <a href="https://forms.gle/your-google-form-link" class="join-btn" target="_blank">Join Us</a>
     </div>
@@ -341,21 +339,8 @@
   <!-- NOTICE BOARD -->
   <section id="notice-board">
     <h2>Notice Board</h2>
-    <h3>Upcoming Events</h3>
     <div class="notice-section" id="upcoming-events">
-      <div class="notice-card">
-        <h3>Cultural Fest 2025</h3>
-        <p>Date: January 15, 2025</p>
-        <p>Annual cultural celebration featuring music, dance, and art exhibitions.</p>
-        <a href="#">Register</a>
-      </div>
-
-      <div class="notice-card">
-        <h3>Art Workshop</h3>
-        <p>Date: January 12, 2025</p>
-        <p>Learn traditional painting and craft from senior artists.</p>
-        <a href="#">Join</a>
-      </div>
+      <!-- Notices will populate here dynamically -->
     </div>
   </section>
 
@@ -396,10 +381,9 @@
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND (Petals) ----------
+    // ---------- PARTICLE BACKGROUND ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
-
     let particlesArray;
 
     function resizeCanvas() {
@@ -453,7 +437,7 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY (FULL WIDTH) ----------
+    // ---------- DYNAMIC TWO-ROW GALLERY ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
 
@@ -465,10 +449,8 @@
         const bottomImages = images.slice(half);
 
         function populateRow(track, imgs) {
-          // Fill screen width + duplicates for infinite effect
-          const imgWidth = 240; // includes margin
+          const imgWidth = 240;
           const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
-
           for (let i = 0; i < needed; i++) {
             const img = document.createElement('img');
             img.src = imgs[i % imgs.length];
@@ -480,6 +462,41 @@
         populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
       })
       .catch(err => console.error('Error loading gallery:', err));
+
+    // ---------- FETCH NOTICES FROM API ----------
+    const apiURL = 'https://script.google.com/macros/s/AKfycbxzp7y2TSisFBVR1OMFhWliup9muwm_akchMv8LlPio2mc8wbWaB3mmeGhy1qN6W2Filg/exec';
+    const newsWheelDiv = document.getElementById('news-wheel');
+    const noticeSection = document.getElementById('upcoming-events');
+
+    fetch(apiURL)
+      .then(res => res.json())
+      .then(data => {
+        // NEWS WHEEL
+        const headlines = data.map(n => n['Notice Headline']).join(' — ');
+        newsWheelDiv.textContent = headlines || 'No notices currently.';
+
+        // NOTICE BOARD
+        noticeSection.innerHTML = '';
+        if (data.length === 0) {
+          noticeSection.innerHTML = '<p>No upcoming events.</p>';
+        } else {
+          data.forEach(n => {
+            const card = document.createElement('div');
+            card.classList.add('notice-card');
+            card.innerHTML = `
+              <h3>${n['Notice Headline'] || 'No title'}</h3>
+              <p>${n['Notice Details'] || ''}</p>
+              ${n['Registration Link(if any)'] ? `<a href="${n['Registration Link(if any)']}" target="_blank">Register</a>` : ''}
+            `;
+            noticeSection.appendChild(card);
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load notices:', err);
+        newsWheelDiv.textContent = 'Failed to load notices.';
+        noticeSection.innerHTML = '<p>Failed to load notices.</p>';
+      });
   </script>
 </body>
 </html>
