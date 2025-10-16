@@ -100,11 +100,12 @@ async function fetchID() {
 
     currentData = result.data;
 
-    // Combine all Active Years if array
-    let activeYears = currentData['Active Year'];
+    // ✅ Ensure all Active Years show as comma-separated string
+    let activeYears = currentData['Active Year'] || currentData['ACTIVEYEAR'] || currentData['ACTIVE YEAR'];
     if (Array.isArray(activeYears)) {
-      currentData['Active Year'] = activeYears.join(', ');
+      activeYears = activeYears.join(', ');
     }
+    currentData['Active Year'] = activeYears ? activeYears.toString() : '';
 
     const filteredData = { ...currentData };
     delete filteredData['SL'];
@@ -118,7 +119,7 @@ async function fetchID() {
       <strong>Name:</strong> ${filteredData.NAME}<br>
       <strong>Student ID:</strong> ${filteredData['STUDENT ID']}<br>
       <strong>Department & Batch:</strong> ${filteredData.DEPARTMENT} - ${filteredData.BATCH}<br>
-      ${filteredData['Active Year'] ? `<strong>Active Year:</strong> ${filteredData['Active Year']}` : ''}
+      <strong>Active Year:</strong> ${filteredData['Active Year'] || '—'}
     `;
     preview.style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'inline-block';
