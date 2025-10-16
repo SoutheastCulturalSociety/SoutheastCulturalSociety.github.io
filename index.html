@@ -175,6 +175,32 @@
       background: #b30000;
     }
 
+    /* Loading indicator with spinner */
+    .notice-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: maroon;
+      width: 100%;
+      padding: 20px 0;
+      gap: 10px;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3; /* Light grey */
+      border-top: 4px solid maroon; /* Maroon */
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* ---------- ABOUT ---------- */
     #about {
       background: #fff0e6;
@@ -340,7 +366,10 @@
   <section id="notice-board">
     <h2>Notice Board</h2>
     <div class="notice-section" id="upcoming-events">
-      <!-- Notices will populate here dynamically -->
+      <div class="notice-loading">
+        <div class="spinner"></div>
+        Loading...
+      </div>
     </div>
   </section>
 
@@ -467,6 +496,9 @@
     const apiURL = 'https://script.google.com/macros/s/AKfycbxzp7y2TSisFBVR1OMFhWliup9muwm_akchMv8LlPio2mc8wbWaB3mmeGhy1qN6W2Filg/exec';
     const newsWheelDiv = document.getElementById('news-wheel');
     const noticeSection = document.getElementById('upcoming-events');
+
+    // Show loading initially
+    noticeSection.innerHTML = '<div class="notice-loading"><div class="spinner"></div>Loading...</div>';
 
     fetch(apiURL)
       .then(res => res.json())
