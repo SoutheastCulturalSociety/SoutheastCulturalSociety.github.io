@@ -1,15 +1,3 @@
-name: Update Gallery JSON
-
-on:
-  push:
-    paths:
-      - 'assets/gallery/**'
-    branches:
-      - main
-
-permissions:
-  contents: write  # ✅ allows the action to commit/push
-
 jobs:
   generate-gallery-json:
     runs-on: ubuntu-latest
@@ -19,11 +7,28 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # ---------- NEW STEP: Fetch images from Google Drive ----------
+      - name: Fetch images from Google Drive
+        run: |
+          FOLDER_ID="18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM"
+          API_KEY="${{ secrets.GOOGLE_API_KEY }}"
+          mkdir -p assets/gallery
+          rm -f assets/gallery/*
+
+          FILES=$(curl -s "https://www.googleapis.com/drive/v3/files?q='${FOLDER_ID}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType)" \
+            | jq -r '.files[] | select(.mimeType | startswith("image/")) | .id + " " + .name')
+
+          for FILE in $FILES; do
+            FILE_ID=$(echo $FILE | awk '{print $1}')
+            FILE_NAME=$(echo $FILE | awk '{print $2}')
+            wget -q "https://drive.google.com/uc?export=view&id=$FILE_ID" -O "assets/gallery/$FILE_NAME"
+          done
+
+      # ---------- EXISTING STEP ----------
       - name: Generate gallery.json
         run: |
           GALLERY_FOLDER="assets/gallery"
           JSON_FILE="gallery.json"
-
           echo "[" > $JSON_FILE
           FILES=($(ls -1 "$GALLERY_FOLDER" | sort))
           for i in "${!FILES[@]}"; do
@@ -40,6 +45,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add gallery.json
-          git diff --cached --quiet || git commit -m "Update gallery.json"
+          git add assets/gallery/* gallery.json
+          git diff --cached --quiet || git commit -m "Sync gallery from Google Drive"
           git push
