@@ -8,7 +8,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: write  # ✅ allows the action to commit/push
 
 jobs:
   generate-gallery-json:
@@ -17,7 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate gallery.json
@@ -25,35 +24,22 @@ jobs:
           GALLERY_FOLDER="assets/gallery"
           JSON_FILE="gallery.json"
 
-          echo "[" > "$JSON_FILE"
-
-          # Ensure the folder exists
-          if [ -d "$GALLERY_FOLDER" ]; then
-            FILES=($(find "$GALLERY_FOLDER" -type f -printf '%P\n' | sort))
-            COUNT=${#FILES[@]}
-
-            for ((i=0; i<COUNT; i++)); do
-              FILE="${GALLERY_FOLDER}/${FILES[$i]}"
-              # Escape quotes for safety
-              FILE_ESCAPED=$(printf '%s' "$FILE" | sed 's/"/\\"/g')
-              if [ $i -lt $((COUNT-1)) ]; then
-                echo "  \"${FILE_ESCAPED}\"," >> "$JSON_FILE"
-              else
-                echo "  \"${FILE_ESCAPED}\"" >> "$JSON_FILE"
-              fi
-            done
-          fi
-
-          echo "]" >> "$JSON_FILE"
-
-          echo "✅ Generated $JSON_FILE:"
-          cat "$JSON_FILE"
+          echo "[" > $JSON_FILE
+          FILES=($(ls -1 "$GALLERY_FOLDER" | sort))
+          for i in "${!FILES[@]}"; do
+            FILE="${GALLERY_FOLDER}/${FILES[$i]}"
+            if [ $i -lt $((${#FILES[@]}-1)) ]; then
+              echo "  \"$FILE\"," >> $JSON_FILE
+            else
+              echo "  \"$FILE\"" >> $JSON_FILE
+            fi
+          done
+          echo "]" >> $JSON_FILE
 
       - name: Commit and push gallery.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git add gallery.json
           git diff --cached --quiet || git commit -m "Update gallery.json"
           git push
