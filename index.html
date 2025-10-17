@@ -188,8 +188,8 @@
     }
 
     .spinner {
-      border: 4px solid #f3f3f3; /* Light grey */
-      border-top: 4px solid maroon; /* Maroon */
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid maroon;
       border-radius: 50%;
       width: 18px;
       height: 18px;
@@ -221,7 +221,7 @@
       color: #4d1a00;
     }
 
-    /* ---------- GALLERY (2-ROW SCROLLING, FULL WIDTH) ---------- */
+    /* ---------- GALLERY ---------- */
     #gallery {
       overflow: hidden;
       position: relative;
@@ -278,6 +278,92 @@
       animation: scrollRight 55s linear infinite;
     }
 
+    .view-all-btn {
+      background: maroon;
+      color: #ffd700;
+      padding: 12px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 25px;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+
+    .view-all-btn:hover {
+      background: #b30000;
+      transform: scale(1.05);
+    }
+
+    /* ---------- MODAL FULL GALLERY ---------- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fffaf0;
+      border-radius: 15px;
+      padding: 25px;
+      max-width: 1000px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(128,0,0,0.6);
+      text-align: center;
+    }
+
+    .modal h3 {
+      color: maroon;
+      margin-bottom: 20px;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .modal-grid img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .modal-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .close-modal {
+      background: maroon;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .close-modal:hover {
+      background: #b30000;
+    }
+
     /* ---------- CONTACT ---------- */
     #contact h2 {
       color: maroon;
@@ -330,7 +416,7 @@
 </head>
 
 <body>
-  <!-- Particle Background Canvas -->
+  <!-- Particle Background -->
   <canvas id="particle-bg"></canvas>
 
   <header>
@@ -348,12 +434,10 @@
     </nav>
   </header>
 
-  <!-- NEWS WHEEL -->
   <div class="news-wheel">
     <div class="news-content" id="news-wheel">Notice Headline ~ Loading...</div>
   </div>
 
-  <!-- HOME -->
   <section id="home">
     <div class="overlay">
       <h2>Welcome to Official Website of Southeast Cultural Society</h2>
@@ -362,7 +446,6 @@
     </div>
   </section>
 
-  <!-- NOTICE BOARD -->
   <section id="notice-board">
     <h2>Notice Board</h2>
     <div class="notice-section" id="upcoming-events">
@@ -373,7 +456,6 @@
     </div>
   </section>
 
-  <!-- ABOUT -->
   <section id="about">
     <h2>About Us</h2>
     <p>
@@ -384,16 +466,24 @@
     </p>
   </section>
 
-  <!-- GALLERY -->
   <section id="gallery">
     <h2>Gallery</h2>
     <div class="gallery-wrapper">
       <div class="gallery-track top" id="gallery-track-top"></div>
       <div class="gallery-track bottom" id="gallery-track-bottom"></div>
     </div>
+    <a href="#" class="view-all-btn" id="openGallery">View Full Gallery</a>
   </section>
 
-  <!-- CONTACT -->
+  <!-- Full Gallery Modal -->
+  <div class="modal" id="galleryModal">
+    <div class="modal-content">
+      <h3>Full Gallery</h3>
+      <div class="modal-grid" id="modalGalleryGrid"></div>
+      <button class="close-modal" id="closeGallery">Close</button>
+    </div>
+  </div>
+
   <section id="contact">
     <h2>Contact Us</h2>
     <p>Email: <a href="mailto:southeastculturalsociety@gmail.com">southeastculturalsociety@gmail.com</a></p>
@@ -404,13 +494,12 @@
     </p>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <p>&copy; 2010–2025 Southeast Cultural Society. All Rights Reserved.</p>
   </footer>
 
   <script>
-    // ---------- PARTICLE BACKGROUND ----------
+    // ---------- PARTICLES ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
     let particlesArray;
@@ -466,13 +555,19 @@
     }
     animateParticles();
 
-    // ---------- DYNAMIC TWO-ROW GALLERY ----------
+    // ---------- GALLERY ----------
     const galleryTop = document.getElementById('gallery-track-top');
     const galleryBottom = document.getElementById('gallery-track-bottom');
+    const modalGalleryGrid = document.getElementById('modalGalleryGrid');
+    const modal = document.getElementById('galleryModal');
+    const openBtn = document.getElementById('openGallery');
+    const closeBtn = document.getElementById('closeGallery');
+    let allImages = [];
 
     fetch('gallery.json')
       .then(res => res.json())
       .then(images => {
+        allImages = images;
         const half = Math.ceil(images.length / 2);
         const topImages = images.slice(0, half);
         const bottomImages = images.slice(half);
@@ -492,22 +587,32 @@
       })
       .catch(err => console.error('Error loading gallery:', err));
 
-    // ---------- FETCH NOTICES FROM API ----------
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      modal.classList.add('active');
+      modalGalleryGrid.innerHTML = '';
+      allImages.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        modalGalleryGrid.appendChild(img);
+      });
+    });
+
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // ---------- FETCH NOTICES ----------
     const apiURL = 'https://script.google.com/macros/s/AKfycbxzp7y2TSisFBVR1OMFhWliup9muwm_akchMv8LlPio2mc8wbWaB3mmeGhy1qN6W2Filg/exec';
     const newsWheelDiv = document.getElementById('news-wheel');
     const noticeSection = document.getElementById('upcoming-events');
 
-    // Show loading initially
-    noticeSection.innerHTML = '<div class="notice-loading"><div class="spinner"></div>Loading...</div>';
-
     fetch(apiURL)
       .then(res => res.json())
       .then(data => {
-        // NEWS WHEEL
         const headlines = data.map(n => n['Notice Headline']).join(' — ');
         newsWheelDiv.textContent = headlines || 'No notices currently.';
-
-        // NOTICE BOARD
         noticeSection.innerHTML = '';
         if (data.length === 0) {
           noticeSection.innerHTML = '<p>No upcoming events.</p>';
