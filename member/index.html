@@ -86,49 +86,33 @@ async function fetchID() {
   document.getElementById('preview').style.display = 'none';
   document.getElementById('generateBtn').style.display = 'none';
 
-  const apiUrl = "https://script.google.com/macros/s/AKfycbzXNMskZbQ1gMRPdw5is8b5dEgLO0P7p5YcNwKgFX3YjgLKo6sqI5Ukt4MkVYxmC1Fc/exec?id=" + encodeURIComponent(studentId);
+  // ✅ Updated API URL
+  const apiUrl = "https://script.google.com/macros/s/AKfycbyWJGIGqwZgZovfJQrRYbqvCodxAt7b2EM6nWIWweXGw_vrFL3tn_u1FjXHHieMNNX4/exec?id=" + encodeURIComponent(studentId);
 
   try {
     const res = await fetch(apiUrl);
     const result = await res.json();
     loader.style.display = 'none';
 
-    if (!result.success || !result.data) {
+    if (!result.success) {
       document.getElementById('generateBtn').style.display = 'inline-block';
       return alert(result.message || "Student ID not found.");
     }
 
-    currentData = result.data;
+    currentData = result;
+    const activeYears = Array.isArray(result.activeYears) ? result.activeYears.join(', ') : result.activeYears;
 
-    // ✅ Handle Active Year properly
-    let activeYears = currentData['Active Year'] || currentData['ACTIVEYEAR'] || currentData['ACTIVE YEAR'];
-    if (Array.isArray(activeYears)) {
-      activeYears = activeYears.join(', ');
-    } else if (typeof activeYears === 'string') {
-      activeYears = activeYears.split(/[,;]+/).map(y => y.trim()).filter(y => y).join(', ');
-    }
-    currentData['Active Year'] = activeYears || '—';
-
-    const filteredData = { ...currentData };
-    delete filteredData['SL'];
-    delete filteredData['MAIL ID'];
-    delete filteredData['WhatsApp no'];
-
-    const preview = document.getElementById('preview');
     const previewInfo = document.getElementById('previewInfo');
-
     previewInfo.innerHTML = `
-      <strong>Name:</strong> ${filteredData.NAME}<br>
-      <strong>Student ID:</strong> ${filteredData['STUDENT ID']}<br>
-      <strong>Department & Batch:</strong> ${filteredData.DEPARTMENT} - ${filteredData.BATCH}<br>
-      <strong>Active Year:</strong> ${filteredData['Active Year']}
+      <strong>Name:</strong> ${result.name}<br>
+      <strong>Student ID:</strong> ${result.studentId}<br>
+      <strong>Department & Batch:</strong> ${result.department} - ${result.batch}<br>
+      <strong>Active Year:</strong> ${activeYears}
     `;
 
-    preview.style.display = 'block';
+    document.getElementById('preview').style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'inline-block';
     document.getElementById('regenBtn').style.display = 'inline-block';
-
-    // ✅ Hide input box after successful generation
     document.getElementById('studentId').style.display = 'none';
 
   } catch (error) {
@@ -176,26 +160,21 @@ function downloadID() {
 
     doc.addImage(logoBase64, 'PNG', xPos, yPos, maxWidth, finalHeight);
 
-    const filteredData = { ...currentData };
-    delete filteredData['SL'];
-    delete filteredData['MAIL ID'];
-    delete filteredData['WhatsApp no'];
-
     let y = 22;
     doc.setFontSize(8);
     doc.setTextColor(0, 0, 0);
-    doc.text(`Name: ${filteredData.NAME}`, 6, y); y += 6;
-    doc.text(`Student ID: ${filteredData['STUDENT ID']}`, 6, y); y += 6;
-    doc.text(`Dept & Batch: ${filteredData.DEPARTMENT} - ${filteredData.BATCH}`, 6, y); y += 6;
-    if (filteredData['Active Year']) { doc.text(`Active Year: ${filteredData['Active Year']}`, 6, y); }
+    doc.text(`Name: ${currentData.name}`, 6, y); y += 6;
+    doc.text(`Student ID: ${currentData.studentId}`, 6, y); y += 6;
+    doc.text(`Dept & Batch: ${currentData.department} - ${currentData.batch}`, 6, y); y += 6;
+    if (currentData.activeYears) { doc.text(`Active Year: ${Array.isArray(currentData.activeYears) ? currentData.activeYears.join(', ') : currentData.activeYears}`, 6, y); }
 
-    doc.save(`${filteredData.NAME}_SCS_ID.pdf`);
+    doc.save(`${currentData.name}_SCS_ID.pdf`);
   });
 }
 
 function reGenerate() {
   document.getElementById('studentId').value = '';
-  document.getElementById('studentId').style.display = 'inline-block'; // ✅ show input box again
+  document.getElementById('studentId').style.display = 'inline-block';
   document.getElementById('preview').style.display = 'none';
   document.getElementById('downloadBtn').style.display = 'none';
   document.getElementById('regenBtn').style.display = 'none';
