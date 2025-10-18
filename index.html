@@ -754,7 +754,7 @@
     }).catch(err=>{console.error('Failed to load notices:',err);newsWheelDiv.textContent='Failed to load notices.';noticeSection.innerHTML='<p>Failed to load notices.</p>';});
 
     // ---------- RECRUITMENT ----------
-    const recruitmentAPI='https://script.google.com/macros/s/AKfycbz7_Va4AErvFeaTjXbsxqCveIgBP61u9Bs-wKnf1leh69G_x6ZEYFZTuVSqlQsHexsQ/exec';
+    const recruitmentAPI='https://script.google.com/macros/s/AKfycbxEUpzVF_D9NAFVIfjfetKVwQa5jw26P9KJ46NkYgJZD86wpN_CrTM1EzS92o7P9A4Q/exec';
     const buttonsDiv=document.getElementById('recruitment-buttons');
     const listDiv=document.getElementById('recruitment-list');
     const closeRecruitBtn=document.querySelector('.close-recruitment-btn');
@@ -793,7 +793,7 @@
           data.data.forEach(stu=>{
             const div=document.createElement('div');
             div.className='recruitment-item';
-            div.innerHTML=`<div>${stu.Name}</div><div>${stu["Student ID"]}</div>`;
+            div.innerHTML=`<div>${stu.Name}</div><div>${stu["Coded Student ID"]}</div>`;
             listDiv.appendChild(div);
           });
         }else{
