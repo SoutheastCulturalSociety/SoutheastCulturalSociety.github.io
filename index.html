@@ -175,7 +175,6 @@
       background: #b30000;
     }
 
-    /* Loading indicator with spinner */
     .notice-loading {
       display: flex;
       align-items: center;
@@ -429,6 +428,97 @@
       z-index: 0;
       pointer-events: none;
     }
+
+    /* ---------- RECRUITMENT SECTION ---------- */
+    #recruitment-update {
+      padding: 25px 10px;
+      background: #fffaf0;
+      margin: 30px auto;
+      border-radius: 15px;
+      max-width: 1000px;
+      box-shadow: 0 0 15px rgba(128,0,0,0.3);
+    }
+
+    #recruitment-update h2 {
+      color: maroon;
+      margin-bottom: 15px;
+    }
+
+    #recruitment-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .recruitment-btn {
+      background: maroon;
+      color: #fffaf0;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .recruitment-btn:hover {
+      background: #b30000;
+      transform: scale(1.05);
+    }
+
+    #recruitment-list {
+      max-height: 300px;
+      overflow-y: auto;
+      background: #fffaf0;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(128,0,0,0.3);
+    }
+
+    .recruitment-header {
+      display: flex;
+      font-weight: 600;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid maroon;
+      gap: 20px;
+    }
+
+    .recruitment-header div {
+      flex: 1;
+      text-align: left;
+    }
+
+    .recruitment-item {
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #4d1a00;
+      display: flex;
+      gap: 20px;
+    }
+
+    .recruitment-item div {
+      flex: 1;
+      text-align: left;
+    }
+
+    .close-recruitment-btn {
+      margin-top: 10px;
+      background: maroon;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .close-recruitment-btn:hover {
+      background: #b30000;
+    }
   </style>
 </head>
 
@@ -471,6 +561,27 @@
         Loading...
       </div>
     </div>
+  </section>
+
+  <!-- ---------- RECRUITMENT UPDATE SECTION ---------- -->
+  <section id="recruitment-update">
+    <h2>Recruitment Update</h2>
+    <p style="text-align:center; color:maroon;">Select a recruitment to view students.</p>
+    <div id="recruitment-buttons">
+      <div class="notice-loading">
+        <div class="spinner"></div>
+        Loading recruitment buttons...
+      </div>
+    </div>
+    <div id="recruitment-list">
+      <div class="recruitment-header">
+        <div>Name</div>
+        <div>Student ID</div>
+      </div>
+
+      <!-- Student rows will appear here -->
+    </div>
+    <button class="close-recruitment-btn">Close</button>
   </section>
 
   <section id="about">
@@ -516,7 +627,7 @@
   </footer>
 
   <script>
-    // ---------- PARTICLES ----------
+    // ---------- PARTICLE JS ----------
     const canvas = document.getElementById("particle-bg");
     const ctx = canvas.getContext("2d");
     let particlesArray;
@@ -536,121 +647,167 @@
         this.speedY = Math.random() * 1 + 0.2;
         this.speedX = Math.random() * 0.5 - 0.25;
         this.opacity = Math.random() * 0.5 + 0.3;
-        this.color = `rgba(255, ${Math.floor(Math.random()*200 + 100)}, ${Math.floor(Math.random()*100)}, ${this.opacity})`;
+        this.color = `rgba(255, ${Math.floor(Math.random()*200+100)}, ${Math.floor(Math.random()*100)}, ${this.opacity})`;
       }
       update() {
         this.y += this.speedY;
         this.x += this.speedX;
-        if (this.y > canvas.height) this.y = -this.size;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.x < 0) this.x = canvas.width;
+        if(this.y>canvas.height)this.y=-this.size;
+        if(this.x>canvas.width)this.x=0;
+        if(this.x<0)this.x=canvas.width;
       }
-      draw() {
-        ctx.fillStyle = this.color;
+      draw(){
+        ctx.fillStyle=this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
         ctx.fill();
       }
     }
 
-    function initParticles() {
-      particlesArray = [];
-      const num = Math.floor(window.innerWidth / 8);
-      for (let i = 0; i < num; i++) {
-        particlesArray.push(new Particle());
-      }
+    function initParticles(){
+      particlesArray=[];
+      const num=Math.floor(window.innerWidth/8);
+      for(let i=0;i<num;i++)particlesArray.push(new Particle());
     }
     initParticles();
 
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let p of particlesArray) {
-        p.update();
-        p.draw();
-      }
+    function animateParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let p of particlesArray){p.update();p.draw();}
       requestAnimationFrame(animateParticles);
     }
     animateParticles();
 
     // ---------- GALLERY ----------
-    const galleryTop = document.getElementById('gallery-track-top');
-    const galleryBottom = document.getElementById('gallery-track-bottom');
-    const modalGalleryGrid = document.getElementById('modalGalleryGrid');
-    const modal = document.getElementById('galleryModal');
-    const openBtn = document.getElementById('openGallery');
-    const closeBtn = document.getElementById('closeGallery');
-    let allImages = [];
+    const galleryTop=document.getElementById('gallery-track-top');
+    const galleryBottom=document.getElementById('gallery-track-bottom');
+    const modalGalleryGrid=document.getElementById('modalGalleryGrid');
+    const modal=document.getElementById('galleryModal');
+    const openBtn=document.getElementById('openGallery');
+    const closeBtn=document.getElementById('closeGallery');
+    let allImages=[];
 
-    fetch('gallery.json')
-      .then(res => res.json())
-      .then(images => {
-        allImages = images;
-        const half = Math.ceil(images.length / 2);
-        const topImages = images.slice(0, half);
-        const bottomImages = images.slice(half);
-
-        function populateRow(track, imgs) {
-          const imgWidth = 240;
-          const needed = Math.ceil(window.innerWidth / imgWidth) + imgs.length;
-          for (let i = 0; i < needed; i++) {
-            const img = document.createElement('img');
-            img.src = imgs[i % imgs.length];
-            track.appendChild(img);
-          }
+    fetch('gallery.json').then(res=>res.json()).then(images=>{
+      allImages=images;
+      const half=Math.ceil(images.length/2);
+      const topImages=images.slice(0,half);
+      const bottomImages=images.slice(half);
+      function populateRow(track,imgs){
+        const imgWidth=240;
+        const needed=Math.ceil(window.innerWidth/imgWidth)+imgs.length;
+        for(let i=0;i<needed;i++){
+          const img=document.createElement('img');
+          img.src=imgs[i%imgs.length];
+          track.appendChild(img);
         }
+      }
+      populateRow(galleryTop,topImages);
+      populateRow(galleryBottom,bottomImages.length?bottomImages:topImages);
+    }).catch(err=>console.error('Error loading gallery:',err));
 
-        populateRow(galleryTop, topImages);
-        populateRow(galleryBottom, bottomImages.length ? bottomImages : topImages);
-      })
-      .catch(err => console.error('Error loading gallery:', err));
-
-    openBtn.addEventListener('click', e => {
+    openBtn.addEventListener('click',e=>{
       e.preventDefault();
       modal.classList.add('active');
-      modalGalleryGrid.innerHTML = '';
-      allImages.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
+      modalGalleryGrid.innerHTML='';
+      allImages.forEach(src=>{
+        const img=document.createElement('img');
+        img.src=src;
         modalGalleryGrid.appendChild(img);
       });
     });
 
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    modal.addEventListener('click', e => {
-      if (e.target === modal) modal.classList.remove('active');
-    });
+    closeBtn.addEventListener('click',()=>modal.classList.remove('active'));
+    modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('active');});
 
-    // ---------- FETCH NOTICES ----------
-    const apiURL = 'https://script.google.com/macros/s/AKfycbxzp7y2TSisFBVR1OMFhWliup9muwm_akchMv8LlPio2mc8wbWaB3mmeGhy1qN6W2Filg/exec';
-    const newsWheelDiv = document.getElementById('news-wheel');
-    const noticeSection = document.getElementById('upcoming-events');
+    // ---------- NOTICES ----------
+    const apiURL='https://script.google.com/macros/s/AKfycbxzp7y2TSisFBVR1OMFhWliup9muwm_akchMv8LlPio2mc8wbWaB3mmeGhy1qN6W2Filg/exec';
+    const newsWheelDiv=document.getElementById('news-wheel');
+    const noticeSection=document.getElementById('upcoming-events');
 
-    fetch(apiURL)
-      .then(res => res.json())
-      .then(data => {
-        const headlines = data.map(n => n['Notice Headline']).join(' — ');
-        newsWheelDiv.textContent = headlines || 'No notices currently.';
-        noticeSection.innerHTML = '';
-        if (data.length === 0) {
-          noticeSection.innerHTML = '<p>No upcoming events.</p>';
-        } else {
-          data.forEach(n => {
-            const card = document.createElement('div');
-            card.classList.add('notice-card');
-            card.innerHTML = `
-              <h3>${n['Notice Headline'] || 'No title'}</h3>
-              <p>${n['Notice Details'] || ''}</p>
-              ${n['Registration Link(if any)'] ? `<a href="${n['Registration Link(if any)']}" target="_blank">Register</a>` : ''}
-            `;
-            noticeSection.appendChild(card);
+    fetch(apiURL).then(res=>res.json()).then(data=>{
+      const headlines=data.map(n=>n['Notice Headline']).join(' — ');
+      newsWheelDiv.textContent=headlines||'No notices currently.';
+      noticeSection.innerHTML='';
+      if(data.length===0){
+        noticeSection.innerHTML='<p>No upcoming events.</p>';
+      }else{
+        data.forEach(n=>{
+          const card=document.createElement('div');
+          card.classList.add('notice-card');
+          card.innerHTML=`<h3>${n['Notice Headline']||'No title'}</h3><p>${n['Notice Details']||''}</p>${n['Registration Link(if any)']?`<a href="${n['Registration Link(if any)']}" target="_blank">Register</a>`:''}`;
+          noticeSection.appendChild(card);
+        });
+      }
+    }).catch(err=>{console.error('Failed to load notices:',err);newsWheelDiv.textContent='Failed to load notices.';noticeSection.innerHTML='<p>Failed to load notices.</p>';});
+
+    // ---------- RECRUITMENT ----------
+    const recruitmentAPI='https://script.google.com/macros/s/AKfycbz7_Va4AErvFeaTjXbsxqCveIgBP61u9Bs-wKnf1leh69G_x6ZEYFZTuVSqlQsHexsQ/exec';
+    const buttonsDiv=document.getElementById('recruitment-buttons');
+    const listDiv=document.getElementById('recruitment-list');
+
+    fetch(recruitmentAPI).then(res=>res.json()).then(data=>{
+      buttonsDiv.innerHTML='';
+      if(data.success && data.data.length){
+        data.data.forEach(rec=>{
+          const btn=document.createElement('button');
+          btn.className='recruitment-btn';
+          btn.textContent=rec;
+          btn.addEventListener('click',()=>loadRecruitmentList(rec));
+          buttonsDiv.appendChild(btn);
+        });
+      }else{
+        buttonsDiv.innerHTML='<p style="color:maroon;">No recruitment data available.</p>';
+      }
+    }).catch(err=>{console.error('Failed to load recruitment buttons:',err);buttonsDiv.innerHTML='<p style="color:maroon;">Failed to load recruitment buttons.</p>';});
+
+    function loadRecruitmentList(recruitmentId){
+      const existingHeader=listDiv.querySelector('.recruitment-header');
+      const instruction=listDiv.querySelector('p');
+      // Remove previous student rows only
+      const oldRows=listDiv.querySelectorAll('.recruitment-item, .recruitment-list-msg');
+      oldRows.forEach(r=>r.remove());
+      // Add loading row
+      const loadingRow=document.createElement('p');
+      loadingRow.style.textAlign='center';
+      loadingRow.style.color='maroon';
+      loadingRow.textContent='Loading...';
+      loadingRow.classList.add('recruitment-list-msg');
+      listDiv.appendChild(loadingRow);
+
+      fetch(`${recruitmentAPI}?recruitment=${recruitmentId}`).then(res=>res.json()).then(data=>{
+        loadingRow.remove();
+        if(data.success && data.data.length){
+          data.data.forEach(stu=>{
+            const div=document.createElement('div');
+            div.className='recruitment-item';
+            div.innerHTML=`<div>${stu.Name}</div><div>${stu["Student ID"]}</div>`;
+            listDiv.appendChild(div);
           });
+        }else{
+          const msg=document.createElement('p');
+          msg.style.textAlign='center';
+          msg.style.color='maroon';
+          msg.classList.add('recruitment-list-msg');
+          msg.textContent='No students found for this recruitment.';
+          listDiv.appendChild(msg);
         }
-      })
-      .catch(err => {
-        console.error('Failed to load notices:', err);
-        newsWheelDiv.textContent = 'Failed to load notices.';
-        noticeSection.innerHTML = '<p>Failed to load notices.</p>';
+      }).catch(err=>{
+        console.error('Failed to load recruitment list:',err);
+        loadingRow.remove();
+        const msg=document.createElement('p');
+        msg.style.textAlign='center';
+        msg.style.color='maroon';
+        msg.classList.add('recruitment-list-msg');
+        msg.textContent='Failed to load students.';
+        listDiv.appendChild(msg);
       });
+    }
+
+    const closeBtnRecruitment=document.querySelector('.close-recruitment-btn');
+    closeBtnRecruitment.addEventListener('click',()=>{
+      const studentRows=listDiv.querySelectorAll('.recruitment-item, .recruitment-list-msg');
+      studentRows.forEach(r=>r.remove());
+    });
   </script>
 </body>
 </html>
