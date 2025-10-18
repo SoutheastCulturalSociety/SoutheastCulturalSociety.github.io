@@ -468,20 +468,28 @@
       transform: scale(1.05);
     }
 
+    /* Fixed header inside scrollable list */
     #recruitment-list {
       max-height: 300px;
       overflow-y: auto;
       background: #fffaf0;
-      padding: 15px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(128,0,0,0.3);
+      position: relative;
+      padding-top: 0; /* removed previous padding */
+    }
+
+    .recruitment-header-container {
+      position: sticky;
+      top: 0;
+      background: #fffaf0;
+      z-index: 5;
     }
 
     .recruitment-header {
       display: flex;
       font-weight: 600;
-      margin-bottom: 10px;
-      padding-bottom: 5px;
+      padding: 10px 15px;
       border-bottom: 1px solid maroon;
       gap: 20px;
     }
@@ -497,6 +505,7 @@
       color: #4d1a00;
       display: flex;
       gap: 20px;
+      padding: 5px 15px;
     }
 
     .recruitment-item div {
@@ -574,11 +583,12 @@
       </div>
     </div>
     <div id="recruitment-list">
-      <div class="recruitment-header">
-        <div>Name</div>
-        <div>Student ID</div>
+      <div class="recruitment-header-container">
+        <div class="recruitment-header">
+          <div>Name</div>
+          <div>Student ID</div>
+        </div>
       </div>
-
       <!-- Student rows will appear here -->
     </div>
     <button class="close-recruitment-btn">Close</button>
@@ -761,12 +771,8 @@
     }).catch(err=>{console.error('Failed to load recruitment buttons:',err);buttonsDiv.innerHTML='<p style="color:maroon;">Failed to load recruitment buttons.</p>';});
 
     function loadRecruitmentList(recruitmentId){
-      const existingHeader=listDiv.querySelector('.recruitment-header');
-      const instruction=listDiv.querySelector('p');
-      // Remove previous student rows only
       const oldRows=listDiv.querySelectorAll('.recruitment-item, .recruitment-list-msg');
       oldRows.forEach(r=>r.remove());
-      // Add loading row
       const loadingRow=document.createElement('p');
       loadingRow.style.textAlign='center';
       loadingRow.style.color='maroon';
