@@ -305,7 +305,7 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      overflow-y: auto;
+      overflow: auto;
       padding: 20px;
     }
 
@@ -320,8 +320,12 @@
       padding: 20px;
       width: 90%;
       max-width: 1000px;
-      box-shadow: 0 0 15px rgba(128,0,0,0.6);
-      text-align: center;
+
+      /* ---------- FIXED HEIGHT FOR SCROLLING CONTENT ---------- */
+      height: 80%; /* desktop default */
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .modal h3 {
@@ -334,6 +338,8 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 10px;
+      overflow-y: auto; /* make scrollable */
+      padding-right: 5px;
     }
 
     .modal-grid img {
@@ -368,6 +374,7 @@
     @media(max-width:600px) {
       .modal-content {
         width: 95%;
+        height: 70%; /* smaller height for mobile */
         padding: 15px;
       }
 
