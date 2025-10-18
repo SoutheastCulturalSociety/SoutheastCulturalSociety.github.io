@@ -221,61 +221,67 @@
     }
 
     /* ---------- GALLERY ---------- */
-    #gallery {
-      overflow: hidden;
-      position: relative;
-      margin-top: 40px;
-    }
+#gallery {
+  overflow: hidden;
+  position: relative;
+  margin-top: 40px;
+}
 
-    #gallery h2 {
-      color: maroon;
-      margin-bottom: 20px;
-    }
+#gallery h2 {
+  color: maroon;
+  margin-bottom: 20px;
+}
 
-    .gallery-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      width: 100%;
-      overflow: hidden;
-    }
+.gallery-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  overflow: hidden;
+}
 
-    .gallery-track {
-      display: flex;
-      width: max-content;
-    }
+/* Each track will contain two identical image sets to create an endless loop */
+.gallery-track {
+  display: flex;
+  width: max-content;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 
-    .gallery-track img {
-      width: 220px;
-      height: 150px;
-      margin: 10px;
-      border-radius: 12px;
-      object-fit: cover;
-      transition: transform 0.3s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
+.gallery-track img {
+  width: 220px;
+  height: 150px;
+  margin: 10px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
 
-    .gallery-track img:hover {
-      transform: scale(1.05);
-    }
+.gallery-track img:hover {
+  transform: scale(1.05);
+}
 
-    @keyframes scrollLeft {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
+/* Keyframes that scroll continuously with no jump */
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
-    @keyframes scrollRight {
-      from { transform: translateX(-50%); }
-      to { transform: translateX(0); }
-    }
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
 
-    .gallery-track.top {
-      animation: scrollLeft 50s linear infinite;
-    }
+/* Apply animations (longer duration = slower scroll) */
+.gallery-track.top {
+  animation: scrollLeft 50s linear infinite;
+}
 
-    .gallery-track.bottom {
-      animation: scrollRight 55s linear infinite;
-    }
+.gallery-track.bottom {
+  animation: scrollRight 55s linear infinite;
+}
+
 
     .view-all-btn {
       background: maroon;
