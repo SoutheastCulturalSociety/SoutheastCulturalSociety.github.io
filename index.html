@@ -468,7 +468,6 @@
       transform: scale(1.05);
     }
 
-    /* Fixed header inside scrollable list */
     #recruitment-list {
       max-height: 300px;
       overflow-y: auto;
@@ -476,7 +475,7 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(128,0,0,0.3);
       position: relative;
-      padding-top: 0; /* removed previous padding */
+      padding-top: 0;
     }
 
     .recruitment-header-container {
@@ -523,6 +522,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.3s;
+      display: none; /* Hidden initially */
     }
 
     .close-recruitment-btn:hover {
@@ -754,6 +754,7 @@
     const recruitmentAPI='https://script.google.com/macros/s/AKfycbz7_Va4AErvFeaTjXbsxqCveIgBP61u9Bs-wKnf1leh69G_x6ZEYFZTuVSqlQsHexsQ/exec';
     const buttonsDiv=document.getElementById('recruitment-buttons');
     const listDiv=document.getElementById('recruitment-list');
+    const closeRecruitBtn=document.querySelector('.close-recruitment-btn');
 
     fetch(recruitmentAPI).then(res=>res.json()).then(data=>{
       buttonsDiv.innerHTML='';
@@ -762,7 +763,10 @@
           const btn=document.createElement('button');
           btn.className='recruitment-btn';
           btn.textContent=rec;
-          btn.addEventListener('click',()=>loadRecruitmentList(rec));
+          btn.addEventListener('click',()=>{
+            loadRecruitmentList(rec);
+            closeRecruitBtn.style.display='inline-block'; // Show close button
+          });
           buttonsDiv.appendChild(btn);
         });
       }else{
@@ -809,10 +813,10 @@
       });
     }
 
-    const closeBtnRecruitment=document.querySelector('.close-recruitment-btn');
-    closeBtnRecruitment.addEventListener('click',()=>{
+    closeRecruitBtn.addEventListener('click',()=>{
       const studentRows=listDiv.querySelectorAll('.recruitment-item, .recruitment-list-msg');
       studentRows.forEach(r=>r.remove());
+      closeRecruitBtn.style.display='none'; // Hide button again
     });
   </script>
 </body>
