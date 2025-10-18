@@ -320,9 +320,7 @@
       padding: 20px;
       width: 90%;
       max-width: 1000px;
-
-      /* ---------- FIXED HEIGHT FOR SCROLLING CONTENT ---------- */
-      height: 80%; /* desktop default */
+      height: 80%;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -338,7 +336,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 10px;
-      overflow-y: auto; /* make scrollable */
+      overflow-y: auto;
       padding-right: 5px;
     }
 
@@ -355,6 +353,7 @@
       transform: scale(1.05);
     }
 
+    /* ---------- FIX: CLOSE BUTTON AT BOTTOM ---------- */
     .close-modal {
       background: maroon;
       color: white;
@@ -362,9 +361,9 @@
       padding: 8px 16px;
       border-radius: 8px;
       font-weight: 600;
-      margin-top: 15px;
       cursor: pointer;
       transition: background 0.3s;
+      margin-top: auto; /* pushes button to bottom */
     }
 
     .close-modal:hover {
@@ -374,7 +373,7 @@
     @media(max-width:600px) {
       .modal-content {
         width: 95%;
-        height: 70%; /* smaller height for mobile */
+        height: 70%;
         padding: 15px;
       }
 
@@ -529,7 +528,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.3s;
-      display: none; /* Hidden initially */
+      display: none;
     }
 
     .close-recruitment-btn:hover {
@@ -596,7 +595,6 @@
           <div>Student ID</div>
         </div>
       </div>
-      <!-- Student rows will appear here -->
     </div>
     <button class="close-recruitment-btn">Close</button>
   </section>
