@@ -157,8 +157,9 @@ Note 2: To upload images, place them in the Google Drive gallery folder, then vi
 Google Drive Gallery Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
 Gallery Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
 
-
+---
 2. Notice AppScript Code
+
 This script serves the notice data from the Google Sheet as a JSON API endpoint.
 
 ```JavaScript
@@ -199,8 +200,9 @@ function doGet(e) {
 Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the Google Sheet. The notices will then be automatically published on the website.
 Notice Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
 
-
+---
 3. Member AppScript Code
+
 This script handles member data retrieval, allowing search by Student ID or listing members by Recruitment batch and current year.
 
 ```JavaScript
@@ -322,8 +324,9 @@ Note: Input data into the MEMBER, SUBEC, and EC sheets within the member Google 
 Member Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
 
 
-
+---
 4. Committee AppScript Code
+
 This script retrieves and filters committee member data for a specific year from the Google Sheet.
 
 ```JavaScript
