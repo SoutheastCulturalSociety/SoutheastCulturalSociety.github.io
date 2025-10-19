@@ -15,7 +15,7 @@ This script handles the full synchronization of images from Google Drive to the 
  */
 
 // ========== CONFIGURATION ========== //
-const GITHUB_TOKEN = "ghp_iDvHYio5RUTo3UVyYH7gSIuvGEDFoM0tPSy*C"; // Replace this
+const GITHUB_TOKEN = "ghp_iDvHYio5RUTo3UVyYH7gSIuvGEDFoM0tPSy*C"; // Replace this | ignore the [*] mark
 const GITHUB_REPO = "SoutheastCulturalSociety/SoutheastCulturalSociety.github.io"; // username/repo
 const GITHUB_BRANCH = "main"; // Branch
 const GITHUB_FOLDER = "assets/gallery"; // Target folder in repo
