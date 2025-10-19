@@ -3,6 +3,7 @@ Website
 
 
 <h1> # WebsiteGallery AppScript Code: </h1>
+```
 /**
  * Google Drive → GitHub full sync
  * Uploads new files, skips existing, deletes removed.
@@ -143,13 +144,17 @@ function deleteGitHubFile(path, sha, fileName) {
     return false;
   }
 }
+```
 
 <h3> *Note: When Run Github assets/gallery folder matched with Google drive gallery folder (use for image delete) </h3>
 <h3> *Note: upload image on Google drive gallery folder then visit Google Drive Gallery input confirm button link then uploaded images will be published on website </h3>
 <h3> *Google drive gallery folder link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM </h3>
 <h3> # Google Drive Gallery input confirm button: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec </h3>v
 
+
 <h1> # notice AppScript Code: </h1>
+
+```
 function doGet(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   
@@ -182,11 +187,13 @@ function doGet(e) {
     .createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
 }
-
+```
 <h3> *Note: input notice Google Sheet- Notice Headline,	Notice Details,	Registration Link(if any) then automatically that will be published on website </h3>
 <h3> *notice Google Sheet link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c </h3>
 
 <h1> #member AppScript code: </h1>
+
+```
 function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -299,11 +306,14 @@ function sendJSON(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
                        .setMimeType(ContentService.MimeType.JSON);
 }
+```
 
 <h3> *Note: input on MEMBER, SUBEC, EC sheet on member Google Sheet to archive data on server. </h3>
 <h3> *member google Sheet link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ </h3>
 
 <h1> # committee AppScript Code: <h1>
+
+```
 function doGet() {
   const ss = SpreadsheetApp.openById("1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8");
   const sheets = ss.getSheets();
@@ -327,7 +337,7 @@ function doGet() {
 
   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
-
+```
 <h3> *Note: input MODERATOR, EXECUTIVE COMMITTEE (EC), SUB EXECUTIVE COMMITTEE (SUB EC) on committee Google sheet to publish on website. </h3>
 <h3> *committee Google sheet link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8 </h3>
 
