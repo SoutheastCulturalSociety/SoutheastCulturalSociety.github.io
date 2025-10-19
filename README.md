@@ -187,7 +187,7 @@ function doGet(e) {
     .createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
 }
-```
+
 <h3> *Note: input notice Google Sheet- Notice Headline,	Notice Details,	Registration Link(if any) then automatically that will be published on website </h3>
 <h3> *notice Google Sheet link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c </h3>
 
