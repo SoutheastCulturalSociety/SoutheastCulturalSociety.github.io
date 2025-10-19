@@ -3,7 +3,7 @@
 This document contains the Google Apps Script code and associated links used to power the Southeast Cultural Society website's dynamic features, including the gallery, notices, and member/committee data retrieval.
 
 ---
-1. Gallery AppScript Code
+1. **gallery** AppScript Code
 
 
 This script handles the full synchronization of images from Google Drive to the GitHub repository, managing uploads, skipping existing files, and deleting removed ones.
@@ -151,16 +151,16 @@ function deleteGitHubFile(path, sha, fileName) {
 }
 ```
 
-Note 1: When this script runs, the GitHub assets/gallery folder will be synced to match the contents of the Google Drive gallery folder (used for image upload and deletion).
+Note 1: When this script runs, the GitHub assets/gallery folder will be synced to match the contents of the Google Drive **gallery** folder (used for image upload and deletion).
 
-Note 2: To upload images, place them in the Google Drive gallery folder, then visit the Gallery Input Confirm Button Link to trigger the script. The uploaded images will then be published to the website.
+Note 2: To upload images, place them in the Google Drive **gallery** folder, then visit the Gallery Input Confirm Button Link to trigger the script. The uploaded images will then be published to the website.
 
-Google Drive gallery Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
+Google Drive **gallery** Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
 
-Gallery Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
+**gallery** Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
 
 ---
-2. Notice AppScript Code
+2. **notice** AppScript Code
 
 This script serves the notice data from the Google Sheet as a JSON API endpoint.
 
@@ -199,12 +199,12 @@ function doGet(e) {
 }
 ```
 
-Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the Google Sheet. The notices will then be automatically published on the website.
+Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the **notice** Google Sheet. The notices will then be automatically published on the website.
 
-Notice Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
+**notice** Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
 
 ---
-3. Member AppScript Code
+3. **member** AppScript Code
 
 This script handles member data retrieval, allowing search by Student ID or listing members by Recruitment batch and current year.
 
@@ -323,13 +323,13 @@ function sendJSON(obj) {
 }
 ```
 
-Note: Input data into the MEMBER, SUBEC, and EC sheets within the member Google Sheet to archive data on the server.
+Note: Input data into the MEMBER, SUBEC, and EC sheets within the **member** Google Sheet to archive data on the server.
 
-Member Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
+**member** Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
 
 
 ---
-4. Committee AppScript Code
+4. **committee** AppScript Code
 
 This script retrieves and filters committee member data for a specific year from the Google Sheet.
 
@@ -359,7 +359,7 @@ function doGet() {
 }
 ```
 
-Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the committee Google sheet to publish the committee lists on the website.
+Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the **committee** Google sheet to publish the committee lists on the website.
 
-Committee Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
+**committee** Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
 
