@@ -1,9 +1,15 @@
-# SoutheastCulturalSociety.github.io
-Website
+# SoutheastCulturalSociety.github.io AppScript Code Documentation
+
+This document contains the Google Apps Script code and associated links used to power the Southeast Cultural Society website's dynamic features, including the gallery, notices, and member/committee data retrieval.
+
+---
+
+1. Gallery AppScript Code
 
 
-<h1> # WebsiteGallery AppScript Code: </h1>
+This script handles the full synchronization of images from Google Drive to the GitHub repository, managing uploads, skipping existing files, and deleting removed ones.
 
+```javascript
 /**
  * Google Drive → GitHub full sync
  * Uploads new files, skips existing, deletes removed.
@@ -145,23 +151,21 @@ function deleteGitHubFile(path, sha, fileName) {
   }
 }
 
+Note 1: When this script runs, the GitHub assets/gallery folder will be synced to match the contents of the Google Drive gallery folder (used for image upload and deletion).
+Note 2: To upload images, place them in the Google Drive gallery folder, then visit the Gallery Input Confirm Button Link to trigger the script. The uploaded images will then be published to the website.
+Google Drive Gallery Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
+Gallery Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
 
-<h3> *Note: When Run Github assets/gallery folder matched with Google drive gallery folder (use for image delete) </h3>
-<h3> *Note: upload image on Google drive gallery folder then visit Google Drive Gallery input confirm button link then uploaded images will be published on website </h3>
-<h3> *Google drive gallery folder link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM </h3>
-<h3> # Google Drive Gallery input confirm button: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec </h3>v
-
-
-<h1> # notice AppScript Code: </h1>
-
-
+2. Notice AppScript Code
+This script serves the notice data from the Google Sheet as a JSON API endpoint.
+JavaScript
 function doGet(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  
+
   // Safely get sheet name
   const sheetName = (e && e.parameter && e.parameter.sheet) || ss.getSheets()[0].getName();
   const sheet = ss.getSheetByName(sheetName);
-  
+
   if (!sheet) {
     return ContentService
       .createTextOutput(JSON.stringify({error: "Sheet not found"}))
@@ -188,12 +192,12 @@ function doGet(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-<h3> *Note: input notice Google Sheet- Notice Headline,	Notice Details,	Registration Link(if any) then automatically that will be published on website </h3>
-<h3> *notice Google Sheet link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c </h3>
+Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the Google Sheet. The notices will then be automatically published on the website.
+Notice Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
 
-<h1> #member AppScript code: </h1>
-
-
+3. Member AppScript Code
+This script handles member data retrieval, allowing search by Student ID or listing members by Recruitment batch and current year.
+JavaScript
 function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -304,16 +308,15 @@ function doGet(e) {
 
 function sendJSON(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
-                       .setMimeType(ContentService.MimeType.JSON);
+             .setMimeType(ContentService.MimeType.JSON);
 }
 
+Note: Input data into the MEMBER, SUBEC, and EC sheets within the member Google Sheet to archive data on the server.
+Member Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
 
-<h3> *Note: input on MEMBER, SUBEC, EC sheet on member Google Sheet to archive data on server. </h3>
-<h3> *member google Sheet link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ </h3>
-
-<h1> # committee AppScript Code: <h1>
-
-
+4. Committee AppScript Code
+This script retrieves and filters committee member data for a specific year from the Google Sheet.
+JavaScript
 function doGet() {
   const ss = SpreadsheetApp.openById("1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8");
   const sheets = ss.getSheets();
@@ -338,7 +341,6 @@ function doGet() {
   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
 
-<h3> *Note: input MODERATOR, EXECUTIVE COMMITTEE (EC), SUB EXECUTIVE COMMITTEE (SUB EC) on committee Google sheet to publish on website. </h3>
-<h3> *committee Google sheet link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8 </h3>
-
+Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the committee Google sheet to publish the committee lists on the website.
+Committee Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
 
