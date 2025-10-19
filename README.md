@@ -3,7 +3,7 @@ Website
 
 
 <h1> # WebsiteGallery AppScript Code: </h1>
-```
+
 /**
  * Google Drive → GitHub full sync
  * Uploads new files, skips existing, deletes removed.
@@ -144,7 +144,7 @@ function deleteGitHubFile(path, sha, fileName) {
     return false;
   }
 }
-```
+
 
 <h3> *Note: When Run Github assets/gallery folder matched with Google drive gallery folder (use for image delete) </h3>
 <h3> *Note: upload image on Google drive gallery folder then visit Google Drive Gallery input confirm button link then uploaded images will be published on website </h3>
@@ -154,7 +154,7 @@ function deleteGitHubFile(path, sha, fileName) {
 
 <h1> # notice AppScript Code: </h1>
 
-```
+
 function doGet(e) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   
@@ -193,7 +193,7 @@ function doGet(e) {
 
 <h1> #member AppScript code: </h1>
 
-```
+
 function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -306,14 +306,14 @@ function sendJSON(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
                        .setMimeType(ContentService.MimeType.JSON);
 }
-```
+
 
 <h3> *Note: input on MEMBER, SUBEC, EC sheet on member Google Sheet to archive data on server. </h3>
 <h3> *member google Sheet link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ </h3>
 
 <h1> # committee AppScript Code: <h1>
 
-```
+
 function doGet() {
   const ss = SpreadsheetApp.openById("1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8");
   const sheets = ss.getSheets();
@@ -337,7 +337,7 @@ function doGet() {
 
   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
-```
+
 <h3> *Note: input MODERATOR, EXECUTIVE COMMITTEE (EC), SUB EXECUTIVE COMMITTEE (SUB EC) on committee Google sheet to publish on website. </h3>
 <h3> *committee Google sheet link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8 </h3>
 
