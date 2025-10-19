@@ -198,6 +198,7 @@ function doGet(e) {
 ```
 
 Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the Google Sheet. The notices will then be automatically published on the website.
+
 Notice Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
 
 ---
@@ -321,6 +322,7 @@ function sendJSON(obj) {
 ```
 
 Note: Input data into the MEMBER, SUBEC, and EC sheets within the member Google Sheet to archive data on the server.
+
 Member Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
 
 
@@ -356,5 +358,6 @@ function doGet() {
 ```
 
 Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the committee Google sheet to publish the committee lists on the website.
+
 Committee Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
 
