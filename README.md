@@ -152,6 +152,7 @@ function deleteGitHubFile(path, sha, fileName) {
 ```
 
 Note 1: When this script runs, the GitHub assets/gallery folder will be synced to match the contents of the Google Drive gallery folder (used for image upload and deletion).
+
 Note 2: To upload images, place them in the Google Drive gallery folder, then visit the Gallery Input Confirm Button Link to trigger the script. The uploaded images will then be published to the website.
 Google Drive Gallery Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
 Gallery Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
@@ -193,7 +194,7 @@ function doGet(e) {
     .createTextOutput(JSON.stringify(result))
     .setMimeType(ContentService.MimeType.JSON);
 }
-
+```
 
 Note: Input the required data (Notice Headline, Notice Details, Registration Link (if any)) into the Google Sheet. The notices will then be automatically published on the website.
 Notice Google Sheet Link: https://docs.google.com/spreadsheets/d/1gPpOM7Uxvr8i4zBsiZpk8VA4dkCDGZZKAWbrzRvlv7c
@@ -315,7 +316,7 @@ function sendJSON(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
              .setMimeType(ContentService.MimeType.JSON);
 }
-
+```
 
 Note: Input data into the MEMBER, SUBEC, and EC sheets within the member Google Sheet to archive data on the server.
 Member Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
@@ -349,7 +350,7 @@ function doGet() {
 
   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
-
+```
 
 Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the committee Google sheet to publish the committee lists on the website.
 Committee Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
