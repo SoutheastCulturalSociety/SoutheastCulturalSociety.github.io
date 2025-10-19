@@ -154,7 +154,9 @@ function deleteGitHubFile(path, sha, fileName) {
 Note 1: When this script runs, the GitHub assets/gallery folder will be synced to match the contents of the Google Drive gallery folder (used for image upload and deletion).
 
 Note 2: To upload images, place them in the Google Drive gallery folder, then visit the Gallery Input Confirm Button Link to trigger the script. The uploaded images will then be published to the website.
+
 Google Drive Gallery Folder Link: https://drive.google.com/drive/folders/18F5Vie2EWnBMY6jR0_lmCIiJu3XuoUgM
+
 Gallery Input Confirm Button Link: https://script.google.com/macros/s/AKfycby-S3MDeKaxFHSJoStz21cMuH3quoPXKGOLwCBfzGlEEqGL6hQC3251IfRxD4EV0cpx/exec
 
 ---
