@@ -1,0 +1,522 @@
+/* ---------- BASIC RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: #4d1a00;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff1e6, #f5e0dc);
+}
+
+header {
+  background: rgba(128,0,0,0.85);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+header img.logo {
+  width: 90px;
+  height: auto;
+}
+
+nav {
+  margin-top: 0.5rem;
+}
+
+nav a {
+  color: #ffd700;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+section {
+  padding: 25px 10px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- HERO SECTION ---------- */
+#home {
+  position: relative;
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#home .overlay {
+  background: rgba(255, 248, 240, 0.85);
+  padding: 50px 25px;
+  border-radius: 20px;
+}
+
+#home h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: maroon;
+}
+
+.join-btn {
+  background: gold;
+  color: maroon;
+  padding: 15px 30px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.join-btn:hover {
+  background: #ffd94d;
+  transform: scale(1.05);
+}
+
+/* ---------- NEWS WHEEL ---------- */
+.news-wheel {
+  background: #8b0000;
+  color: #fffaf0;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  font-weight: 600;
+}
+
+.news-content {
+  display: inline-block;
+  animation: scroll 18s linear infinite;
+}
+
+@keyframes scroll {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+/* ---------- NOTICE BOARD ---------- */
+#notice-board h2 {
+  margin-bottom: 20px;
+  color: maroon;
+}
+
+.notice-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.notice-card {
+  background: #fffaf0;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  transition: transform 0.3s;
+  box-shadow: 0 0 10px rgba(128,0,0,0.3);
+}
+
+.notice-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(128,0,0,0.5);
+}
+
+.notice-card h3 {
+  color: maroon;
+  margin-bottom: 8px;
+}
+
+.notice-card a {
+  display: inline-block;
+  margin-top: 8px;
+  color: white;
+  background: maroon;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.notice-card a:hover {
+  background: #b30000;
+}
+
+.notice-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: maroon;
+  width: 100%;
+  padding: 20px 0;
+  gap: 10px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid maroon;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ---------- ABOUT ---------- */
+#about {
+  background: #fff0e6;
+  border-radius: 15px;
+  padding: 60px 15px;
+  box-shadow: 0 0 15px rgba(128,0,0,0.3);
+}
+
+#about h2 {
+  color: maroon;
+  margin-bottom: 20px;
+}
+
+#about p {
+  max-width: 800px;
+  margin: auto;
+  line-height: 1.7;
+  color: #4d1a00;
+}
+
+/* ---------- GALLERY ---------- */
+#gallery {
+  overflow: hidden;
+  position: relative;
+  margin-top: 40px;
+}
+
+#gallery h2 {
+  color: maroon;
+  margin-bottom: 20px;
+}
+
+.gallery-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.gallery-track {
+  display: flex;
+  width: max-content;
+}
+
+.gallery-track img {
+  width: 220px;
+  height: 150px;
+  margin: 10px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.gallery-track img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes scrollRight {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.gallery-track.top {
+  animation: scrollLeft 50s linear infinite;
+}
+
+.gallery-track.bottom {
+  animation: scrollRight 55s linear infinite;
+}
+
+.view-all-btn {
+  background: maroon;
+  color: #ffd700;
+  padding: 12px 25px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 25px;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.view-all-btn:hover {
+  background: #b30000;
+  transform: scale(1.05);
+}
+
+/* ---------- MODAL FULL GALLERY ---------- */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: auto;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #fffaf0;
+  border: 2px solid maroon;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 1000px;
+  height: 85%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal h3 {
+  color: maroon;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.modal-grid img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.modal-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- FIX: CLOSE BUTTON AT BOTTOM ---------- */
+.close-modal {
+  background: maroon;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: auto; /* pushes button to bottom */
+}
+
+.close-modal:hover {
+  background: #b30000;
+}
+
+@media(max-width:600px) {
+  .modal-content {
+    width: 95%;
+    height: 85%;
+    padding: 15px;
+  }
+
+  .modal h3 {
+    font-size: 1.5rem;
+  }
+
+  .modal-grid img {
+    height: 100px;
+  }
+}
+
+/* ---------- CONTACT ---------- */
+#contact h2 {
+  color: maroon;
+  margin-bottom: 15px;
+}
+
+#contact p {
+  margin-bottom: 10px;
+}
+
+#contact a {
+  color: maroon;
+  text-decoration: none;
+}
+
+#contact a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  background: #8b0000;
+  color: #fffaf0;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: #ffd700;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- PARTICLE BACKGROUND ---------- */
+#particle-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- RECRUITMENT SECTION ---------- */
+#recruitment-update {
+  padding: 25px 10px;
+  background: #fffaf0;
+  margin: 30px auto;
+  border-radius: 15px;
+  max-width: 1000px;
+  box-shadow: 0 0 15px rgba(128,0,0,0.3);
+}
+
+#recruitment-update h2 {
+  color: maroon;
+  margin-bottom: 15px;
+}
+
+#recruitment-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.recruitment-btn {
+  background: maroon;
+  color: #fffaf0;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.recruitment-btn:hover {
+  background: #b30000;
+  transform: scale(1.05);
+}
+
+#recruitment-list {
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fffaf0;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(128,0,0,0.3);
+  position: relative;
+  padding-top: 0;
+}
+
+.recruitment-header-container {
+  position: sticky;
+  top: 0;
+  background: #fffaf0;
+  z-index: 5;
+}
+
+.recruitment-header {
+  display: flex;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-bottom: 1px solid maroon;
+  gap: 20px;
+}
+
+.recruitment-header div {
+  flex: 1;
+  text-align: left;
+}
+
+.recruitment-item {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #4d1a00;
+  display: flex;
+  gap: 20px;
+  padding: 5px 15px;
+}
+
+.recruitment-item div {
+  flex: 1;
+  text-align: left;
+}
+
+.close-recruitment-btn {
+  margin-top: 10px;
+  background: maroon;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: none;
+}
+
+.close-recruitment-btn:hover {
+  background: #b30000;
+}
