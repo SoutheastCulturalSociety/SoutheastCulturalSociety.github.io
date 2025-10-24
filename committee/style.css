@@ -1,0 +1,140 @@
+/* ---------- BASIC RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #fff1e6, #f5e0dc);
+  color: #4d1a00;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: rgba(128,0,0,0.85);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+header img.logo {
+  width: 90px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+header p {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+nav a {
+  color: #ffd700;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+section {
+  padding: 40px 15px;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: maroon;
+  text-transform: capitalize;
+}
+
+table {
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #fffaf0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(128,0,0,0.2);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+th {
+  background: #b22a2a;
+  color: #fff;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background: #fff1e6;
+}
+
+tr:hover {
+  background: #ffe6d9;
+}
+
+footer {
+  background: #8b0000;
+  color: #fffaf0;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 0.95rem;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 10px;
+  }
+  table {
+    font-size: 0.9em;
+  }
+}
+
+/* ---------- LOADER STYLES ---------- */
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  flex-direction: column;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3; /* Light gray */
+  border-top: 8px solid #b22a2a; /* Maroon */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

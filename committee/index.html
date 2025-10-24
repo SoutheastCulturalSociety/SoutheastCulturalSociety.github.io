@@ -5,154 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SCS 2025 Committee</title>
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="../assets/logo.png">
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    /* ---------- BASIC RESET ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #fff1e6, #f5e0dc);
-      color: #4d1a00;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background: rgba(128,0,0,0.85);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    header img.logo {
-      width: 90px;
-      height: auto;
-      display: block;
-      margin: 0 auto 10px auto;
-    }
-
-    header h1 {
-      font-size: 2rem;
-      margin-bottom: 5px;
-    }
-
-    header p {
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-
-    nav a {
-      color: #ffd700;
-      margin: 0 12px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    section {
-      padding: 40px 15px;
-      position: relative;
-      z-index: 2;
-      flex: 1;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: maroon;
-      text-transform: capitalize;
-    }
-
-    table {
-      width: 100%;
-      max-width: 1000px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background: #fffaf0;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(128,0,0,0.2);
-    }
-
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-    }
-
-    th {
-      background: #b22a2a;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) {
-      background: #fff1e6;
-    }
-
-    tr:hover {
-      background: #ffe6d9;
-    }
-
-    footer {
-      background: #8b0000;
-      color: #fffaf0;
-      text-align: center;
-      padding: 15px 0;
-      font-size: 0.95rem;
-      margin-top: auto;
-    }
-
-    @media (max-width: 768px) {
-      th, td {
-        padding: 10px;
-      }
-      table {
-        font-size: 0.9em;
-      }
-    }
-
-    /* ---------- LOADER STYLES ---------- */
-    #loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 50vh;
-      flex-direction: column;
-    }
-
-    .spinner {
-      border: 8px solid #f3f3f3; /* Light gray */
-      border-top: 8px solid #b22a2a; /* Maroon */
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 10px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -168,84 +25,18 @@
     </nav>
   </header>
 
-  <!-- Loader -->
   <div id="loader">
     <div class="spinner"></div>
     <p>Loading committee data...</p>
   </div>
 
-  <!-- Sections will be dynamically created here -->
   <div id="committee-sections"></div>
 
   <footer>
     &copy; 2010–2025 Southeast Cultural Society | 2025 Committee
   </footer>
 
-  <!-- ===================== DYNAMIC SHEET SCRIPT ===================== -->
-  <script>
-    const sheetUrl = "https://script.google.com/macros/s/AKfycbw-fIX9VNcdsE2uK24t1jYBCl1QtnQO40CdU8sXgrlbh4Gt0bemI_dMLNERqA1hcU3d/exec";
-    const currentYear = 2025; // Filter only this year
-    const allowedColumns = ["SL", "NAME", "DESIGNATION"]; // Only show these columns
-
-    async function loadSheetData() {
-      const container = document.getElementById("committee-sections");
-      const loader = document.getElementById("loader");
-
-      try {
-        const res = await fetch(sheetUrl);
-        const data = await res.json();
-
-        for (const [sheetName, rows] of Object.entries(data)) {
-          const filteredRows = rows.filter(r => r["ACTIVE YEAR"] == currentYear);
-          if (!filteredRows.length) continue;
-
-          const sectionId = sheetName.toLowerCase().replace(/\s/g, "-");
-          const section = document.createElement("section");
-          section.id = sectionId;
-
-          const h2 = document.createElement("h2");
-          h2.textContent = sheetName;
-          section.appendChild(h2);
-
-          const table = document.createElement("table");
-          const thead = document.createElement("thead");
-          const tbody = document.createElement("tbody");
-
-          // Create table header (only allowed columns)
-          const headerRow = document.createElement("tr");
-          allowedColumns.forEach(key => {
-            const th = document.createElement("th");
-            th.textContent = key;
-            headerRow.appendChild(th);
-          });
-          thead.appendChild(headerRow);
-
-          // Create table rows
-          filteredRows.forEach(row => {
-            const tr = document.createElement("tr");
-            allowedColumns.forEach(key => {
-              const td = document.createElement("td");
-              td.textContent = row[key] || ""; // blank if missing
-              tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-          });
-
-          table.appendChild(thead);
-          table.appendChild(tbody);
-          section.appendChild(table);
-          container.appendChild(section);
-        }
-      } catch (error) {
-        console.error("Error loading sheet data:", error);
-        container.innerHTML = "<p style='text-align:center;color:red;'>Failed to load data. Please try again later.</p>";
-      } finally {
-        loader.style.display = "none"; // Hide loader after data is loaded
-      }
-    }
-
-    loadSheetData();
-  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
