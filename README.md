@@ -1,3 +1,5 @@
+Written by - [**Shree Rantu Samadder**](https://rantusamadder.github.io)
+
 # SoutheastCulturalSociety.github.io AppScript Code Documentation
 
 This document contains the Google Apps Script code and associated links used to power the Southeast Cultural Society website's dynamic features, including the gallery, notices, and member/committee data retrieval.
