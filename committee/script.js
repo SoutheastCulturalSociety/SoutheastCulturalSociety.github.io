@@ -1,6 +1,6 @@
 const sheetUrl = "https://script.google.com/macros/s/AKfycbw-fIX9VNcdsE2uK24t1jYBCl1QtnQO40CdU8sXgrlbh4Gt0bemI_dMLNERqA1hcU3d/exec";
-const currentYear = 2025; // Filter only this year
-const allowedColumns = ["SL", "NAME", "DESIGNATION"]; // Only show these columns
+const currentYear = 2025;
+const allowedColumns = ["SL", "NAME", "DESIGNATION"];
 
 async function loadSheetData() {
   const container = document.getElementById("committee-sections");
@@ -17,7 +17,6 @@ async function loadSheetData() {
       const sectionId = sheetName.toLowerCase().replace(/\s/g, "-");
       const section = document.createElement("section");
 
-      // Updated ID mapping logic (based on your HTML anchors)
       if (sheetName.toLowerCase().includes('moderator')) {
         section.id = 'moderator';
       } else if (
@@ -43,7 +42,7 @@ async function loadSheetData() {
       const thead = document.createElement("thead");
       const tbody = document.createElement("tbody");
 
-      // Create table header (only allowed columns)
+      // Create table header
       const headerRow = document.createElement("tr");
       allowedColumns.forEach(key => {
         const th = document.createElement("th");
@@ -52,12 +51,12 @@ async function loadSheetData() {
       });
       thead.appendChild(headerRow);
 
-      // Create table rows
+      // Create rows
       filteredRows.forEach(row => {
         const tr = document.createElement("tr");
         allowedColumns.forEach(key => {
           const td = document.createElement("td");
-          td.textContent = row[key] || ""; // blank if missing
+          td.textContent = row[key] || "";
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
@@ -67,13 +66,50 @@ async function loadSheetData() {
       table.appendChild(tbody);
       section.appendChild(table);
       container.appendChild(section);
+
+      // Add connector lines after table render
+      requestAnimationFrame(() => connectRoadLines(table));
     }
   } catch (error) {
     console.error("Error loading sheet data:", error);
     container.innerHTML = "<p style='text-align:center;color:red;'>Failed to load data. Please try again later.</p>";
   } finally {
-    loader.style.display = "none"; // Hide loader after data is loaded
+    loader.style.display = "none";
   }
 }
 
+/* ---------- DYNAMIC CONNECTOR FUNCTION ---------- */
+function connectRoadLines(table) {
+  const rows = table.querySelectorAll("tbody tr");
+
+  rows.forEach((row, i) => {
+    const cell = row.querySelector("td:first-child");
+    const nextRow = rows[i + 1];
+    if (!cell || !nextRow) return;
+
+    // Remove old line if re-rendered
+    const oldLine = cell.querySelector(".road-line");
+    if (oldLine) oldLine.remove();
+
+    const nextCell = nextRow.querySelector("td:first-child");
+    const line = document.createElement("div");
+    line.classList.add("road-line");
+    cell.appendChild(line);
+
+    // Calculate distance between dots
+    const cellDotY = cell.getBoundingClientRect().bottom;
+    const nextDotY = nextCell.getBoundingClientRect().top;
+    const height = nextDotY - cellDotY;
+
+    // Apply height dynamically
+    line.style.height = `${height}px`;
+  });
+}
+
+/* ---------- INIT ---------- */
 loadSheetData();
+
+/* Optional: reconnect if window resized */
+window.addEventListener("resize", () => {
+  document.querySelectorAll("table").forEach(connectRoadLines);
+});
