@@ -16,18 +16,23 @@ async function loadSheetData() {
 
       const sectionId = sheetName.toLowerCase().replace(/\s/g, "-");
       const section = document.createElement("section");
-      // Note: Anchors in the header link to #moderator, #ec, #subec.
-      // This logic will use the full sheet name as ID, so adjust the anchor names in index.html if needed.
-      // E.g., if sheetName is 'Executive Committee', ID will be 'executive-committee'.
-      // However, to match your original HTML anchors, I'll map based on common sense:
+
+      // Updated ID mapping logic (based on your HTML anchors)
       if (sheetName.toLowerCase().includes('moderator')) {
-          section.id = 'moderator';
-      } else if (sheetName.toLowerCase().includes('executive')) {
-          section.id = 'ec';
-      } else if (sheetName.toLowerCase().includes('sub')) {
-          section.id = 'subec';
+        section.id = 'moderator';
+      } else if (
+        sheetName.toLowerCase().includes('executive') &&
+        !sheetName.toLowerCase().includes('sub')
+      ) {
+        section.id = 'ec';
+      } else if (
+        sheetName.toLowerCase().includes('sub') ||
+        sheetName.toLowerCase().includes('sub-executive') ||
+        sheetName.toLowerCase().includes('sub ec')
+      ) {
+        section.id = 'subec';
       } else {
-          section.id = sectionId;
+        section.id = sectionId;
       }
 
       const h2 = document.createElement("h2");
