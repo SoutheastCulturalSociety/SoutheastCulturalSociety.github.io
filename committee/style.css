@@ -82,6 +82,7 @@ table {
 th, td {
   padding: 12px 15px;
   text-align: left;
+  vertical-align: middle;
 }
 
 th {
@@ -105,15 +106,6 @@ footer {
   padding: 15px 0;
   font-size: 0.95rem;
   margin-top: auto;
-}
-
-@media (max-width: 768px) {
-  th, td {
-    padding: 10px;
-  }
-  table {
-    font-size: 0.9em;
-  }
 }
 
 /* ---------- LOADER STYLES ---------- */
@@ -143,9 +135,10 @@ footer {
 /* ---------- CONNECTED ROAD PATH STYLE ---------- */
 table td:first-child {
   position: relative;
-  width: 50px; /* Adjust width for dot spacing */
+  width: 40px; /* Slightly smaller for better mobile fit */
   text-align: center;
   color: transparent; /* Hide serial numbers */
+  min-width: 40px;
 }
 
 /* Circular dot */
@@ -170,8 +163,38 @@ table tr:not(:last-child) td:first-child::after {
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  height: 100%;
+  height: calc(100% + 1px); /* Extend slightly to ensure connection */
   background: maroon;
   z-index: 1;
   opacity: 0.3;
+}
+
+/* ---------- MOBILE OPTIMIZATION ---------- */
+@media (max-width: 768px) {
+  th, td {
+    padding: 10px;
+    word-break: break-word;
+  }
+
+  table {
+    font-size: 0.9em;
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* Keep dots vertically aligned in mobile */
+  table td:first-child {
+    width: 35px;
+    min-width: 35px;
+  }
+
+  table td:first-child::before {
+    width: 12px;
+    height: 12px;
+  }
+
+  table tr:not(:last-child) td:first-child::after {
+    width: 2.5px;
+    opacity: 0.4;
+  }
 }
