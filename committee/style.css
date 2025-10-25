@@ -76,6 +76,7 @@ table {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(128,0,0,0.2);
+  position: relative;
 }
 
 th, td {
@@ -137,4 +138,40 @@ footer {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ---------- CONNECTED ROAD PATH STYLE ---------- */
+table td:first-child {
+  position: relative;
+  width: 50px; /* Adjust width for dot spacing */
+  text-align: center;
+  color: transparent; /* Hide serial numbers */
+}
+
+/* Circular dot */
+table td:first-child::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: maroon;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* Connecting vertical line (road) */
+table tr:not(:last-child) td:first-child::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: maroon;
+  z-index: 1;
+  opacity: 0.3;
 }
