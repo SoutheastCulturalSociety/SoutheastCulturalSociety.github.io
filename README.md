@@ -376,8 +376,8 @@ function onFormSubmit(e) {
 
 Note: Input data into the MEMBER sheet of the **member** Google Sheet through the **member** Google Form and separately input data into the SUBEC and EC sheets within the same Google Sheet to archive their respective records on the server.
 
-**member** Google Sheet Link: https://docs.google.com/spreadsheets/d/1NG47VR_368be7H3E-CUwkHP8mof8kisGqndR1nlJycU/edit?gid=845247013#gid=845247013
 **member** Google Form Link: https://forms.gle/UuXQfAibx7RJeT9B7
+**member** Google Sheet Link: https://docs.google.com/spreadsheets/d/1NG47VR_368be7H3E-CUwkHP8mof8kisGqndR1nlJycU/edit?gid=845247013#gid=845247013
 
 
 ---
