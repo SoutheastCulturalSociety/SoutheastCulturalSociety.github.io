@@ -18,7 +18,7 @@ async function fetchID() {
   document.getElementById('preview').style.display = 'none';
   document.getElementById('generateBtn').style.display = 'none';
 
-  const apiUrl = "https://script.google.com/macros/s/AKfycbxEUpzVF_D9NAFVIfjfetKVwQa5jw26P9KJ46NkYgJZD86wpN_CrTM1EzS92o7P9A4Q/exec?id=" + encodeURIComponent(studentId);
+  const apiUrl = "https://script.google.com/macros/s/AKfycbyckWywB1_89Sfy8Fs-fDHvDLdqiY1NBoUz0FIpJ7NPs7ZJNKAwgDRaonA5p5DdGszT/exec?id=" + encodeURIComponent(studentId);
 
   try {
     const res = await fetch(apiUrl);
