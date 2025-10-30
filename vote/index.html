@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vote Dashboard</title>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -20,9 +18,7 @@
     <section class="controls">
       <label for="sheetSelect">Select Sheet:</label>
       <select id="sheetSelect"></select>
-
       <button id="refreshBtn" class="refresh-btn">⟳ Refresh</button>
-
       <button id="autoRefreshBtn" class="toggle-btn">⏱ Auto: OFF</button>
     </section>
 
@@ -43,9 +39,14 @@
     </section>
 
     <footer>
-      <small class="muted">Live Voting | Synced with Google Sheets</small>
+      <small class="muted">2010–2025 Southeast Cultural Society. All Rights Reserved.</small>
     </footer>
   </main>
+
+  <!-- 🔄 GLOBAL LOADER -->
+  <div id="loader" class="loader-overlay hidden">
+    <div class="spinner"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
