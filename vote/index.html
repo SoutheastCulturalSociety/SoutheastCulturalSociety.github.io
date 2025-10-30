@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vote Dashboard</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Voting Panel</h1>
+      <p class="muted">Select a sheet, view results, and cast your vote.</p>
+    </header>
+
+    <section class="controls">
+      <label for="sheetSelect">Select Sheet:</label>
+      <select id="sheetSelect"></select>
+
+      <button id="refreshBtn" class="refresh-btn">⟳ Refresh</button>
+
+      <button id="autoRefreshBtn" class="toggle-btn">⏱ Auto: OFF</button>
+    </section>
+
+    <section class="content">
+      <div class="chart-card">
+        <canvas id="pieChart" width="400" height="400"></canvas>
+      </div>
+
+      <div class="vote-area">
+        <h3>Candidates</h3>
+        <ul id="candidatesList" class="candidates"></ul>
+
+        <form id="addCandidateForm">
+          <input id="newCandidateName" placeholder="Propose candidate name" required />
+          <button type="submit">Propose</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <small class="muted">Live Voting | Synced with Google Sheets</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
