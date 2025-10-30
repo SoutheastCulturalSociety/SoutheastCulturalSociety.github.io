@@ -28,10 +28,9 @@ async function gasFetch(params){
 }
 
 function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, ch => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"
-  }[ch]));
+  return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch]));
 }
+
 function colorForIndex(i){
   const hue = (i*47)%360;
   return `hsl(${hue} 70% 55%)`;
@@ -44,10 +43,7 @@ async function init(){
   hideLoader();
 
   sheetSelect.addEventListener('change', onSheetChange);
-  refreshBtn.addEventListener('click', async ()=>{
-    if(currentSheet){ showLoader(); await loadData(currentSheet); hideLoader(); }
-  });
-
+  refreshBtn.addEventListener('click', async ()=>{ if(currentSheet){ showLoader(); await loadData(currentSheet); hideLoader(); } });
   autoRefreshBtn.addEventListener('click', toggleAutoRefresh);
 
   addCandidateForm.addEventListener('submit', async e=>{
@@ -85,7 +81,7 @@ async function loadSheets(){
 }
 
 async function onSheetChange(e){
-  currentSheet=e.target.value;
+  currentSheet = e.target.value;
   showLoader();
   await loadData(currentSheet);
   hideLoader();
@@ -94,8 +90,8 @@ async function onSheetChange(e){
 // ========== Data Load ==========
 async function loadData(sheetName){
   try{
-    const res=await gasFetch({action:'getData',sheet:sheetName});
-    currentRows=res.data.rows||[];
+    const res = await gasFetch({action:'getData',sheet:sheetName});
+    currentRows = res.data?.rows || [];
     renderCandidates(currentRows);
     renderChart(currentRows);
   }catch(err){ console.error(err); }
@@ -120,29 +116,31 @@ function renderCandidates(rows){
 
 async function onVote(rowNum,btn){
   try{
-    btn.disabled=true;
+    btn.disabled = true;
     btn.classList.add('loading');
-    const res=await gasFetch({action:'vote',sheet:currentSheet,row:rowNum});
+    const res = await gasFetch({action:'vote',sheet:currentSheet,row:rowNum});
     if(res.success){
-      const row=currentRows.find(r=>r.rowNum==rowNum);
-      if(row) row.votes=res.newCount;
+      const row = currentRows.find(r=>r.rowNum==rowNum);
+      if(row) row.votes = res.newCount;
       renderCandidates(currentRows);
       renderChart(currentRows);
-    }else alert('Vote failed');
+    }else{
+      alert('Vote failed');
+    }
   }catch(err){
     alert('Error: '+err.message);
   }finally{
     btn.classList.remove('loading');
-    btn.disabled=false;
+    btn.disabled = false;
   }
 }
 
 function renderChart(rows){
-  const labels=rows.map(r=>r.candidate||'');
-  const values=rows.map(r=>Number(r.votes||0));
-  const colors=labels.map((_,i)=>colorForIndex(i));
+  const labels = rows.map(r=>r.candidate||'');
+  const values = rows.map(r=>Number(r.votes||0));
+  const colors = labels.map((_,i)=>colorForIndex(i));
   if(chart) chart.destroy();
-  chart=new Chart(pieCtx,{
+  chart = new Chart(pieCtx,{
     type:'pie',
     data:{labels,datasets:[{data:values,backgroundColor:colors}]},
     options:{responsive:true,plugins:{legend:{position:'bottom'}}}
@@ -153,16 +151,16 @@ function renderChart(rows){
 function toggleAutoRefresh(){
   if(autoRefreshInterval){
     clearInterval(autoRefreshInterval);
-    autoRefreshInterval=null;
+    autoRefreshInterval = null;
     autoRefreshBtn.classList.remove('active');
     autoRefreshBtn.textContent='⏱ Auto: OFF';
   }else{
     if(!currentSheet) return;
-    autoRefreshInterval=setInterval(async()=>{
+    autoRefreshInterval = setInterval(async ()=>{
       showLoader();
       await loadData(currentSheet);
       hideLoader();
-    },AUTO_REFRESH_MS);
+    }, AUTO_REFRESH_MS);
     autoRefreshBtn.classList.add('active');
     autoRefreshBtn.textContent='⏱ Auto: ON';
   }
