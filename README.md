@@ -211,6 +211,9 @@ Note: Input the required data (Notice Headline, Notice Details, Registration Lin
 This script handles member data retrieval, allowing search by Student ID or listing members by Recruitment batch and current year.
 
 ```JavaScript
+/*****************************
+ * 🔹 EXISTING CODE (updated minimally)
+ *****************************/
 function doGet(e) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -220,7 +223,7 @@ function doGet(e) {
     const sheets = ss.getSheets();
 
     // -------------------
-    // 1️⃣ If searching by Student ID → keep existing functionality
+    // 1️⃣ If searching by Student ID → keep existing functionality but skip empty "Active Year"
     if (studentIdRaw) {
       let studentData = null;
       let activeYears = [];
@@ -230,10 +233,19 @@ function doGet(e) {
         if (data.length < 2) return;
 
         const headers = data[0].map(h => h.toString().trim());
+        const idIndex = headers.findIndex(h => h.toUpperCase() === "STUDENT ID");
+        const yearIndex = headers.findIndex(h => h.toUpperCase() === "ACTIVE YEAR");
+
+        if (idIndex === -1) return;
 
         for (let i = 1; i < data.length; i++) {
           const row = data[i];
-          const rowId = row[headers.indexOf("STUDENT ID")]?.toString().trim().toUpperCase();
+          const rowId = row[idIndex]?.toString().trim().toUpperCase();
+          const year = yearIndex !== -1 ? row[yearIndex]?.toString().trim() : "";
+
+          // ⛔ Skip if ACTIVE YEAR is empty
+          if (!year) continue;
+
           if (rowId === studentIdRaw) {
             if (!studentData) {
               studentData = {};
@@ -244,13 +256,16 @@ function doGet(e) {
                 }
               });
             }
-            const year = row[headers.indexOf("Active Year")] || row[headers.indexOf("ACTIVE YEAR")];
-            if (year && !activeYears.includes(year)) activeYears.push(year);
+            if (!activeYears.includes(year)) activeYears.push(year);
           }
         }
       });
 
-      if (!studentData) return sendJSON({ success: false, message: "Student ID not found." });
+      if (!studentData)
+        return sendJSON({
+          success: false,
+          message: "Student ID not found or has no active year."
+        });
 
       studentData["Active Year"] = activeYears.sort().join(", ");
       return sendJSON({ success: true, data: studentData });
@@ -321,13 +336,48 @@ function doGet(e) {
 
 function sendJSON(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
-             .setMimeType(ContentService.MimeType.JSON);
+                       .setMimeType(ContentService.MimeType.JSON);
 }
+
+
+
+/*********************************************
+ * 🔹 NEW CODE: Auto-sync Form → MEMBER Sheet
+ *********************************************/
+function onFormSubmit(e) {
+  const formSheetName = "Form Responses 1";
+  const memberSheetName = "MEMBER";
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const formSheet = ss.getSheetByName(formSheetName);
+  const memberSheet = ss.getSheetByName(memberSheetName);
+
+  if (!formSheet || !memberSheet) return;
+
+  const row = e.range.getRow();
+  const formData = formSheet.getRange(row, 3, 1, 6).getValues()[0]; // Columns C–H
+
+  // Map to MEMBER columns: A, B, D, E, G, H
+  const memberRow = [
+    formData[0], // C → A
+    formData[1], // D → B
+    "",           // skip MEMBER column C
+    formData[2], // E → D
+    formData[3], // F → E
+    "",           // skip MEMBER column F
+    formData[4], // G → G
+    formData[5]  // H → H
+  ];
+
+  memberSheet.appendRow(memberRow);
+}
+
 ```
 
-Note: Input data into the MEMBER, SUBEC, and EC sheets within the **member** Google Sheet to archive data on the server.
+Note: Input data into the MEMBER sheet of the **member** Google Sheet through the **member** Google Form and separately input data into the SUBEC and EC sheets within the same Google Sheet to archive their respective records on the server.
 
-**member** Google Sheet Link: https://docs.google.com/spreadsheets/d/1W9c-fiNp1Pd4f9Ur3QmWGnZodYWj1hoASCVa_5UNVnQ
+**member** Google Form Link: https://forms.gle/UuXQfAibx7RJeT9B7 <br>
+**member** Google Sheet Link: https://docs.google.com/spreadsheets/d/1NG47VR_368be7H3E-CUwkHP8mof8kisGqndR1nlJycU/edit?gid=845247013#gid=845247013 
 
 
 ---
