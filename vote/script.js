@@ -43,7 +43,13 @@ async function init(){
   hideLoader();
 
   sheetSelect.addEventListener('change', onSheetChange);
-  refreshBtn.addEventListener('click', async ()=>{ if(currentSheet){ showLoader(); await loadData(currentSheet); hideLoader(); } });
+  refreshBtn.addEventListener('click', async ()=>{
+    if(currentSheet){
+      showLoader();
+      await loadData(currentSheet);
+      hideLoader();
+    }
+  });
   autoRefreshBtn.addEventListener('click', toggleAutoRefresh);
 
   addCandidateForm.addEventListener('submit', async e=>{
@@ -135,15 +141,27 @@ async function onVote(rowNum,btn){
   }
 }
 
+// ========== Chart: Show only top 4 ==========
 function renderChart(rows){
-  const labels = rows.map(r=>r.candidate||'');
-  const values = rows.map(r=>Number(r.votes||0));
+  // Sort by votes (desc) and take top 4
+  const sorted = [...rows].sort((a,b)=>Number(b.votes||0)-Number(a.votes||0)).slice(0,4);
+  const labels = sorted.map(r=>r.candidate||'');
+  const values = sorted.map(r=>Number(r.votes||0));
   const colors = labels.map((_,i)=>colorForIndex(i));
+
   if(chart) chart.destroy();
   chart = new Chart(pieCtx,{
     type:'pie',
     data:{labels,datasets:[{data:values,backgroundColor:colors}]},
-    options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{position:'bottom'},
+        tooltip:{callbacks:{
+          label:(ctx)=>`${ctx.label}: ${ctx.formattedValue} votes`
+        }}
+      }
+    }
   });
 }
 
