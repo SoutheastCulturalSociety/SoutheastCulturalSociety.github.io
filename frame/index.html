@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Photo Frame Tool</title>
+
+   <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --accent: #22c55e;
+      --muted: #cfcfcf;
+    }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      background:var(--bg);
+      color:var(--muted);
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Rajdhani", sans-serif;
+      padding:32px;
+      box-sizing:border-box;
+    }
+    .ui {
+      width:100%;
+      max-width:760px;
+    }
+    h1 { text-align:center; font-size:1.6rem; margin-bottom:18px; color:#fff; font-weight:700; }
+    .canvas-wrap {
+      background:transparent;
+      border-radius:12px;
+      padding:12px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    canvas { display:block; width:100%; height:auto; border-radius:10px; }
+    .controls { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:14px; }
+    .btn {
+      background:#111827; color:#fff; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.04);
+      cursor:pointer; user-select:none;
+    }
+    .btn:active { transform:translateY(1px); }
+    label.upload {
+      display:inline-block; margin-top:16px; background:var(--accent); color:#fff; padding:10px 16px; border-radius:999px;
+      cursor:pointer; font-weight:600; box-shadow:0 6px 18px rgba(0,0,0,0.5);
+    }
+    input[type="range"] { accent-color:var(--accent); width:220px; }
+    .row { display:flex; gap:12px; justify-content:center; align-items:center; margin-top:12px; }
+    .download { margin-top:18px; display:block; margin-left:auto; margin-right:auto; background:var(--accent); color:#000; padding:10px 18px; border-radius:999px; font-weight:700; }
+    .hidden { display:none !important; }
+    @media (max-width:640px){ input[type="range"]{ width:140px; } }
+  </style>
+</head>
+<body>
+  <div class="ui">
+    <h1>Photo Frame Generator</h1>
+    
+
+    <div class="canvas-wrap">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div style="text-align:center;">
+      <label class="upload" for="photo-upload">Upload Photo</label>
+      <input id="photo-upload" type="file" accept="image/*" class="hidden">
+    </div>
+
+    <div id="controls" class="controls hidden" aria-hidden="true">
+      <button id="zoom-out" class="btn" title="Zoom out">-</button>
+      <input id="zoom-slider" type="range" min="0.3" max="3.0" step="0.01" value="1.0" />
+      <button id="zoom-in" class="btn" title="Zoom in">+</button>
+    </div>
+
+    <button id="download-btn" class="download hidden">Download Image</button>
+  </div>
+
+<script>
+  (function(){
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d', { alpha: false });
+    const upload = document.getElementById('photo-upload');
+    const controls = document.getElementById('controls');
+    const zoomSlider = document.getElementById('zoom-slider');
+    const zoomInBtn = document.getElementById('zoom-in');
+    const zoomOutBtn = document.getElementById('zoom-out');
+    const downloadBtn = document.getElementById('download-btn');
+
+    let frame = new Image();
+    let userImg = null;
+    let baseScale = 1;      // scale to make the image "cover" the frame at zoom = 1
+    let zoom = 1.0;         // user-controlled multiplier (1 = baseScale)
+    const MIN_Z = 0.3, MAX_Z = 3.0;
+
+    let frameLoaded = false;
+    let imgLoaded = false;
+
+    // Load frame right away
+    frame.src = 'frame.png';
+    frame.onload = () => {
+      frameLoaded = true;
+      // Set canvas size to the frame's natural pixel size for crisp output
+      canvas.width = frame.naturalWidth;
+      canvas.height = frame.naturalHeight;
+      // If an image is already selected earlier, compute baseScale now
+      if (userImg && userImg.complete) {
+        computeBaseScale();
+      }
+      draw();
+    };
+    frame.onerror = () => {
+      console.error('Could not load frame.png — make sure it exists in the same folder.');
+      // still set a default canvas size
+      canvas.width = 800;
+      canvas.height = 800;
+      frameLoaded = true;
+      draw();
+    };
+
+    // When user picks an image
+    upload.addEventListener('change', (ev) => {
+      const f = ev.target.files && ev.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        userImg = new Image();
+        userImg.onload = () => {
+          imgLoaded = true;
+          // If frame already loaded, compute baseScale now
+          if (frameLoaded) computeBaseScale();
+          // Show controls
+          controls.classList.remove('hidden');
+          controls.setAttribute('aria-hidden', 'false');
+          downloadBtn.classList.remove('hidden');
+          // reset zoom to 1 (cover)
+          zoom = 1.0;
+          zoomSlider.value = String(zoom);
+          draw();
+        };
+        userImg.src = e.target.result;
+      };
+      reader.readAsDataURL(f);
+    });
+
+    function computeBaseScale(){
+      if (!userImg || !frameLoaded) return;
+      // Scale image to "cover" canvas (frame) area
+      const scaleX = canvas.width / userImg.width;
+      const scaleY = canvas.height / userImg.height;
+      baseScale = Math.max(scaleX, scaleY);
+      // protect baseScale
+      if (!isFinite(baseScale) || baseScale <= 0) baseScale = 1;
+    }
+
+    function draw(){
+      // Clear with white (or any background) to avoid weird alpha
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      if (imgLoaded && userImg) {
+        // draw using baseScale * zoom (zoom multiplies baseCover)
+        const drawW = Math.round(userImg.width * baseScale * zoom);
+        const drawH = Math.round(userImg.height * baseScale * zoom);
+        const x = Math.round((canvas.width - drawW) / 2);
+        const y = Math.round((canvas.height - drawH) / 2);
+        ctx.drawImage(userImg, x, y, drawW, drawH);
+      }
+
+      // Draw frame on top (always)
+      if (frameLoaded) {
+        ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Zoom controls
+    zoomSlider.min = MIN_Z;
+    zoomSlider.max = MAX_Z;
+    zoomSlider.step = 0.01;
+    zoomSlider.value = String(zoom);
+
+    zoomSlider.addEventListener('input', (e) => {
+      zoom = parseFloat(e.target.value) || 1;
+      draw();
+    });
+
+    zoomInBtn.addEventListener('click', () => {
+      zoom = Math.min(MAX_Z, +(zoom + 0.1).toFixed(2));
+      zoomSlider.value = String(zoom);
+      draw();
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+      zoom = Math.max(MIN_Z, +(zoom - 0.1).toFixed(2));
+      zoomSlider.value = String(zoom);
+      draw();
+    });
+
+    // download
+    downloadBtn.addEventListener('click', () => {
+      // create a temporary link
+      const link = document.createElement('a');
+      link.download = 'framed_photo.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    // redraw on window resize to keep canvas element displayed responsively
+    // (canvas pixel size remains frame size; CSS width adjusts automatically)
+    window.addEventListener('resize', () => { draw(); });
+
+  })();
+</script>
+</body>
+</html>
