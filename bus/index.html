@@ -1,180 +1,180 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bus Seat Layout</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 18px; background: #f6f8fb; color: #111; }
-    .top-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .info { font-weight:600; }
-    .engine { text-align:center; margin-bottom:10px; font-size:0.95rem; color:#333; }
-    .layout { display:grid; grid-template-columns: repeat(2, 1fr) 60px repeat(2, 1fr); gap:8px; }
-    .col { display:grid; grid-auto-rows: 54px; gap:8px; }
-    .seat { background:#fff; border:1px solid #ccc; border-radius:8px; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; user-select:none; box-shadow: 0 1px 3px rgba(0,0,0,0.06);}
-    .seat .name { font-weight:700; margin-bottom:4px; }
-    .seat .sid { font-size:0.85rem; color:#444; }
-    .pathway { width:60px; display:flex; align-items:center; justify-content:center; font-size:0.9rem; color:#666; }
-    .controls { margin-top:14px; display:flex; gap:8px; align-items:center; }
-    input[type="text"] { padding:8px 10px; border-radius:6px; border:1px solid #bbb; width:220px; }
-    button { padding:9px 12px; border-radius:6px; border: none; background:#0b63d6; color:white; cursor:pointer; }
-    button.secondary { background:#666; }
-    .status { margin-left:8px; font-size:0.95rem; color:#333; }
-    .locked { opacity:0.45; pointer-events:none; }
-    .seat.editing { outline: 3px solid rgba(11,99,214,0.15); }
-    .legend { margin-top:10px; font-size:0.9rem; color:#555; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #bus {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap; /* ensures mobile-friendly wrapping */
+    }
+
+    .seat {
+      width: 60px;
+      height: 60px;
+      margin: 5px;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-align: center;
+      font-size: 14px;
+      word-break: break-word;
+      transition: all 0.2s ease;
+    }
+
+    .seat.taken {
+      background: #d9534f; /* red for booked */
+    }
+
+    .seat .seat-no {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .seat .booking-name {
+      font-size: 11px;
+      color: #fff;
+    }
+
+    .pathway {
+      width: 30px; /* aisle */
+    }
+
+    .bus-body {
+      background: #ccc;
+      padding: 15px 20px;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loader {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      background: #fff;
+      padding: 10px 20px;
+      border: 1px solid #000;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+
+    /* Mobile adjustments */
+    @media(max-width: 600px){
+      .seat {
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+        margin: 3px;
+      }
+      .seat .booking-name {
+        font-size: 9px;
+      }
+      .pathway {
+        width: 15px; /* narrower aisle on mobile */
+      }
+      .row {
+        justify-content: space-around; /* balance seats better */
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="top-row">
-    <div class="info">Gate (Top-left)</div>
-    <div style="font-weight:800">Bus Seat Layout — 48 seats</div>
-    <div class="info">Driver (Top-right)</div>
-  </div>
+  <h2>Bus Seat Layout</h2>
+  <div id="bus" class="bus-body"></div>
+  <div class="loader" id="loader">Loading...</div>
 
-  <div class="engine">Engine cover / Access area</div>
+  <script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbwmuEabGqMLMReSK5jQo6kl3MPZmxZDeZv_bn8arIJ7XqlhB9TLtWdZA0Cqyqv-DbGt/exec";
+    const loader = document.getElementById('loader');
 
-  <div id="layout" class="layout">
-    <div id="left-col" class="col"></div>
-    <div id="left-col-b" class="col"></div>
-    <div class="pathway">PATHWAY</div>
-    <div id="right-col-c" class="col"></div>
-    <div id="right-col-d" class="col"></div>
-  </div>
+    function showLoader(){ loader.style.display = 'block'; }
+    function hideLoader(){ loader.style.display = 'none'; }
 
-  <div class="controls">
-    <input id="studentIdInput" type="text" placeholder="Enter STUDENT ID to unlock editing">
-    <button id="unlockBtn">Unlock</button>
-    <button id="refreshBtn" class="secondary">Refresh</button>
-    <span id="status" class="status"></span>
-  </div>
+    async function loadSeats() {
+      showLoader();
+      try {
+        const response = await fetch(apiUrl);
+        const seats = await response.json();
+        const busDiv = document.getElementById('bus');
+        busDiv.innerHTML = "";
 
-  <div class="legend">
-    Click a seat to assign/clear it AFTER unlocking. Seat displays: <strong>SeatName</strong> and <em>StudentID</em>.
-  </div>
+        seats.forEach((seat) => {
+          const rowDiv = document.createElement('div');
+          rowDiv.className = 'row';
 
-<script>
-  // Client-side logic, uses google.script.run
-  let canEdit = false;
-  let currentStudentId = '';
-  let layoutData = []; // array {seat, studentId}
-  const leftCols = ['A','B'];
-  const rightCols = ['C','D'];
+          // Left side seats
+          createSeat(rowDiv, seat.A, seat.B);
+          createSeat(rowDiv, seat.C, seat.D);
 
-  function init() {
-    document.getElementById('unlockBtn').addEventListener('click', unlock);
-    document.getElementById('refreshBtn').addEventListener('click', loadLayout);
-    loadLayout();
-  }
+          // Aisle
+          const aisle = document.createElement('div');
+          aisle.className = 'pathway';
+          rowDiv.appendChild(aisle);
 
-  function setStatus(msg, isError) {
-    const s = document.getElementById('status');
-    s.textContent = msg || '';
-    s.style.color = isError ? '#b00020' : '#333';
-  }
+          // Right side seats
+          createSeat(rowDiv, seat.E, seat.F);
+          createSeat(rowDiv, seat.G, seat.H);
 
-  function unlock() {
-    const id = document.getElementById('studentIdInput').value.trim();
-    if (!id) { setStatus('Please enter a Student ID', true); return; }
-    setStatus('Verifying...');
-    google.script.run.withSuccessHandler(function(valid) {
-      if (valid) {
-        canEdit = true;
-        currentStudentId = id;
-        setStatus('Unlocked — you can now click seats to assign/clear for ID ' + id);
-        renderLayout();
-      } else {
-        canEdit = false;
-        currentStudentId = '';
-        setStatus('Student ID not found. Access denied.', true);
+          busDiv.appendChild(rowDiv);
+        });
+
+      } catch (err) {
+        console.error(err);
+        alert("Failed to load seats.");
+      } finally {
+        hideLoader();
       }
-    }).verifyStudent(id);
-  }
-
-  function loadLayout() {
-    setStatus('Loading layout...');
-    google.script.run.withSuccessHandler(function(data) {
-      layoutData = data; // [{seat, studentId},...]
-      setStatus('Layout loaded. Enter your STUDENT ID to edit.');
-      renderLayout();
-    }).getBusLayout();
-  }
-
-  function renderLayout() {
-    // build maps for quick lookup
-    const map = {};
-    layoutData.forEach(o => map[o.seat] = o.studentId || '');
-    // clear columns
-    const leftA = document.getElementById('left-col');
-    const leftB = document.getElementById('left-col-b');
-    const rightC = document.getElementById('right-col-c');
-    const rightD = document.getElementById('right-col-d');
-    leftA.innerHTML = '';
-    leftB.innerHTML = '';
-    rightC.innerHTML = '';
-    rightD.innerHTML = '';
-
-    for (let r=1; r<=12; r++){
-      const sA = 'A' + r;
-      const sB = 'B' + r;
-      const sC = 'C' + r;
-      const sD = 'D' + r;
-      leftA.appendChild(makeSeatEl(sA, map[sA] || ''));
-      leftB.appendChild(makeSeatEl(sB, map[sB] || ''));
-      rightC.appendChild(makeSeatEl(sC, map[sC] || ''));
-      rightD.appendChild(makeSeatEl(sD, map[sD] || ''));
     }
 
-    // lock overlay if not allowed
-    const allSeats = document.querySelectorAll('.seat');
-    allSeats.forEach(el => {
-      if (!canEdit) {
-        el.classList.add('locked');
-      } else {
-        el.classList.remove('locked');
-      }
-    });
-  }
+    function createSeat(parent, seatNo, bookingName) {
+      const seatDiv = document.createElement('div');
+      seatDiv.className = 'seat';
+      if (bookingName) seatDiv.classList.add('taken');
 
-  function makeSeatEl(seatName, studentId) {
-    const el = document.createElement('div');
-    el.className = 'seat';
-    el.dataset.seat = seatName;
-    const name = document.createElement('div');
-    name.className = 'name';
-    name.textContent = seatName;
-    const sid = document.createElement('div');
-    sid.className = 'sid';
-    sid.textContent = studentId ? studentId : '(empty)';
-    el.appendChild(name);
-    el.appendChild(sid);
+      const seatNumberDiv = document.createElement('div');
+      seatNumberDiv.className = 'seat-no';
+      seatNumberDiv.innerText = seatNo;
 
-    // click behavior
-    el.addEventListener('click', function(){
-      if (!canEdit) {
-        setStatus('Unlock with your STUDENT ID first to edit.', true);
-        return;
-      }
-      // Toggle logic: if seat already has this student's ID, clear it. Otherwise assign currentStudentId.
-      const current = sid.textContent === '(empty)' ? '' : sid.textContent;
-      const assign = (current === currentStudentId) ? '' : currentStudentId;
-      // optimistic UI change
-      sid.textContent = assign ? assign : '(empty)';
-      el.classList.add('editing');
-      setStatus('Updating ' + seatName + ' ...');
-      google.script.run.withSuccessHandler(function(res){
-        el.classList.remove('editing');
-        setStatus('Updated ' + res.seat + '.');
-        // reload full layout to ensure sync
-        loadLayout();
-      }).updateSeat(seatName, assign);
-    });
+      const bookingNameDiv = document.createElement('div');
+      bookingNameDiv.className = 'booking-name';
+      bookingNameDiv.innerText = bookingName || '';
 
-    return el;
-  }
+      seatDiv.appendChild(seatNumberDiv);
+      seatDiv.appendChild(bookingNameDiv);
 
-  // init on load
-  document.addEventListener('DOMContentLoaded', init);
-</script>
+      parent.appendChild(seatDiv);
+    }
+
+    loadSeats();
+  </script>
 </body>
 </html>
