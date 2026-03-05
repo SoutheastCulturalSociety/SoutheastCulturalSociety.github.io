@@ -435,5 +435,5 @@ function doGet() {
 
 Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the **committee** Google sheet to publish the committee lists on the website.
 
-**committee** Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
+**committee** Google Sheet Link: https://docs.google.com/spreadsheets/d/1zmjCg9tmmmCr3OfyN6ygpjyoxlBhqcHSD9jQTdtbq8E/
 
