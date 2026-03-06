@@ -1,5 +1,5 @@
 const sheetUrl = "https://script.google.com/macros/s/AKfycbwmbJdpYAKkRShaUC8f_U4qtAgnYEwR-y5cucqFpn3JbFZfI4DyTjwGQ0ZQiqhLj_mkUA/exec";
-const currentYear = 2026; // Filter only this year
+const currentYear = new Date().getFullYear(); // Dynamic year
 const allowedColumns = ["SL", "NAME", "DESIGNATION"]; // Only show these columns
 
 async function loadSheetData() {
