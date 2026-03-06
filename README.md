@@ -387,31 +387,53 @@ This script retrieves and filters committee member data for a specific year from
 
 ```JavaScript
 function doGet() {
-  const ss = SpreadsheetApp.openById("1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8");
-  const sheets = ss.getSheets();
-  const currentYear = 2025;
+
+  const ss = SpreadsheetApp.openById("1zmjCg9tmmmCr3OfyN6ygpjyoxlBhqcHSD9jQTdtbq8E");
+
+  const sheetNames = [
+    "MODERATOR",
+    "EXECUTIVE COMMITTEE (EC)",
+    "SUB EXECUTIVE COMMITTEE (SUB EC)"
+  ];
+
+  const currentYear = new Date().getFullYear();
+
   let result = {};
 
-  sheets.forEach(sheet => {
+  sheetNames.forEach(name => {
+
+    const sheet = ss.getSheetByName(name);
+    if (!sheet) return;
+
     const data = sheet.getDataRange().getValues();
     const headers = data[0];
-    const yearIndex = headers.indexOf("ACTIVE YEAR");
 
-    // Filter rows for the current year
-    const filteredRows = data.slice(1).filter(row => row[yearIndex] == currentYear);
+    let rows = [];
 
-    result[sheet.getName()] = filteredRows.map(row => {
-      let obj = {};
-      headers.forEach((header, i) => obj[header] = row[i]);
-      return obj;
-    });
+    for (let i = 1; i < data.length; i++) {
+
+      let row = {};
+      headers.forEach((h, j) => {
+        row[h] = data[i][j];
+      });
+
+      if (row["ACTIVE YEAR"] == currentYear) {
+        rows.push(row);
+      }
+
+    }
+
+    result[name] = rows;
+
   });
 
-  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 ```
 
 Note: Input data for MODERATOR, EXECUTIVE COMMITTEE (EC), and SUB EXECUTIVE COMMITTEE (SUB EC) on the **committee** Google sheet to publish the committee lists on the website.
 
-**committee** Google Sheet Link: https://docs.google.com/spreadsheets/d/1P4Ru7PTuf3apwg3IKJ43u_F1N87oNblqGakQjvrmNJ8
+**committee** Google Sheet Link: https://docs.google.com/spreadsheets/d/1zmjCg9tmmmCr3OfyN6ygpjyoxlBhqcHSD9jQTdtbq8E/
 
