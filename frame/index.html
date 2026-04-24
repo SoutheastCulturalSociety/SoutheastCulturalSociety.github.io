@@ -2,114 +2,212 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Photo Frame Tool</title>
 
   <link rel="icon" type="image/png" href="../assets/logo.png" />
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    :root {
-      --bg: #0b0b0b;
-      --accent: #22c55e;
-      --muted: #cfcfcf;
+    :root{
+      --bg:#0b0b0b;
+      --card:#111827;
+      --accent:#22c55e;
+      --muted:#cfcfcf;
     }
-    body {
+
+    *{box-sizing:border-box;}
+
+    body{
       margin:0;
       min-height:100vh;
       display:flex;
-      align-items:flex-start;
       justify-content:center;
+      align-items:flex-start;
       background:var(--bg);
       color:var(--muted);
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Rajdhani", sans-serif;
-      padding:32px;
-      box-sizing:border-box;
-    }
-    .ui { width:100%; max-width:760px; }
-    h1 { text-align:center; font-size:1.6rem; margin-bottom:18px; color:#fff; font-weight:700; }
-
-    .canvas-wrap { background:transparent; padding:12px; display:flex; justify-content:center; }
-    canvas { display:block; width:100%; height:auto; border-radius:10px; }
-
-    .controls, .move-controls {
-      display:flex; gap:10px; justify-content:center; align-items:center; margin-top:12px;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      padding:18px;
     }
 
-    .btn {
-      background:#111827; color:#fff; padding:8px 12px; border-radius:999px;
-      border:1px solid rgba(255,255,255,0.04); cursor:pointer;
+    .ui{
+      width:100%;
+      max-width:760px;
     }
-    .btn:active { transform:translateY(1px); }
 
-    label.upload {
-      display:inline-block; margin-top:16px; background:var(--accent); color:#000;
-      padding:10px 16px; border-radius:999px; cursor:pointer; font-weight:700;
+    h1{
+      text-align:center;
+      color:#fff;
+      font-size:1.6rem;
+      margin:0 0 16px;
+      font-weight:700;
     }
-    input[type="range"] { accent-color:var(--accent); width:220px; }
 
-    .download { margin-top:18px; display:block; margin-inline:auto; background:var(--accent); color:#000; padding:10px 18px; border-radius:999px; font-weight:700; }
-    .hidden { display:none !important; }
+    .canvas-wrap{
+      background:#000;
+      border-radius:14px;
+      overflow:hidden;
+      padding:10px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      touch-action:none;
+    }
+
+    canvas{
+      display:block;
+      width:100%;
+      max-width:100%;
+      height:auto;
+      border-radius:10px;
+      background:#fff;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
+    }
+
+    .center{
+      text-align:center;
+    }
+
+    .controls,
+    .move-controls{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .btn{
+      border:none;
+      background:var(--card);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:15px;
+      min-width:46px;
+      transition:.15s;
+    }
+
+    .btn:active{
+      transform:scale(.97);
+    }
+
+    .upload{
+      display:inline-block;
+      margin-top:16px;
+      background:var(--accent);
+      color:#000;
+      padding:11px 18px;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    input[type="range"]{
+      width:220px;
+      max-width:70vw;
+      accent-color:var(--accent);
+    }
+
+    .download{
+      display:block;
+      margin:18px auto 0;
+      background:var(--accent);
+      color:#000;
+      border:none;
+      padding:11px 18px;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .hint{
+      text-align:center;
+      font-size:13px;
+      opacity:.8;
+      margin-top:10px;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    @media (max-width:640px){
+      body{padding:12px;}
+      h1{font-size:1.35rem;}
+      .btn{padding:10px 12px;}
+    }
   </style>
 </head>
 
 <body>
-  <div class="ui">
-    <h1>Photo Frame Generator</h1>
+<div class="ui">
 
-    <div class="canvas-wrap">
-      <canvas id="canvas"></canvas>
-    </div>
+  <h1>Photo Frame Generator</h1>
 
-    <div style="text-align:center;">
-      <label class="upload" for="photo-upload">Upload Photo</label>
-      <input id="photo-upload" type="file" accept="image/*" class="hidden">
-    </div>
-
-    <div id="controls" class="controls hidden" aria-hidden="true">
-      <button id="zoom-out" class="btn">-</button>
-      <input id="zoom-slider" type="range" min="0.3" max="3.0" step="0.01" value="1.0" />
-      <button id="zoom-in" class="btn">+</button>
-    </div>
-
-    <!-- Move Buttons -->
-    <div id="move-controls" class="move-controls hidden">
-      <button id="move-up" class="btn">⬆</button>
-      <button id="move-left" class="btn">⬅</button>
-      <button id="move-right" class="btn">➡</button>
-      <button id="move-down" class="btn">⬇</button>
-      <button id="reset-move" class="btn">Reset</button>
-    </div>
-
-    <button id="download-btn" class="download hidden">Download Image</button>
+  <div class="canvas-wrap">
+    <canvas id="canvas"></canvas>
   </div>
 
+  <div class="center">
+    <label class="upload" for="photo-upload">Upload Photo</label>
+    <input id="photo-upload" type="file" accept="image/*" class="hidden">
+  </div>
+
+  <div id="controls" class="controls hidden">
+    <button id="zoom-out" class="btn">−</button>
+    <input id="zoom-slider" type="range" min="0.3" max="3" step="0.01" value="1">
+    <button id="zoom-in" class="btn">+</button>
+  </div>
+
+  <div id="move-controls" class="move-controls hidden">
+    <button id="move-up" class="btn">⬆</button>
+    <button id="move-left" class="btn">⬅</button>
+    <button id="move-right" class="btn">➡</button>
+    <button id="move-down" class="btn">⬇</button>
+    <button id="reset-move" class="btn">Reset</button>
+  </div>
+
+  <button id="download-btn" class="download hidden">Download Image</button>
+
+  <div class="hint">
+    Drag image • Pinch not required • Works better on Android / iPhone / Safari / Chrome
+  </div>
+
+</div>
 
 <script>
 (function(){
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d', { alpha: false });
 
-  const upload = document.getElementById('photo-upload');
-  const controls = document.getElementById('controls');
-  const moveControls = document.getElementById('move-controls');
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
 
-  const zoomSlider = document.getElementById('zoom-slider');
-  const zoomInBtn = document.getElementById('zoom-in');
-  const zoomOutBtn = document.getElementById('zoom-out');
-  const downloadBtn = document.getElementById('download-btn');
+  const upload = document.getElementById("photo-upload");
+  const controls = document.getElementById("controls");
+  const moveControls = document.getElementById("move-controls");
+  const downloadBtn = document.getElementById("download-btn");
 
-  const btnUp = document.getElementById('move-up');
-  const btnDown = document.getElementById('move-down');
-  const btnLeft = document.getElementById('move-left');
-  const btnRight = document.getElementById('move-right');
-  const btnReset = document.getElementById('reset-move');
+  const zoomSlider = document.getElementById("zoom-slider");
+  const zoomInBtn = document.getElementById("zoom-in");
+  const zoomOutBtn = document.getElementById("zoom-out");
+
+  const btnUp = document.getElementById("move-up");
+  const btnDown = document.getElementById("move-down");
+  const btnLeft = document.getElementById("move-left");
+  const btnRight = document.getElementById("move-right");
+  const btnReset = document.getElementById("reset-move");
 
   let frame = new Image();
   let userImg = null;
 
+  let frameLoaded = false;
+  let imgLoaded = false;
+
   let baseScale = 1;
-  let zoom = 1.0;
+  let zoom = 1;
 
   let offsetX = 0;
   let offsetY = 0;
@@ -118,47 +216,66 @@
   let dragStartX = 0;
   let dragStartY = 0;
 
-  let frameLoaded = false;
-  let imgLoaded = false;
-
   // Load frame
   frame.src = "frame.png";
-  frame.onload = () => {
+
+  frame.onload = function(){
     frameLoaded = true;
-    canvas.width = frame.naturalWidth;
-    canvas.height = frame.naturalHeight;
-    if (userImg && userImg.complete) computeBaseScale();
+
+    // memory safe canvas sizing
+    const maxSize = 2000;
+
+    let w = frame.naturalWidth;
+    let h = frame.naturalHeight;
+
+    if(w > maxSize || h > maxSize){
+      const ratio = Math.min(maxSize / w, maxSize / h);
+      w = Math.round(w * ratio);
+      h = Math.round(h * ratio);
+    }
+
+    canvas.width = w;
+    canvas.height = h;
+
+    if(userImg) computeBaseScale();
     draw();
   };
 
-  upload.addEventListener('change', (ev) => {
-    const f = ev.target.files?.[0];
-    if (!f) return;
+  // Upload photo
+  upload.addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+    if(!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+
+    reader.onload = function(ev){
+
       userImg = new Image();
-      userImg.onload = () => {
+
+      userImg.onload = function(){
+
         imgLoaded = true;
-        if (frameLoaded) computeBaseScale();
+
+        if(frameLoaded) computeBaseScale();
+
+        zoom = 1;
+        zoomSlider.value = 1;
+
+        offsetX = 0;
+        offsetY = 0;
 
         controls.classList.remove("hidden");
         moveControls.classList.remove("hidden");
         downloadBtn.classList.remove("hidden");
 
-        zoom = 1.0;
-        zoomSlider.value = zoom;
-
-        offsetX = 0;
-        offsetY = 0;
-
         draw();
       };
 
-      userImg.src = e.target.result;
+      userImg.src = ev.target.result;
     };
 
-    reader.readAsDataURL(f);
+    reader.readAsDataURL(file);
   });
 
   function computeBaseScale(){
@@ -168,101 +285,151 @@
   }
 
   function draw(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    if (imgLoaded) {
+    if(imgLoaded){
+
       const drawW = userImg.width * baseScale * zoom;
       const drawH = userImg.height * baseScale * zoom;
 
-      const x = (canvas.width - drawW) / 2 + offsetX;
-      const y = (canvas.height - drawH) / 2 + offsetY;
+      const x = (canvas.width - drawW)/2 + offsetX;
+      const y = (canvas.height - drawH)/2 + offsetY;
 
       ctx.drawImage(userImg, x, y, drawW, drawH);
     }
 
-    if (frameLoaded) {
-      ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+    if(frameLoaded){
+      ctx.drawImage(frame,0,0,canvas.width,canvas.height);
     }
   }
 
-  // Zoom
-  zoomSlider.addEventListener("input", (e) => {
-    zoom = parseFloat(e.target.value);
+  // Zoom controls
+  zoomSlider.addEventListener("input", function(){
+    zoom = parseFloat(this.value);
     draw();
   });
 
-  zoomInBtn.onclick = () => { zoom = Math.min(3, zoom + 0.1); zoomSlider.value = zoom; draw(); };
-  zoomOutBtn.onclick = () => { zoom = Math.max(0.3, zoom - 0.1); zoomSlider.value = zoom; draw(); };
+  zoomInBtn.onclick = function(){
+    zoom = Math.min(3, zoom + 0.1);
+    zoomSlider.value = zoom;
+    draw();
+  };
+
+  zoomOutBtn.onclick = function(){
+    zoom = Math.max(0.3, zoom - 0.1);
+    zoomSlider.value = zoom;
+    draw();
+  };
 
   // Move buttons
-  btnUp.onclick = () => { offsetY -= 10; draw(); };
-  btnDown.onclick = () => { offsetY += 10; draw(); };
-  btnLeft.onclick = () => { offsetX -= 10; draw(); };
-  btnRight.onclick = () => { offsetX += 10; draw(); };
+  btnUp.onclick = ()=>{ offsetY -= 10; draw(); };
+  btnDown.onclick = ()=>{ offsetY += 10; draw(); };
+  btnLeft.onclick = ()=>{ offsetX -= 10; draw(); };
+  btnRight.onclick = ()=>{ offsetX += 10; draw(); };
 
-  // RESET BUTTON
-  btnReset.onclick = () => {
+  btnReset.onclick = ()=>{
     offsetX = 0;
     offsetY = 0;
     draw();
   };
 
   // Arrow keys
-  window.addEventListener("keydown", (e) => {
-    if (!imgLoaded) return;
-    switch (e.key) {
+  window.addEventListener("keydown", function(e){
+
+    if(!imgLoaded) return;
+
+    switch(e.key){
       case "ArrowUp": offsetY -= 10; break;
       case "ArrowDown": offsetY += 10; break;
       case "ArrowLeft": offsetX -= 10; break;
       case "ArrowRight": offsetX += 10; break;
-      default: return;
+      default:return;
     }
+
     draw();
   });
 
   // Mouse drag
-  canvas.addEventListener("mousedown", (e) => {
+  canvas.addEventListener("mousedown", function(e){
+    if(!imgLoaded) return;
     isDragging = true;
     dragStartX = e.clientX;
     dragStartY = e.clientY;
   });
 
-  window.addEventListener("mouseup", () => isDragging = false);
+  window.addEventListener("mouseup", function(){
+    isDragging = false;
+  });
 
-  window.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
+  window.addEventListener("mousemove", function(e){
+
+    if(!isDragging) return;
+
     offsetX += e.clientX - dragStartX;
     offsetY += e.clientY - dragStartY;
+
     dragStartX = e.clientX;
     dragStartY = e.clientY;
+
     draw();
   });
 
   // Touch drag
-  canvas.addEventListener("touchstart", (e) => {
+  canvas.addEventListener("touchstart", function(e){
+
+    if(!imgLoaded) return;
+
+    e.preventDefault();
+
     const t = e.touches[0];
+
+    isDragging = true;
     dragStartX = t.clientX;
     dragStartY = t.clientY;
-    isDragging = true;
-  });
 
-  canvas.addEventListener("touchend", () => isDragging = false);
+  }, { passive:false });
 
-  canvas.addEventListener("touchmove", (e) => {
+  canvas.addEventListener("touchmove", function(e){
+
+    if(!isDragging) return;
+
+    e.preventDefault();
+
     const t = e.touches[0];
+
     offsetX += t.clientX - dragStartX;
     offsetY += t.clientY - dragStartY;
+
     dragStartX = t.clientX;
     dragStartY = t.clientY;
-    draw();
-  });
 
-  downloadBtn.addEventListener('click', () => {
-    const link = document.createElement('a');
-    link.download = "framed_photo.png";
-    link.href = canvas.toDataURL();
-    link.click();
+    draw();
+
+  }, { passive:false });
+
+  canvas.addEventListener("touchend", function(){
+    isDragging = false;
+  }, { passive:false });
+
+  // Download for all browsers
+  downloadBtn.addEventListener("click", function(){
+
+    const dataURL = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+
+    if(typeof link.download !== "undefined"){
+      link.href = dataURL;
+      link.download = "framed_photo.png";
+      link.click();
+    }else{
+      window.open(dataURL, "_blank");
+    }
+
   });
 
 })();
