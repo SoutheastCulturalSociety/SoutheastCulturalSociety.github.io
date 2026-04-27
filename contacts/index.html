@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Contacts</title>
+
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#fff1e6,#f5e0dc);
+color:#4d1a00;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+header{
+background:rgba(128,0,0,0.85);
+color:white;
+padding:1rem;
+text-align:center;
+}
+
+header img.logo{
+width:90px;
+height:auto;
+display:block;
+margin:0 auto 10px auto;
+}
+
+header h1{
+font-size:2rem;
+margin-bottom:5px;
+}
+
+header p{
+font-weight:500;
+margin-bottom:10px;
+}
+
+nav a{
+color:#ffd700;
+margin:0 12px;
+text-decoration:none;
+font-weight:600;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+/* MAIN */
+main{
+flex:1;
+padding:30px 15px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+background:white;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+overflow:hidden;
+}
+
+.title{
+background:maroon;
+color:white;
+padding:16px;
+font-size:22px;
+font-weight:600;
+text-align:center;
+}
+
+.search-box{
+padding:18px;
+border-bottom:1px solid #eee;
+}
+
+.search-box input{
+width:100%;
+padding:12px 15px;
+border:1px solid #b22a2a;
+border-radius:8px;
+font-size:16px;
+outline:none;
+}
+
+.search-box input:focus{
+border-color:maroon;
+}
+
+.list{
+padding:8px 12px;
+}
+
+.contact{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:14px 10px;
+border-bottom:1px solid #f0f0f0;
+flex-wrap:wrap;
+}
+
+.left{
+display:flex;
+align-items:center;
+gap:12px;
+flex:1;
+min-width:220px;
+}
+
+.avatar{
+width:50px;
+height:50px;
+border-radius:50%;
+background:maroon;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:bold;
+flex-shrink:0;
+}
+
+.info h3{
+font-size:17px;
+color:#222;
+margin-bottom:2px;
+}
+
+.info p{
+font-size:14px;
+color:#777;
+}
+
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.btn{
+text-decoration:none;
+padding:10px 14px;
+border-radius:8px;
+font-size:14px;
+font-weight:600;
+color:white;
+transition:.2s;
+}
+
+.btn:hover{
+transform:scale(1.04);
+}
+
+.whatsapp{
+background:#25d366;
+}
+
+.call{
+background:#128c7e;
+}
+
+.loading,
+.no-result{
+padding:25px;
+text-align:center;
+font-size:16px;
+color:#666;
+}
+
+/* FOOTER */
+footer{
+background:#8b0000;
+color:#fffaf0;
+text-align:center;
+padding:15px 0;
+font-size:0.95rem;
+margin-top:auto;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+header h1{
+font-size:1.5rem;
+}
+
+nav a{
+display:inline-block;
+margin:6px;
+}
+
+.contact{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.actions{
+width:100%;
+}
+
+.btn{
+flex:1;
+text-align:center;
+}
+
+}
+</style>
+</head>
+<body>
+
+<header>
+<img src="../assets/logo.png" class="logo" alt="SCS Logo">
+<h1>Southeast Cultural Society</h1>
+<p>Since 2010</p>
+
+<nav>
+<a href="#">Contact List</a>
+<a href="https://southeastculturalsociety.github.io" target="_blank">Home</a>
+</nav>
+</header>
+
+<main>
+
+<div class="container">
+
+<div class="title">
+WhatsApp Inbox & Call List
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search by name or designation...">
+</div>
+
+<div class="list" id="contactList">
+<div class="loading">Loading Contacts...</div>
+</div>
+
+</div>
+
+</main>
+
+<footer>
+&copy; 2010–2026 Southeast Cultural Society | All Rights Reserved.
+</footer>
+
+<script>
+
+/* ================================
+   PUT YOUR APPS SCRIPT URL HERE
+================================= */
+const scriptURL = "https://script.google.com/macros/s/AKfycby1ZH0eQXSRzgfa1n0-URAnBZY0GbLNnfrwCnpikpqCcMKrcUgosDRmRjnYAxw4bao00g/exec";
+
+let allContacts = [];
+
+/* WhatsApp Number Rule:
+01712345678 => 1712345678
+(remove first 0)
+*/
+function formatWhatsAppNumber(phone){
+phone = phone.toString().replace(/\D/g,'');
+
+if(phone.startsWith("0") && phone.length === 11){
+return phone.substring(1);
+}
+
+return phone;
+}
+
+function renderContacts(data){
+
+const list = document.getElementById("contactList");
+
+if(data.length === 0){
+list.innerHTML = `<div class="no-result">No contacts found.</div>`;
+return;
+}
+
+let html = "";
+
+data.forEach(person=>{
+
+let firstLetter = person.name.charAt(0).toUpperCase();
+let callNumber = person.phone.toString().replace(/\D/g,'');
+let waNumber = formatWhatsAppNumber(person.phone);
+
+html += `
+<div class="contact">
+
+<div class="left">
+<div class="avatar">${firstLetter}</div>
+
+<div class="info">
+<h3>${person.name}</h3>
+<p>${person.designation}</p>
+</div>
+</div>
+
+<div class="actions">
+
+<a class="btn whatsapp"
+href="https://wa.me/${waNumber}"
+target="_blank">
+Message
+</a>
+
+<a class="btn call"
+href="tel:${callNumber}">
+Call
+</a>
+
+</div>
+
+</div>
+`;
+
+});
+
+list.innerHTML = html;
+}
+
+fetch(scriptURL)
+.then(res => res.json())
+.then(data => {
+allContacts = data;
+renderContacts(allContacts);
+})
+.catch(err=>{
+document.getElementById("contactList").innerHTML =
+`<div class="loading">Failed to load contacts.</div>`;
+});
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input", function(){
+
+const keyword = this.value.toLowerCase().trim();
+
+const filtered = allContacts.filter(item =>
+item.name.toLowerCase().includes(keyword) ||
+item.designation.toLowerCase().includes(keyword)
+);
+
+renderContacts(filtered);
+
+});
+
+</script>
+
+</body>
+</html>
