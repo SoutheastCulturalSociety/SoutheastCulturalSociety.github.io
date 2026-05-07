@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>National Cultural Fest Contact Collection</title>
+
+<link rel="icon" type="image/png" href="../assets/logo.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tom Select -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#fff1e6,#f5e0dc);
+color:#4d1a00;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+header{
+background:rgba(128,0,0,0.85);
+color:white;
+padding:1rem;
+text-align:center;
+}
+
+header img.logo{
+width:90px;
+display:block;
+margin:0 auto 10px;
+}
+
+header h1{
+font-size:2rem;
+margin-bottom:5px;
+}
+
+header p{
+font-weight:500;
+margin-bottom:10px;
+}
+
+nav a{
+color:#ffd700;
+margin:0 12px;
+text-decoration:none;
+font-weight:600;
+}
+
+nav a:hover{
+text-decoration:underline;
+}
+
+/* MAIN */
+main{
+flex:1;
+padding:30px 15px;
+}
+
+.container{
+max-width:720px;
+margin:auto;
+background:white;
+border-radius:14px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+overflow:hidden;
+}
+
+.title{
+background:maroon;
+color:white;
+padding:18px;
+font-size:22px;
+font-weight:600;
+text-align:center;
+}
+
+.form-area{
+padding:25px;
+}
+
+.field{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+input,
+select{
+width:100%;
+padding:12px 14px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:maroon;
+}
+
+.hidden{
+display:none !important;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:maroon;
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+transition:.2s;
+}
+
+button:hover{
+opacity:.92;
+}
+
+.message{
+margin-top:18px;
+padding:18px;
+border-radius:10px;
+font-weight:600;
+text-align:center;
+}
+
+.success{
+background:#d4edda;
+color:#155724;
+}
+
+.error{
+background:#f8d7da;
+color:#721c24;
+}
+
+/* TOM SELECT */
+.ts-control{
+padding:10px !important;
+border-radius:8px !important;
+border:1px solid #ccc !important;
+}
+
+.ts-control.focus{
+border-color:maroon !important;
+box-shadow:none !important;
+}
+
+.ts-dropdown{
+border-radius:10px !important;
+overflow:hidden;
+}
+
+.ts-dropdown .active{
+background:#f5e0dc !important;
+color:maroon !important;
+}
+
+/* FOOTER */
+footer{
+background:#8b0000;
+color:#fffaf0;
+text-align:center;
+padding:15px 0;
+font-size:0.95rem;
+margin-top:auto;
+}
+
+@media(max-width:768px){
+
+header h1{
+font-size:1.5rem;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<img src="../assets/logo.png" class="logo">
+
+<h1>Southeast Cultural Society</h1>
+
+<p>Since 2010</p>
+
+<nav>
+
+<a href="#">
+Contact Collection
+</a>
+
+<a href="https://southeastculturalsociety.github.io" target="_blank">
+Home
+</a>
+
+</nav>
+
+</header>
+
+<main>
+
+<div class="container">
+
+<div class="title">
+National Cultural Contact Collection
+</div>
+
+<div class="form-area">
+
+<form id="contactForm">
+
+<!-- MEMBER -->
+<div class="field">
+<label>Your Name</label>
+
+<select id="member" required>
+<option value="">Select Your Name</option>
+</select>
+</div>
+
+<!-- UNIVERSITY -->
+<div class="field" id="universityWrapper">
+<label>University</label>
+
+<select id="university">
+<option value="">Select University</option>
+</select>
+</div>
+
+<div class="field hidden" id="newUniversityField">
+<label>New University Name</label>
+
+<input type="text" id="newUniversity">
+</div>
+
+<!-- COLLEGE -->
+<div class="field" id="collegeWrapper">
+<label>College</label>
+
+<select id="college">
+<option value="">Select College</option>
+</select>
+</div>
+
+<div class="field hidden" id="newCollegeField">
+<label>New College Name</label>
+
+<input type="text" id="newCollege">
+</div>
+
+<!-- CONTACT SECTION -->
+<div id="contactSection" class="hidden">
+
+<div class="field">
+<label>Club Name</label>
+
+<input type="text" id="clubName">
+</div>
+
+<div class="field">
+<label>Contact Person Name</label>
+
+<input type="text" id="contactPerson">
+</div>
+
+<div class="field">
+<label>Designation</label>
+
+<input type="text" id="designation">
+</div>
+
+<div class="field">
+<label>WhatsApp Number</label>
+
+<input type="text" id="whatsapp">
+</div>
+
+<div class="field">
+<label>Email</label>
+
+<input type="email" id="email">
+</div>
+
+<button type="submit">
+Submit Contact
+</button>
+
+</div>
+
+<!-- SUCCESS BOX -->
+<div id="successBox" class="message success hidden">
+
+<div style="margin-bottom:15px;">
+Contact Submitted Successfully.
+</div>
+
+<button type="button" id="submitAnotherBtn">
+Submit Another
+</button>
+
+</div>
+
+<!-- ERROR BOX -->
+<div id="message" class="message error hidden"></div>
+
+</form>
+
+</div>
+
+</div>
+
+</main>
+
+<footer>
+&copy; 2010–2026 Southeast Cultural Society | All Rights Reserved.
+</footer>
+
+<!-- Tom Select -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycbws8dqhPHcKbnoabDOvNzEdZ-_XRDiOvNrEDKl_4bZpKIeH2h6VpnsBjkTcQSZgu5VScg/exec";
+
+let memberSelect;
+let universitySelect;
+let collegeSelect;
+
+let isSubmitting = false;
+
+/* =========================
+   LOAD DATA
+========================= */
+async function loadData(){
+
+const res = await fetch(scriptURL + "?action=getData");
+
+const data = await res.json();
+
+loadDropdown("member", data.members);
+
+loadDropdown("university", data.universities, true);
+
+loadDropdown("college", data.colleges, true);
+
+initializeSearchDropdowns();
+
+}
+
+/* =========================
+   LOAD DROPDOWN
+========================= */
+function loadDropdown(id, items, allowNew=false){
+
+const select = document.getElementById(id);
+
+select.innerHTML = "";
+
+const defaultOption = document.createElement("option");
+
+defaultOption.value = "";
+defaultOption.textContent = "Select";
+
+select.appendChild(defaultOption);
+
+items.forEach(item=>{
+
+const option = document.createElement("option");
+
+option.value = item;
+option.textContent = item;
+
+select.appendChild(option);
+
+});
+
+if(allowNew){
+
+const option = document.createElement("option");
+
+option.value = "__new__";
+option.textContent = "+ Add New";
+
+select.appendChild(option);
+
+}
+
+}
+
+/* =========================
+   SEARCH DROPDOWNS
+========================= */
+function initializeSearchDropdowns(){
+
+if(memberSelect) memberSelect.destroy();
+if(universitySelect) universitySelect.destroy();
+if(collegeSelect) collegeSelect.destroy();
+
+memberSelect = new TomSelect("#member",{create:false});
+
+universitySelect = new TomSelect("#university",{
+create:false,
+onChange:function(value){
+handleUniversitySelection(value);
+}
+});
+
+collegeSelect = new TomSelect("#college",{
+create:false,
+onChange:function(value){
+handleCollegeSelection(value);
+}
+});
+
+}
+
+/* =========================
+   UNIVERSITY
+========================= */
+function handleUniversitySelection(value){
+
+document.getElementById("newUniversityField")
+.classList.toggle("hidden", value !== "__new__");
+
+if(value){
+document.getElementById("collegeWrapper").style.display = "none";
+showContactSection();
+}else{
+document.getElementById("collegeWrapper").style.display = "block";
+hideContactSection();
+}
+
+}
+
+/* =========================
+   COLLEGE
+========================= */
+function handleCollegeSelection(value){
+
+document.getElementById("newCollegeField")
+.classList.toggle("hidden", value !== "__new__");
+
+if(value){
+document.getElementById("universityWrapper").style.display = "none";
+showContactSection();
+}else{
+document.getElementById("universityWrapper").style.display = "block";
+hideContactSection();
+}
+
+}
+
+/* =========================
+   SHOW / HIDE CONTACT
+========================= */
+function showContactSection(){
+document.getElementById("contactSection").classList.remove("hidden");
+}
+
+function hideContactSection(){
+
+const uni = document.getElementById("university").value;
+const col = document.getElementById("college").value;
+
+if(!uni && !col){
+document.getElementById("contactSection").classList.add("hidden");
+}
+
+}
+
+/* =========================
+   SUBMIT FORM (UPDATED)
+========================= */
+document.getElementById("contactForm")
+.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+if(isSubmitting) return;
+isSubmitting = true;
+
+/* BUTTON LOADING */
+const submitBtn = document.querySelector("#contactSection button");
+const originalText = submitBtn.innerText;
+submitBtn.innerText = "Submitting...";
+submitBtn.disabled = true;
+
+const data = {
+
+submittedBy: document.getElementById("member").value,
+university: document.getElementById("university").value,
+newUniversity: document.getElementById("newUniversity").value,
+college: document.getElementById("college").value,
+newCollege: document.getElementById("newCollege").value,
+clubName: document.getElementById("clubName").value,
+contactPerson: document.getElementById("contactPerson").value,
+designation: document.getElementById("designation").value,
+whatsapp: document.getElementById("whatsapp").value,
+email: document.getElementById("email").value
+
+};
+
+try{
+
+const res = await fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify(data)
+});
+
+const result = await res.json();
+
+const errorBox = document.getElementById("message");
+const successBox = document.getElementById("successBox");
+
+if(result.success){
+
+/* UI RESET WITHOUT BREAKING MEMBER */
+document.getElementById("contactSection").classList.add("hidden");
+
+document.getElementById("universityWrapper").style.display = "none";
+document.getElementById("collegeWrapper").style.display = "none";
+
+document.getElementById("newUniversityField").classList.add("hidden");
+document.getElementById("newCollegeField").classList.add("hidden");
+
+/* show success */
+successBox.classList.remove("hidden");
+errorBox.classList.add("hidden");
+
+/* reset only form fields EXCEPT member */
+const memberValue = document.getElementById("member").value;
+
+document.getElementById("contactForm").reset();
+
+document.getElementById("member").value = memberValue;
+
+await refreshDropdowns();
+
+}else{
+
+errorBox.innerHTML = result.message;
+errorBox.classList.remove("hidden");
+
+successBox.classList.add("hidden");
+
+}
+
+}finally{
+
+/* restore button */
+submitBtn.innerText = originalText;
+submitBtn.disabled = false;
+isSubmitting = false;
+
+}
+
+});
+
+/* =========================
+   SUBMIT ANOTHER
+========================= */
+document.getElementById("submitAnotherBtn")
+.addEventListener("click", function(){
+
+document.getElementById("successBox").classList.add("hidden");
+
+document.getElementById("universityWrapper").style.display = "block";
+document.getElementById("collegeWrapper").style.display = "block";
+
+document.getElementById("contactSection").classList.add("hidden");
+
+document.getElementById("message").classList.add("hidden");
+
+});
+
+/* =========================
+   REFRESH
+========================= */
+async function refreshDropdowns(){
+
+const res = await fetch(scriptURL + "?action=getData");
+
+const data = await res.json();
+
+loadDropdown("member", data.members);
+
+loadDropdown("university", data.universities, true);
+
+loadDropdown("college", data.colleges, true);
+
+initializeSearchDropdowns();
+
+}
+
+/* =========================
+   INIT
+========================= */
+loadData();
+
+</script>
+</body>
+</html>
