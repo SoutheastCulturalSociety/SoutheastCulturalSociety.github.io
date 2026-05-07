@@ -10,10 +10,43 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-<!-- Tom Select -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 
 <style>
+
+/* ================= LOADER ================= */
+#pageLoader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#800000,#4d0000);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+color:white;
+font-family:'Poppins',sans-serif;
+}
+
+.loaderSpinner{
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,0.2);
+border-top:5px solid #ffd700;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:15px;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+/* ================= EXISTING STYLE ================= */
 
 *{
 margin:0;
@@ -75,9 +108,14 @@ padding:30px 15px;
 max-width:720px;
 margin:auto;
 background:white;
+
+/* FIX: allow dropdown visibility */
+overflow:visible;
+
 border-radius:14px;
 box-shadow:0 10px 30px rgba(0,0,0,.08);
-overflow:hidden;
+position:relative;
+z-index:1;
 }
 
 .title{
@@ -95,6 +133,7 @@ padding:25px;
 
 .field{
 margin-bottom:18px;
+position:relative;
 }
 
 label{
@@ -111,11 +150,6 @@ border:1px solid #ccc;
 border-radius:8px;
 font-size:15px;
 outline:none;
-}
-
-input:focus,
-select:focus{
-border-color:maroon;
 }
 
 .hidden{
@@ -157,28 +191,6 @@ background:#f8d7da;
 color:#721c24;
 }
 
-/* TOM SELECT */
-.ts-control{
-padding:10px !important;
-border-radius:8px !important;
-border:1px solid #ccc !important;
-}
-
-.ts-control.focus{
-border-color:maroon !important;
-box-shadow:none !important;
-}
-
-.ts-dropdown{
-border-radius:10px !important;
-overflow:hidden;
-}
-
-.ts-dropdown .active{
-background:#f5e0dc !important;
-color:maroon !important;
-}
-
 /* FOOTER */
 footer{
 background:#8b0000;
@@ -189,12 +201,22 @@ font-size:0.95rem;
 margin-top:auto;
 }
 
-@media(max-width:768px){
+/* ================= TOM SELECT FIX ================= */
 
-header h1{
-font-size:1.5rem;
+.ts-dropdown{
+max-height:220px !important;
+overflow-y:auto !important;
+z-index:999999 !important;
 }
 
+.ts-control{
+min-height:44px;
+}
+
+/* better dropdown visibility on small screens */
+.ts-dropdown-content{
+max-height:220px;
+overflow-y:auto;
 }
 
 </style>
@@ -202,24 +224,23 @@ font-size:1.5rem;
 
 <body>
 
+<!-- ================= LOADER ================= -->
+<div id="pageLoader">
+<div class="loaderSpinner"></div>
+<h2>SCS IT DEPARTMENT</h2>
+<p>Loading System...</p>
+</div>
+
 <header>
 
 <img src="../assets/logo.png" class="logo">
 
 <h1>Southeast Cultural Society</h1>
-
 <p>Since 2010</p>
 
 <nav>
-
-<a href="#">
-Contact Collection
-</a>
-
-<a href="https://southeastculturalsociety.github.io" target="_blank">
-Home
-</a>
-
+<a href="#">Contact Collection</a>
+<a href="https://southeastculturalsociety.github.io" target="_blank">Home</a>
 </nav>
 
 </header>
@@ -236,19 +257,15 @@ National Cultural Fest Contact Collection
 
 <form id="contactForm">
 
-<!-- MEMBER -->
 <div class="field">
 <label>Your Name</label>
-
 <select id="member" required>
 <option value="">Select Your Name</option>
 </select>
 </div>
 
-<!-- UNIVERSITY -->
 <div class="field" id="universityWrapper">
 <label>University</label>
-
 <select id="university">
 <option value="">Select University</option>
 </select>
@@ -256,14 +273,11 @@ National Cultural Fest Contact Collection
 
 <div class="field hidden" id="newUniversityField">
 <label>New University Name</label>
-
 <input type="text" id="newUniversity">
 </div>
 
-<!-- COLLEGE -->
 <div class="field" id="collegeWrapper">
 <label>College</label>
-
 <select id="college">
 <option value="">Select College</option>
 </select>
@@ -271,63 +285,45 @@ National Cultural Fest Contact Collection
 
 <div class="field hidden" id="newCollegeField">
 <label>New College Name</label>
-
 <input type="text" id="newCollege">
 </div>
 
-<!-- CONTACT SECTION -->
 <div id="contactSection" class="hidden">
 
 <div class="field">
 <label>Club Name</label>
-
 <input type="text" id="clubName">
 </div>
 
 <div class="field">
 <label>Contact Person Name</label>
-
 <input type="text" id="contactPerson">
 </div>
 
 <div class="field">
 <label>Designation</label>
-
 <input type="text" id="designation">
 </div>
 
 <div class="field">
 <label>WhatsApp Number</label>
-
 <input type="text" id="whatsapp">
 </div>
 
 <div class="field">
 <label>Email</label>
-
 <input type="email" id="email">
 </div>
 
-<button type="submit">
-Submit Contact
-</button>
+<button type="submit">Submit Contact</button>
 
 </div>
 
-<!-- SUCCESS BOX -->
 <div id="successBox" class="message success hidden">
-
-<div style="margin-bottom:15px;">
 Contact Submitted Successfully.
+<button type="button" id="submitAnotherBtn">Submit Another</button>
 </div>
 
-<button type="button" id="submitAnotherBtn">
-Submit Another
-</button>
-
-</div>
-
-<!-- ERROR BOX -->
 <div id="message" class="message error hidden"></div>
 
 </form>
@@ -342,82 +338,48 @@ Submit Another
 &copy; 2010–2026 Southeast Cultural Society | All Rights Reserved.
 </footer>
 
-<!-- Tom Select -->
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 
 <script>
 
 const scriptURL = "https://script.google.com/macros/s/AKfycbws8dqhPHcKbnoabDOvNzEdZ-_XRDiOvNrEDKl_4bZpKIeH2h6VpnsBjkTcQSZgu5VScg/exec";
 
-let memberSelect;
-let universitySelect;
-let collegeSelect;
+let memberSelect, universitySelect, collegeSelect;
 
-let isSubmitting = false;
+/* ================= PAGE LOADER ================= */
+window.addEventListener("load", async () => {
+await loadData();
+document.getElementById("pageLoader").style.display = "none";
+});
 
-/* =========================
-   LOAD DATA
-========================= */
+/* ================= LOAD DATA ================= */
 async function loadData(){
-
 const res = await fetch(scriptURL + "?action=getData");
-
 const data = await res.json();
 
 loadDropdown("member", data.members);
-
 loadDropdown("university", data.universities, true);
-
 loadDropdown("college", data.colleges, true);
 
-initializeSearchDropdowns();
-
+initSelects();
 }
 
-/* =========================
-   LOAD DROPDOWN
-========================= */
+/* ================= DROPDOWN ================= */
 function loadDropdown(id, items, allowNew=false){
-
 const select = document.getElementById(id);
+select.innerHTML = `<option value="">Select</option>`;
 
-select.innerHTML = "";
-
-const defaultOption = document.createElement("option");
-
-defaultOption.value = "";
-defaultOption.textContent = "Select";
-
-select.appendChild(defaultOption);
-
-items.forEach(item=>{
-
-const option = document.createElement("option");
-
-option.value = item;
-option.textContent = item;
-
-select.appendChild(option);
-
+items.forEach(i=>{
+select.innerHTML += `<option value="${i}">${i}</option>`;
 });
 
 if(allowNew){
-
-const option = document.createElement("option");
-
-option.value = "__new__";
-option.textContent = "+ Add New";
-
-select.appendChild(option);
-
+select.innerHTML += `<option value="__new__">+ Add New</option>`;
+}
 }
 
-}
-
-/* =========================
-   SEARCH DROPDOWNS
-========================= */
-function initializeSearchDropdowns(){
+/* ================= TOM SELECT ================= */
+function initSelects(){
 
 if(memberSelect) memberSelect.destroy();
 if(universitySelect) universitySelect.destroy();
@@ -427,107 +389,67 @@ memberSelect = new TomSelect("#member",{create:false});
 
 universitySelect = new TomSelect("#university",{
 create:false,
-onChange:function(value){
-handleUniversitySelection(value);
-}
+dropdownParent: "body",
+onChange:handleUniversitySelection
 });
 
 collegeSelect = new TomSelect("#college",{
 create:false,
-onChange:function(value){
-handleCollegeSelection(value);
-}
+dropdownParent: "body",
+onChange:handleCollegeSelection
 });
 
 }
 
-/* =========================
-   UNIVERSITY
-========================= */
-function handleUniversitySelection(value){
+/* ================= LOGIC ================= */
+function handleUniversitySelection(v){
 
 document.getElementById("newUniversityField")
-.classList.toggle("hidden", value !== "__new__");
+.classList.toggle("hidden", v !== "__new__");
 
-if(value){
-document.getElementById("collegeWrapper").style.display = "none";
-showContactSection();
-}else{
-document.getElementById("collegeWrapper").style.display = "block";
-hideContactSection();
+document.getElementById("collegeWrapper").style.display =
+v ? "none" : "block";
+
+toggleContact(v);
 }
 
-}
-
-/* =========================
-   COLLEGE
-========================= */
-function handleCollegeSelection(value){
+function handleCollegeSelection(v){
 
 document.getElementById("newCollegeField")
-.classList.toggle("hidden", value !== "__new__");
+.classList.toggle("hidden", v !== "__new__");
 
-if(value){
-document.getElementById("universityWrapper").style.display = "none";
-showContactSection();
-}else{
-document.getElementById("universityWrapper").style.display = "block";
-hideContactSection();
+document.getElementById("universityWrapper").style.display =
+v ? "none" : "block";
+
+toggleContact(v);
 }
 
-}
-
-/* =========================
-   SHOW / HIDE CONTACT
-========================= */
-function showContactSection(){
+function toggleContact(v){
+if(v){
 document.getElementById("contactSection").classList.remove("hidden");
-}
-
-function hideContactSection(){
-
-const uni = document.getElementById("university").value;
-const col = document.getElementById("college").value;
-
-if(!uni && !col){
+}else{
 document.getElementById("contactSection").classList.add("hidden");
 }
-
 }
 
-/* =========================
-   SUBMIT FORM (UPDATED)
-========================= */
+/* ================= SUBMIT ================= */
 document.getElementById("contactForm")
-.addEventListener("submit", async function(e){
+.addEventListener("submit", async (e)=>{
 
 e.preventDefault();
 
-if(isSubmitting) return;
-isSubmitting = true;
-
-/* BUTTON LOADING */
-const submitBtn = document.querySelector("#contactSection button");
-const originalText = submitBtn.innerText;
-submitBtn.innerText = "Submitting...";
-submitBtn.disabled = true;
-
 const data = {
-
-submittedBy: document.getElementById("member").value,
-university: document.getElementById("university").value,
+submittedBy: memberSelect.getValue(),
+university: universitySelect.getValue(),
 newUniversity: document.getElementById("newUniversity").value,
-college: document.getElementById("college").value,
+college: collegeSelect.getValue(),
 newCollege: document.getElementById("newCollege").value,
-clubName: document.getElementById("clubName").value,
-contactPerson: document.getElementById("contactPerson").value,
-designation: document.getElementById("designation").value,
-whatsapp: document.getElementById("whatsapp").value,
-email: document.getElementById("email").value
-
+clubName: clubName.value,
+contactPerson: contactPerson.value,
+designation: designation.value,
+whatsapp: whatsapp.value,
+email: email.value
 };
-
-try{
 
 const res = await fetch(scriptURL,{
 method:"POST",
@@ -536,94 +458,29 @@ body:JSON.stringify(data)
 
 const result = await res.json();
 
-const errorBox = document.getElementById("message");
-const successBox = document.getElementById("successBox");
-
 if(result.success){
-
-/* UI RESET WITHOUT BREAKING MEMBER */
-document.getElementById("contactSection").classList.add("hidden");
-
-document.getElementById("universityWrapper").style.display = "none";
-document.getElementById("collegeWrapper").style.display = "none";
-
-document.getElementById("newUniversityField").classList.add("hidden");
-document.getElementById("newCollegeField").classList.add("hidden");
-
-/* show success */
-successBox.classList.remove("hidden");
-errorBox.classList.add("hidden");
-
-/* reset only form fields EXCEPT member */
-const memberValue = document.getElementById("member").value;
-
-document.getElementById("contactForm").reset();
-
-document.getElementById("member").value = memberValue;
-
-await refreshDropdowns();
-
+document.getElementById("successBox").classList.remove("hidden");
 }else{
-
-errorBox.innerHTML = result.message;
-errorBox.classList.remove("hidden");
-
-successBox.classList.add("hidden");
-
-}
-
-}finally{
-
-/* restore button */
-submitBtn.innerText = originalText;
-submitBtn.disabled = false;
-isSubmitting = false;
-
+document.getElementById("message").innerText = result.message;
+document.getElementById("message").classList.remove("hidden");
 }
 
 });
 
-/* =========================
-   SUBMIT ANOTHER
-========================= */
+/* ================= RESET ================= */
 document.getElementById("submitAnotherBtn")
-.addEventListener("click", function(){
+.addEventListener("click", ()=>{
 
 document.getElementById("successBox").classList.add("hidden");
 
-document.getElementById("universityWrapper").style.display = "block";
+document.getElementById("contactForm").reset();
+
 document.getElementById("collegeWrapper").style.display = "block";
-
-document.getElementById("contactSection").classList.add("hidden");
-
-document.getElementById("message").classList.add("hidden");
+document.getElementById("universityWrapper").style.display = "block";
 
 });
 
-/* =========================
-   REFRESH
-========================= */
-async function refreshDropdowns(){
-
-const res = await fetch(scriptURL + "?action=getData");
-
-const data = await res.json();
-
-loadDropdown("member", data.members);
-
-loadDropdown("university", data.universities, true);
-
-loadDropdown("college", data.colleges, true);
-
-initializeSearchDropdowns();
-
-}
-
-/* =========================
-   INIT
-========================= */
-loadData();
-
 </script>
+
 </body>
 </html>
