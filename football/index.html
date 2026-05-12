@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Football Squad Board</title>
+
+<link rel="icon" type="image/png" href="https://southeastculturalsociety.github.io/assets/logo.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+    radial-gradient(circle at top,#0b2a17 0%,#031108 55%);
+    color:white;
+    overflow:hidden;
+}
+
+/* LOADER */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#031108;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+    transition:0.5s;
+}
+
+.loader-ball{
+    width:95px;
+    height:95px;
+    border-radius:50%;
+    border:5px solid rgba(255,255,255,0.08);
+    border-top:5px solid #00ff88;
+    animation:spin 1s linear infinite;
+    margin-bottom:25px;
+}
+
+.loader h1{
+    color:#00ff88;
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.loader p{
+    opacity:0.8;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+/* MAIN */
+
+.main{
+    min-height:100vh;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOP */
+
+.top-section{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+/* LOGO */
+
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-box img{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+    filter:drop-shadow(0 0 10px rgba(0,255,120,0.25));
+}
+
+.logo-text h1{
+    font-size:24px;
+    color:#00ff88;
+    line-height:1;
+}
+
+.logo-text p{
+    font-size:12px;
+    opacity:0.75;
+    margin-top:4px;
+}
+
+/* GAME LAYOUT */
+
+.game-layout{
+    flex:1;
+    display:grid;
+    grid-template-columns:170px auto 90px;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    max-width:980px;
+    width:100%;
+    margin:auto;
+}
+
+/* REFEREE */
+
+.referee-side{
+    display:flex;
+    justify-content:flex-end;
+}
+
+.referee-panel{
+    width:150px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    padding:22px 18px;
+    text-align:center;
+    backdrop-filter:blur(10px);
+    box-shadow:
+    0 0 25px rgba(0,255,120,0.05),
+    inset 0 0 15px rgba(255,255,255,0.03);
+}
+
+.ref-icon{
+    font-size:48px;
+    margin-bottom:12px;
+}
+
+.referee-panel h2{
+    font-size:22px;
+    color:#00ff88;
+    margin-bottom:5px;
+}
+
+.referee-panel p{
+    font-size:12px;
+    opacity:0.7;
+    line-height:1.4;
+}
+
+/* CARDS */
+
+.cards-side{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:18px;
+}
+
+.card{
+    width:62px;
+    height:90px;
+    border-radius:16px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:38px;
+    box-shadow:
+    0 0 20px rgba(255,255,255,0.12),
+    inset 0 0 10px rgba(255,255,255,0.15);
+}
+
+.yellow{
+    background:#ffd60a;
+}
+
+.red{
+    background:#ff2d2d;
+}
+
+/* FIELD */
+
+.field-wrapper{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.field{
+    position:relative;
+    width:min(88vw, 420px);
+    aspect-ratio:68 / 105;
+    background:#15803d;
+    border:5px solid white;
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:
+    0 0 35px rgba(0,255,120,0.18),
+    inset 0 0 55px rgba(255,255,255,0.04);
+}
+
+.field::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 38px,
+        transparent 38px,
+        transparent 76px
+    );
+}
+
+.middle-line{
+    position:absolute;
+    width:3px;
+    height:100%;
+    background:white;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.center-circle{
+    position:absolute;
+    width:120px;
+    height:120px;
+    border:3px solid white;
+    border-radius:50%;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.center-dot{
+    position:absolute;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:white;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+.penalty-top{
+    position:absolute;
+    width:200px;
+    height:85px;
+    border:3px solid white;
+    left:50%;
+    transform:translateX(-50%);
+    top:0;
+}
+
+.penalty-bottom{
+    position:absolute;
+    width:200px;
+    height:85px;
+    border:3px solid white;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:0;
+}
+
+/* POSITIONS */
+
+.position{
+    position:absolute;
+    width:108px;
+    text-align:center;
+    z-index:2;
+}
+
+.position label{
+    display:block;
+    margin-bottom:6px;
+    font-size:11px;
+    font-weight:600;
+    text-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+.position select{
+    width:100%;
+    padding:9px;
+    border:none;
+    border-radius:14px;
+    outline:none;
+    font-size:11px;
+    font-weight:600;
+    background:white;
+    color:black;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+.verified{
+    border:3px solid lime !important;
+    box-shadow:0 0 18px lime;
+}
+
+/* POSITIONS */
+
+.gk{ top:10px; left:50%; transform:translateX(-50%); }
+.lb{ top:18%; left:5%; }
+.cb{ top:18%; left:50%; transform:translateX(-50%); }
+.rb{ top:18%; right:5%; }
+.cm{ top:50%; left:50%; transform:translate(-50%,-50%); }
+.lw{ bottom:18%; left:8%; }
+.rw{ bottom:18%; right:8%; }
+.st{ bottom:10px; left:50%; transform:translateX(-50%); }
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.72);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.modal-box{
+    width:300px;
+    background:white;
+    color:black;
+    padding:24px;
+    border-radius:22px;
+}
+
+.modal-box h2{ margin-bottom:15px; font-size:22px; }
+
+.modal-box input{
+    width:100%;
+    padding:12px;
+    border:2px solid #ddd;
+    border-radius:14px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+.modal-box button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:14px;
+    background:#00b85c;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* MOBILE FIXED */
+
+@media(max-width:768px){
+
+    body{ overflow:auto; }
+
+    .main{ padding:8px; }
+
+    .logo-box img{ width:42px; height:42px; }
+
+    .logo-text h1{ font-size:16px; }
+
+    .logo-text p{ font-size:10px; }
+
+    .game-layout{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        grid-template-areas:
+        "referee cards"
+        "field field";
+        gap:10px;
+        align-items:start;
+    }
+
+    .referee-side{
+        grid-area:referee;
+        justify-content:center;
+    }
+
+    .cards-side{
+        grid-area:cards;
+        flex-direction:row;
+        justify-content:center;
+        align-items:center;
+        gap:10px;
+    }
+
+    .field-wrapper{
+        grid-area:field;
+    }
+
+    .referee-panel{
+        width:100%;
+        max-width:340px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:10px 14px;
+        text-align:left;
+    }
+
+    .ref-icon{ font-size:28px; margin-bottom:0; }
+
+    .referee-panel h2{ font-size:15px; }
+
+    .referee-panel p{ font-size:10px; }
+
+    .card{ width:45px; height:65px; font-size:25px; }
+
+    .field{ width:min(95vw, 360px); }
+
+    .position{ width:82px; }
+
+    .position label{ font-size:9px; }
+
+    .position select{ padding:7px; font-size:9px; }
+
+    .center-circle{ width:90px; height:90px; }
+
+    .penalty-top,.penalty-bottom{ width:140px; height:60px; }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="loader" id="loader">
+<div class="loader-ball"></div>
+<h1 id="favoritePosition">Striker</h1>
+<p>SCS IT Department</p>
+</div>
+
+<div class="main">
+
+<div class="top-section">
+<div class="logo-box">
+<img src="https://southeastculturalsociety.github.io/assets/logo.png">
+<div class="logo-text">
+<h1>Football Squad Board</h1>
+<p>Southeast Cultural Society</p>
+</div>
+</div>
+</div>
+
+<div class="game-layout">
+
+<div class="referee-side">
+<div class="referee-panel">
+<div class="ref-icon">⚽</div>
+<div>
+<h2>Referee</h2>
+<p>Official Match Control</p>
+</div>
+</div>
+</div>
+
+<div class="field-wrapper">
+
+<div class="field">
+
+<div class="middle-line"></div>
+<div class="center-circle"></div>
+<div class="center-dot"></div>
+<div class="penalty-top"></div>
+<div class="penalty-bottom"></div>
+
+<div class="position gk"><label>Goalkeeper</label><select data-position="Goalkeeper"></select></div>
+<div class="position lb"><label>Left Back</label><select data-position="Left Back"></select></div>
+<div class="position cb"><label>Center Back</label><select data-position="Center Back"></select></div>
+<div class="position rb"><label>Right Back</label><select data-position="Right Back"></select></div>
+<div class="position cm"><label>Center Mid</label><select data-position="Center Mid"></select></div>
+<div class="position lw"><label>Left Wing</label><select data-position="Left Wing"></select></div>
+<div class="position rw"><label>Right Wing</label><select data-position="Right Wing"></select></div>
+<div class="position st"><label>Striker</label><select data-position="Striker"></select></div>
+
+</div>
+
+</div>
+
+<div class="cards-side">
+<div class="card yellow">🟨</div>
+<div class="card red">🟥</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-box">
+<h2>Player Verification</h2>
+<input type="text" id="studentIdInput" placeholder="Enter Student ID">
+<button id="verifyBtn">Verify Player</button>
+</div>
+</div>
+
+<script>
+
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzlhbiP6wkM_hxLE2hXLSy38j7utnHMMjVooFwTBDjME8C1ZhMw79pzOT6T5im2RoadsQ/exec";
+
+const loader = document.getElementById("loader");
+const favoritePosition = document.getElementById("favoritePosition");
+
+const positions = [
+"Striker",
+"Center Mid",
+"Right Wing",
+"Left Wing",
+"Center Back",
+"Right Back",
+"Left Back",
+"Goalkeeper"
+];
+
+let loaderIndex = 0;
+
+setInterval(() => {
+favoritePosition.innerText = positions[loaderIndex];
+loaderIndex++;
+
+if(loaderIndex >= positions.length){
+loaderIndex = 0;
+}
+}, 700);
+
+function hideLoader(){
+loader.style.opacity = "0";
+
+setTimeout(() => {
+loader.style.display = "none";
+}, 500);
+}
+
+const selects = document.querySelectorAll("select");
+const modal = document.getElementById("modal");
+const verifyBtn = document.getElementById("verifyBtn");
+const studentIdInput = document.getElementById("studentIdInput");
+
+let players = [];
+let currentSelect = null;
+
+async function loadPlayers(){
+
+try{
+
+const response = await fetch(WEB_APP_URL);
+players = await response.json();
+
+selects.forEach(select=>{
+
+select.innerHTML=`<option value="">Select Player</option>`;
+
+players.forEach(player=>{
+
+select.innerHTML += `
+<option value="${player.name}">
+${player.name}
+</option>
+`;
+
+});
+
+});
+
+}
+catch(error){
+
+console.error("Error loading players:", error);
+alert("Failed to load players");
+
+}
+finally{
+
+/* LOADER HIDES ONLY AFTER APPS SCRIPT RETURNS */
+setTimeout(() => {
+hideLoader();
+}, 500);
+
+}
+
+}
+
+/* PAGE + APPS SCRIPT FULL LOAD */
+window.addEventListener("load", async () => {
+await loadPlayers();
+});
+
+selects.forEach(select=>{
+
+select.addEventListener("change",()=>{
+
+if(select.value){
+
+currentSelect = select;
+modal.style.display="flex";
+studentIdInput.value="";
+
+}
+
+});
+
+});
+
+verifyBtn.addEventListener("click", async ()=>{
+
+const selectedPlayer = currentSelect.value;
+const enteredId = studentIdInput.value;
+
+const found = players.find(
+p => p.name === selectedPlayer && p.studentId == enteredId
+);
+
+if(found){
+
+currentSelect.classList.add("verified");
+modal.style.display = "none";
+
+/* LOADER SHOWS DURING SAVE ALSO */
+loader.style.display = "flex";
+loader.style.opacity = "1";
+
+favoritePosition.innerText = currentSelect.dataset.position;
+
+await fetch(WEB_APP_URL,{
+method:"POST",
+body:JSON.stringify({
+position:currentSelect.dataset.position,
+player:selectedPlayer,
+studentId:enteredId
+})
+});
+
+hideLoader();
+
+alert("Player Assigned Successfully");
+
+}else{
+
+alert("Invalid Student ID");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
