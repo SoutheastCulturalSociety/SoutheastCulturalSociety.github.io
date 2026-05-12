@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Football Squad Board</title>
 
 <link rel="icon" type="image/png" href="https://southeastculturalsociety.github.io/assets/logo.png">
@@ -11,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -23,7 +21,8 @@ body{
     background:
     radial-gradient(circle at top,#0b2a17 0%,#031108 55%);
     color:white;
-    overflow:hidden;
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
 /* LOADER */
@@ -83,7 +82,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-bottom:12px;
+    margin-bottom:16px;
 }
 
 /* LOGO */
@@ -113,64 +112,67 @@ body{
     margin-top:4px;
 }
 
-/* GAME LAYOUT */
+/* DESKTOP LAYOUT */
 
 .game-layout{
-    flex:1;
-    display:grid;
-    grid-template-columns:170px auto 90px;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    max-width:980px;
     width:100%;
+    max-width:1500px;
     margin:auto;
+    display:grid;
+    grid-template-columns:260px minmax(300px,500px) 260px;
+    gap:18px;
+    align-items:start;
 }
 
-/* REFEREE */
+/* PANELS */
 
-.referee-side{
-    display:flex;
-    justify-content:flex-end;
-}
-
-.referee-panel{
-    width:150px;
+.side-panel{
     background:rgba(255,255,255,0.04);
     border:1px solid rgba(255,255,255,0.08);
     border-radius:24px;
-    padding:22px 18px;
-    text-align:center;
+    padding:18px;
     backdrop-filter:blur(10px);
     box-shadow:
     0 0 25px rgba(0,255,120,0.05),
     inset 0 0 15px rgba(255,255,255,0.03);
 }
 
+.side-title{
+    color:#00ff88;
+    font-size:18px;
+    margin-bottom:14px;
+    text-align:center;
+}
+
+/* REFEREE */
+
+.referee-panel{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+}
+
 .ref-icon{
-    font-size:48px;
-    margin-bottom:12px;
+    font-size:42px;
 }
 
 .referee-panel h2{
-    font-size:22px;
+    font-size:20px;
     color:#00ff88;
-    margin-bottom:5px;
 }
 
 .referee-panel p{
     font-size:12px;
-    opacity:0.7;
-    line-height:1.4;
+    opacity:0.75;
 }
 
 /* CARDS */
 
 .cards-side{
     display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:18px;
+    gap:14px;
+    justify-content:center;
 }
 
 .card{
@@ -194,6 +196,41 @@ body{
     background:#ff2d2d;
 }
 
+/* LIST */
+
+.assign-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.assign-item label{
+    display:block;
+    margin-bottom:5px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.assign-item select{
+    width:100%;
+    padding:11px;
+    border:none;
+    border-radius:14px;
+    outline:none;
+    font-size:12px;
+    font-weight:600;
+    background:white;
+    color:black;
+}
+
+.locked{
+    background:#d1ffd1 !important;
+    border:3px solid lime !important;
+    color:#000;
+    pointer-events:none;
+    cursor:not-allowed;
+}
+
 /* FIELD */
 
 .field-wrapper{
@@ -204,8 +241,8 @@ body{
 
 .field{
     position:relative;
-    width:min(88vw, 420px);
-    aspect-ratio:68 / 105;
+    width:min(90vw,500px);
+    aspect-ratio:68/105;
     background:#15803d;
     border:5px solid white;
     border-radius:26px;
@@ -228,6 +265,8 @@ body{
         transparent 76px
     );
 }
+
+/* FIELD MARKINGS */
 
 .middle-line{
     position:absolute;
@@ -284,7 +323,7 @@ body{
 
 .position{
     position:absolute;
-    width:108px;
+    width:100px;
     text-align:center;
     z-index:2;
 }
@@ -292,39 +331,47 @@ body{
 .position label{
     display:block;
     margin-bottom:6px;
-    font-size:11px;
+    font-size:10px;
     font-weight:600;
     text-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
 .position select{
     width:100%;
-    padding:9px;
+    padding:8px;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
     outline:none;
-    font-size:11px;
+    font-size:10px;
     font-weight:600;
-    background:white;
-    color:black;
-    box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
-.verified{
-    border:3px solid lime !important;
-    box-shadow:0 0 18px lime;
-}
+/* 11 POSITIONS */
+/* STRIKER TOP */
 
-/* POSITIONS */
+.st{ top:8px; left:50%; transform:translateX(-50%); }
 
-.gk{ top:10px; left:50%; transform:translateX(-50%); }
-.lb{ top:18%; left:5%; }
-.cb{ top:18%; left:50%; transform:translateX(-50%); }
-.rb{ top:18%; right:5%; }
+.lw{ top:16%; left:5%; }
+
+.rw{ top:16%; right:5%; }
+
+.cam{ top:29%; left:50%; transform:translateX(-50%); }
+
+.lm{ top:44%; left:7%; }
+
+.rm{ top:44%; right:7%; }
+
 .cm{ top:50%; left:50%; transform:translate(-50%,-50%); }
-.lw{ bottom:18%; left:8%; }
-.rw{ bottom:18%; right:8%; }
-.st{ bottom:10px; left:50%; transform:translateX(-50%); }
+
+.lb{ bottom:23%; left:5%; }
+
+.cb{ bottom:23%; left:50%; transform:translateX(-50%); }
+
+.rb{ bottom:23%; right:5%; }
+
+/* GOALKEEPER BOTTOM */
+
+.gk{ bottom:10px; left:50%; transform:translateX(-50%); }
 
 /* MODAL */
 
@@ -339,14 +386,17 @@ body{
 }
 
 .modal-box{
-    width:300px;
+    width:320px;
     background:white;
     color:black;
     padding:24px;
     border-radius:22px;
 }
 
-.modal-box h2{ margin-bottom:15px; font-size:22px; }
+.modal-box h2{
+    margin-bottom:15px;
+    font-size:22px;
+}
 
 .modal-box input{
     width:100%;
@@ -369,83 +419,71 @@ body{
     cursor:pointer;
 }
 
-/* MOBILE FIXED */
+/* MOBILE */
 
-@media(max-width:768px){
+@media(max-width:900px){
 
-    body{ overflow:auto; }
-
-    .main{ padding:8px; }
-
-    .logo-box img{ width:42px; height:42px; }
-
-    .logo-text h1{ font-size:16px; }
-
-    .logo-text p{ font-size:10px; }
-
-    .game-layout{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        grid-template-areas:
-        "referee cards"
-        "field field";
-        gap:10px;
-        align-items:start;
+    body{
+        overflow-y:auto;
     }
 
-    .referee-side{
-        grid-area:referee;
+    .game-layout{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .field{
+        width:min(96vw,430px);
+    }
+
+    .position{
+        width:82px;
+    }
+
+    .position label{
+        font-size:8px;
+    }
+
+    .position select{
+        font-size:8px;
+        padding:6px;
+    }
+
+    .center-circle{
+        width:90px;
+        height:90px;
+    }
+
+    .penalty-top,
+    .penalty-bottom{
+        width:140px;
+        height:60px;
+    }
+
+    .referee-panel{
         justify-content:center;
     }
 
     .cards-side{
-        grid-area:cards;
-        flex-direction:row;
-        justify-content:center;
-        align-items:center;
-        gap:10px;
+        margin-top:12px;
     }
 
-    .field-wrapper{
-        grid-area:field;
+    .card{
+        width:48px;
+        height:70px;
+        font-size:26px;
     }
 
-    .referee-panel{
+    .side-panel{
         width:100%;
-        max-width:340px;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:10px 14px;
-        text-align:left;
     }
-
-    .ref-icon{ font-size:28px; margin-bottom:0; }
-
-    .referee-panel h2{ font-size:15px; }
-
-    .referee-panel p{ font-size:10px; }
-
-    .card{ width:45px; height:65px; font-size:25px; }
-
-    .field{ width:min(95vw, 360px); }
-
-    .position{ width:82px; }
-
-    .position label{ font-size:9px; }
-
-    .position select{ padding:7px; font-size:9px; }
-
-    .center-circle{ width:90px; height:90px; }
-
-    .penalty-top,.penalty-bottom{ width:140px; height:60px; }
-
 }
-
 </style>
 </head>
 
 <body>
+
+<!-- LOADER -->
 
 <div class="loader" id="loader">
 <div class="loader-ball"></div>
@@ -455,49 +493,37 @@ body{
 
 <div class="main">
 
+<!-- TOP -->
+
 <div class="top-section">
 <div class="logo-box">
 <img src="https://southeastculturalsociety.github.io/assets/logo.png">
+
 <div class="logo-text">
 <h1>Football Squad Board</h1>
 <p>Southeast Cultural Society</p>
 </div>
+
 </div>
 </div>
+
+<!-- MAIN GRID -->
 
 <div class="game-layout">
 
-<div class="referee-side">
+<!-- LEFT SIDE -->
+
+<div>
+
+<div class="side-panel">
+
 <div class="referee-panel">
 <div class="ref-icon">⚽</div>
+
 <div>
 <h2>Referee</h2>
 <p>Official Match Control</p>
 </div>
-</div>
-</div>
-
-<div class="field-wrapper">
-
-<div class="field">
-
-<div class="middle-line"></div>
-<div class="center-circle"></div>
-<div class="center-dot"></div>
-<div class="penalty-top"></div>
-<div class="penalty-bottom"></div>
-
-<div class="position gk"><label>Goalkeeper</label><select data-position="Goalkeeper"></select></div>
-<div class="position lb"><label>Left Back</label><select data-position="Left Back"></select></div>
-<div class="position cb"><label>Center Back</label><select data-position="Center Back"></select></div>
-<div class="position rb"><label>Right Back</label><select data-position="Right Back"></select></div>
-<div class="position cm"><label>Center Mid</label><select data-position="Center Mid"></select></div>
-<div class="position lw"><label>Left Wing</label><select data-position="Left Wing"></select></div>
-<div class="position rw"><label>Right Wing</label><select data-position="Right Wing"></select></div>
-<div class="position st"><label>Striker</label><select data-position="Striker"></select></div>
-
-</div>
-
 </div>
 
 <div class="cards-side">
@@ -507,14 +533,183 @@ body{
 
 </div>
 
+<!-- BENCH -->
+
+<div class="side-panel" style="margin-top:18px;">
+
+<h2 class="side-title">Bench Team</h2>
+
+<div class="assign-list">
+
+<div class="assign-item">
+<label>Bench Player 1</label>
+<select class="bench-select" data-position="Bench Player 1"></select>
 </div>
 
-<div class="modal" id="modal">
-<div class="modal-box">
-<h2>Player Verification</h2>
-<input type="text" id="studentIdInput" placeholder="Enter Student ID">
-<button id="verifyBtn">Verify Player</button>
+<div class="assign-item">
+<label>Bench Player 2</label>
+<select class="bench-select" data-position="Bench Player 2"></select>
 </div>
+
+<div class="assign-item">
+<label>Bench Player 3</label>
+<select class="bench-select" data-position="Bench Player 3"></select>
+</div>
+
+<div class="assign-item">
+<label>Bench Player 4</label>
+<select class="bench-select" data-position="Bench Player 4"></select>
+</div>
+
+<div class="assign-item">
+<label>Bench Player 5</label>
+<select class="bench-select" data-position="Bench Player 5"></select>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FIELD -->
+
+<div class="field-wrapper">
+
+<div class="field">
+
+<div class="middle-line"></div>
+<div class="center-circle"></div>
+<div class="center-dot"></div>
+
+<div class="penalty-top"></div>
+<div class="penalty-bottom"></div>
+
+<!-- 11 POSITIONS -->
+
+<div class="position st">
+<label>Striker</label>
+<select class="player-select" data-position="Striker"></select>
+</div>
+
+<div class="position lw">
+<label>Left Wing</label>
+<select class="player-select" data-position="Left Wing"></select>
+</div>
+
+<div class="position rw">
+<label>Right Wing</label>
+<select class="player-select" data-position="Right Wing"></select>
+</div>
+
+<div class="position cam">
+<label>CAM</label>
+<select class="player-select" data-position="CAM"></select>
+</div>
+
+<div class="position lm">
+<label>Left Mid</label>
+<select class="player-select" data-position="Left Mid"></select>
+</div>
+
+<div class="position rm">
+<label>Right Mid</label>
+<select class="player-select" data-position="Right Mid"></select>
+</div>
+
+<div class="position cm">
+<label>Center Mid</label>
+<select class="player-select" data-position="Center Mid"></select>
+</div>
+
+<div class="position lb">
+<label>Left Back</label>
+<select class="player-select" data-position="Left Back"></select>
+</div>
+
+<div class="position cb">
+<label>Center Back</label>
+<select class="player-select" data-position="Center Back"></select>
+</div>
+
+<div class="position rb">
+<label>Right Back</label>
+<select class="player-select" data-position="Right Back"></select>
+</div>
+
+<div class="position gk">
+<label>Goalkeeper</label>
+<select class="player-select" data-position="Goalkeeper"></select>
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div>
+
+<div class="side-panel">
+
+<h2 class="side-title">Cheer Leaders</h2>
+
+<div class="assign-list">
+
+<div class="assign-item">
+<label>Cheer Leader 1</label>
+<select class="cheer-select" data-position="Cheer Leader 1"></select>
+</div>
+
+<div class="assign-item">
+<label>Cheer Leader 2</label>
+<select class="cheer-select" data-position="Cheer Leader 2"></select>
+</div>
+
+<div class="assign-item">
+<label>Cheer Leader 3</label>
+<select class="cheer-select" data-position="Cheer Leader 3"></select>
+</div>
+
+<div class="assign-item">
+<label>Cheer Leader 4</label>
+<select class="cheer-select" data-position="Cheer Leader 4"></select>
+</div>
+
+<div class="assign-item">
+<label>Cheer Leader 5</label>
+<select class="cheer-select" data-position="Cheer Leader 5"></select>
+</div>
+
+<div class="assign-item">
+<label>Cheer Leader 6</label>
+<select class="cheer-select" data-position="Cheer Leader 6"></select>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-box">
+
+<h2>Player Verification</h2>
+
+<input type="text" id="studentIdInput" placeholder="Enter Student ID" />
+
+<button id="verifyBtn">Verify Player</button>
+
+</div>
+
 </div>
 
 <script>
@@ -524,7 +719,7 @@ const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzlhbiP6wkM_hxLE2hX
 const loader = document.getElementById("loader");
 const favoritePosition = document.getElementById("favoritePosition");
 
-const positions = [
+const rotatingPositions = [
 "Striker",
 "Center Mid",
 "Right Wing",
@@ -538,42 +733,64 @@ const positions = [
 let loaderIndex = 0;
 
 setInterval(() => {
-favoritePosition.innerText = positions[loaderIndex];
+
+favoritePosition.innerText = rotatingPositions[loaderIndex];
+
 loaderIndex++;
 
-if(loaderIndex >= positions.length){
+if(loaderIndex >= rotatingPositions.length){
 loaderIndex = 0;
 }
-}, 700);
+
+},700);
 
 function hideLoader(){
+
 loader.style.opacity = "0";
 
 setTimeout(() => {
 loader.style.display = "none";
-}, 500);
+},500);
+
 }
 
 const selects = document.querySelectorAll("select");
+
 const modal = document.getElementById("modal");
+
 const verifyBtn = document.getElementById("verifyBtn");
+
 const studentIdInput = document.getElementById("studentIdInput");
 
 let players = [];
+
 let currentSelect = null;
+
+/* STORE USED PLAYERS */
+
+let assignedPlayers = new Set();
+
+/* LOAD PLAYERS */
 
 async function loadPlayers(){
 
 try{
 
 const response = await fetch(WEB_APP_URL);
-players = await response.json();
 
-selects.forEach(select=>{
+const data = await response.json();
 
-select.innerHTML=`<option value="">Select Player</option>`;
+players = data.players || data;
 
-players.forEach(player=>{
+/* EXISTING ASSIGNMENTS */
+
+const assignments = data.assignments || [];
+
+selects.forEach(select => {
+
+select.innerHTML = `<option value="">Select Player</option>`;
+
+players.forEach(player => {
 
 select.innerHTML += `
 <option value="${player.name}">
@@ -585,48 +802,92 @@ ${player.name}
 
 });
 
+/* PRINT EXISTING ASSIGNMENTS */
+
+assignments.forEach(item => {
+
+const select = document.querySelector(
+`select[data-position="${item.position}"]`
+);
+
+if(select){
+
+select.value = item.player;
+
+select.classList.add("locked");
+
+select.disabled = true;
+
+assignedPlayers.add(item.player);
+
+}
+
+});
+
 }
 catch(error){
 
-console.error("Error loading players:", error);
+console.error(error);
+
 alert("Failed to load players");
 
 }
 finally{
 
-/* LOADER HIDES ONLY AFTER APPS SCRIPT RETURNS */
 setTimeout(() => {
 hideLoader();
-}, 500);
+},500);
 
 }
 
 }
 
-/* PAGE + APPS SCRIPT FULL LOAD */
+/* PAGE LOAD */
+
 window.addEventListener("load", async () => {
+
 await loadPlayers();
+
 });
 
-selects.forEach(select=>{
+/* CHANGE EVENT */
 
-select.addEventListener("change",()=>{
+selects.forEach(select => {
 
-if(select.value){
+select.addEventListener("change", () => {
+
+if(!select.value) return;
+
+const selectedPlayer = select.value;
+
+/* PREVENT MULTIPLE ASSIGN */
+
+if(assignedPlayers.has(selectedPlayer)){
+
+alert("This player is already assigned.");
+
+select.value = "";
+
+return;
+
+}
 
 currentSelect = select;
-modal.style.display="flex";
-studentIdInput.value="";
 
-}
+studentIdInput.value = "";
 
-});
+modal.style.display = "flex";
 
 });
 
-verifyBtn.addEventListener("click", async ()=>{
+});
+
+/* VERIFY */
+
+verifyBtn.addEventListener("click", async () => {
 
 const selectedPlayer = currentSelect.value;
+
 const enteredId = studentIdInput.value;
 
 const found = players.find(
@@ -635,29 +896,44 @@ p => p.name === selectedPlayer && p.studentId == enteredId
 
 if(found){
 
-currentSelect.classList.add("verified");
+assignedPlayers.add(selectedPlayer);
+
+currentSelect.classList.add("locked");
+
+currentSelect.disabled = true;
+
 modal.style.display = "none";
 
-/* LOADER SHOWS DURING SAVE ALSO */
+/* SHOW LOADER */
+
 loader.style.display = "flex";
 loader.style.opacity = "1";
 
-favoritePosition.innerText = currentSelect.dataset.position;
+favoritePosition.innerText =
+currentSelect.dataset.position;
 
-await fetch(WEB_APP_URL,{
+await fetch(WEB_APP_URL, {
+
 method:"POST",
+
 body:JSON.stringify({
+
 position:currentSelect.dataset.position,
+
 player:selectedPlayer,
+
 studentId:enteredId
+
 })
+
 });
 
 hideLoader();
 
 alert("Player Assigned Successfully");
 
-}else{
+}
+else{
 
 alert("Invalid Student ID");
 
